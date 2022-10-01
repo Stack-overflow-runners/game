@@ -1,4 +1,4 @@
-const ForumPage = () => {
+function ForumPage() {
 
   return (
     <div>Страница форума</div>

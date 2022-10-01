@@ -1,4 +1,4 @@
-const LeaderBoardPage = () => {
+function LeaderBoardPage() {
 
   return (
     <div>Таблица лидеров</div>

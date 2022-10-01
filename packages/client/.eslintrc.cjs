@@ -17,11 +17,6 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 1,
-  },
-  "react/function-component-definition": [
-    2,
-    {
-      namedComponents: "arrow-function",
-    },
-  ],
+    "react/react-in-jsx-scope": "off"
+  }
 }

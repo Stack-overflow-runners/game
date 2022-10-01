@@ -1,4 +1,4 @@
-const SignInPage = () => {
+function SignInPage() {
 
   return (
     <div>Страница входа</div>

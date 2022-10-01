@@ -1,4 +1,4 @@
-const GamePage = () => {
+function GamePage() {
 
   return (
     <div>Страница с игрой</div>
