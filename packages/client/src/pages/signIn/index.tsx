@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { withNaming } from '@bem-react/classname';
 import { useNavigate } from 'react-router-dom';
+import 'antd/dist/antd.css';
 import './style.css';
 
 interface FormData {
