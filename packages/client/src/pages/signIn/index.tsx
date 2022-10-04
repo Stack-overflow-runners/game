@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input, Typography } from 'antd';
 import { withNaming } from '@bem-react/classname';
 import { useNavigate } from 'react-router-dom';
 import 'antd/dist/antd.css';
@@ -24,7 +24,7 @@ const fakeUserFetch = (data: FormData) =>
       resolve(data ? { username: 'Ivan' } : null);
     }, 1000);
   });
-  
+
 function SignInPage(): JSX.Element {
   const navigate = useNavigate();
 
@@ -50,6 +50,7 @@ function SignInPage(): JSX.Element {
         onFinish={handleFormFinish}
         layout="vertical"
         autoComplete="off">
+        <Typography.Title className={cn('sign-in', 'form-title')}>Вход</Typography.Title>
         <Form.Item
           className={cn('sign-in', 'form-item')}
           label="Username"
