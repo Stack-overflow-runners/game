@@ -1,3 +1,5 @@
+import 'antd/dist/antd.css';
+import './App.css';
 import { useEffect } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import LeaderBoardPage from './pages/leaderBoard';
@@ -7,7 +9,6 @@ import SignUpPage from './pages/signUp';
 import ForumPage from './pages/forum';
 import ProfilePage from './pages/profile';
 import GamePage from './pages/game';
-import './App.css';
 
 function App() {
   useEffect(() => {
