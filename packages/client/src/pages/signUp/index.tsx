@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, Typography } from 'antd';
 import { useNavigate } from 'react-router';
+import { Rule } from 'antd/lib/form';
 import 'antd/dist/antd.css';
 import './style.css';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -97,7 +98,7 @@ function SignUpPage(): JSX.Element {
           className={cn('sign-up', 'form-item')}
           label="Почта"
           name="email"
-          rules={inputRules.email}>
+          rules={inputRules.email as Rule[]}>
           <Input />
         </Form.Item>
         <Form.Item
