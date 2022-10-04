@@ -1,9 +1,9 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { Button, Checkbox, Form, Input, Typography } from 'antd';
-import { withNaming } from '@bem-react/classname';
 import { useNavigate } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import './style.css';
+import cn from '../../utils/cn';
 
 interface FormData {
   username: string;
@@ -11,19 +11,16 @@ interface FormData {
   remember: boolean;
 }
 
-const cn = (block: string, element?: string, modifier?: any) => {
-  const preset = { e: '__', m: '_', v: '_' };
-  const baseCn = withNaming(preset);
-
-  return baseCn(block, element)(modifier);
-};
-
 const fakeUserFetch = (data: FormData) =>
   new Promise(resolve => {
     setTimeout(() => {
       resolve(data ? { username: 'Ivan' } : null);
     }, 1000);
   });
+
+const signIn = cn('sign-in');
+
+const initialValues: Partial<FormData> = { remember: true };
 
 function SignInPage(): JSX.Element {
   const navigate = useNavigate();
@@ -36,23 +33,20 @@ function SignInPage(): JSX.Element {
     });
   }, []);
 
-  const initialValues: Partial<FormData> = useMemo(
-    () => ({ remember: true }),
-    []
-  );
-
   return (
-    <div className={cn('sign-in')}>
+    <div className={signIn()}>
       <Form
-        className={cn('sign-in', 'form')}
+        className={signIn('form')}
         name="basic"
         initialValues={initialValues}
         onFinish={handleFormFinish}
         layout="vertical"
         autoComplete="off">
-        <Typography.Title className={cn('sign-in', 'form-title')}>Вход</Typography.Title>
+        <Typography.Title className={signIn('form-title')}>
+          Вход
+        </Typography.Title>
         <Form.Item
-          className={cn('sign-in', 'form-item')}
+          className={signIn('form-item')}
           label="Username"
           name="username"
           rules={[{ required: true, message: 'Введите логин!' }]}>
@@ -60,21 +54,21 @@ function SignInPage(): JSX.Element {
         </Form.Item>
 
         <Form.Item
-          className={cn('sign-in', 'form-item')}
+          className={signIn('form-item')}
           label="Password"
           name="password"
           rules={[{ required: true, message: 'Введите пароль!' }]}>
           <Input.Password />
         </Form.Item>
 
-        <Form.Item className={cn('sign-in', 'form-item')}>
+        <Form.Item className={signIn('form-item')}>
           <Button type="primary" htmlType="submit" block>
             Войти
           </Button>
         </Form.Item>
 
         <Form.Item
-          className={cn('sign-in', 'form-item')}
+          className={signIn('form-item')}
           name="remember"
           valuePropName="checked">
           <Checkbox>Запомнить меня</Checkbox>
