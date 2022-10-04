@@ -1,5 +1,6 @@
 import { useCanvas } from '../../hooks';
 import BulletObject from '../../engine/bullet';
+import GAME_SETTINGS from '../../game-settings';
 
 type Props = {
   bullet: BulletObject;
@@ -9,7 +10,13 @@ type Props = {
 function Bullet({ bullet, type }: Props) {
   const context = useCanvas();
 
-  bullet.setCoord(bullet.x, bullet.y + (type === 'enemy' ? 3 : -3));
+  bullet.setCoord(
+    bullet.x,
+    bullet.y +
+      (type === 'enemy'
+        ? GAME_SETTINGS.enemyBullet.speed
+        : -GAME_SETTINGS.shipBullet.speed)
+  );
 
   if (context !== null && bullet.isAlive) {
     context.fillStyle = 'black';

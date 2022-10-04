@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
+
 import { useCanvas } from '../../hooks';
 import game from '../../engine/game-engine';
-import checkCollision from '../../engine/utils/check-collision'
+import checkCollision from '../../engine/utils/check-collision';
 
 type Props = {
   handleStopGame: () => void;
@@ -18,9 +20,11 @@ function CollisionChecker({ handleStopGame }: Props) {
   );
   game.checkEnemyShipBulletsCollision();
 
-  if (isShipEnemyCollision || isShipEnemyBulletCollision) {
-    handleStopGame();
-  }
+  useEffect(() => {
+    if (isShipEnemyCollision || isShipEnemyBulletCollision) {
+      handleStopGame();
+    }
+  }, [isShipEnemyCollision, isShipEnemyBulletCollision]);
 
   return null;
 }

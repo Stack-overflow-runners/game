@@ -1,5 +1,6 @@
 import { useCanvas } from '../../hooks';
 import EnemyObject from '../../engine/enemy';
+import GAME_SETTINGS from '../../game-settings'
 
 type Props = {
   initialXPosition: number;
@@ -9,7 +10,7 @@ type Props = {
 function Enemy({ initialXPosition, enemy }: Props) {
   const context = useCanvas();
 
-  enemy.setCoord(initialXPosition, enemy.y + 0.5);
+  enemy.setCoord(initialXPosition, enemy.y + GAME_SETTINGS.enemy.speed);
 
   if (context !== null && enemy.isAlive) {
     context.fillStyle = 'green';

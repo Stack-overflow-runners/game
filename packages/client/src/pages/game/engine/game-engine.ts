@@ -4,6 +4,7 @@ import Bullet from './bullet';
 import getRandomArbitrary from '../../../utils/get-random-arbitrary';
 import { IntervalId } from '../../../types/interval-id';
 import checkObjectsIntersect from './utils/check-objects-intersect';
+import GAME_SETTINGS from '../game-settings';
 
 type GameState = {
   ship: Ship;
@@ -11,6 +12,8 @@ type GameState = {
   enemiesBullets: Bullet[];
   shipBullets: Bullet[];
 };
+
+const {ship, enemy, enemyBullet, shipBullet, canvas, cleanerInterval} = GAME_SETTINGS;
 
 class GameEngine {
   private shipBulletsIntervalId: IntervalId | undefined;
@@ -22,7 +25,7 @@ class GameEngine {
   private objectsCleanerIntervalId: IntervalId | undefined;
 
   gameState: GameState = {
-    ship: new Ship(300, 750, 50, 100),
+    ship: new Ship(canvas.width / 2 - ship.width / 2, canvas.height - ship.height, ship.width, ship.height),
     enemies: [],
     enemiesBullets: [],
     shipBullets: [],
@@ -33,21 +36,21 @@ class GameEngine {
       const { enemies, enemiesBullets, shipBullets } = this.gameState;
 
       this.gameState.enemies = enemies.filter(
-        ({ isAlive, y }) => isAlive && y <= 800
+        ({ isAlive, y }) => isAlive && y <= canvas.height
       );
       this.gameState.enemiesBullets = enemiesBullets.filter(
-        ({ isAlive, y }) => isAlive && y <= 800
+        ({ isAlive, y }) => isAlive && y <= canvas.height
       );
       this.gameState.shipBullets = shipBullets.filter(
-        ({ isAlive, y }) => isAlive && y >= -20
+        ({ isAlive, y }) => isAlive && y >= -shipBullet.height
       );
-    }, 10000);
+    }, cleanerInterval);
   }
 
   generateEnemies() {
     this.enemiesIntervalId = setInterval(() => {
       this.gameState.enemies.push(
-        new Enemy(getRandomArbitrary(0, 500), -100, 100, 100)
+        new Enemy(getRandomArbitrary(0, canvas.width - enemy.width), -enemy.height, enemy.width, enemy.height)
       );
     }, 2000);
   }
@@ -55,34 +58,34 @@ class GameEngine {
   generateEnemiesBullets() {
     this.enemiesBulletsIntervalId = setInterval(() => {
       const { enemies, enemiesBullets } = this.gameState;
-      enemies.forEach(enemy => {
-        if (!enemy.isAlive) {
+      enemies.forEach(enm => {
+        if (!enm.isAlive) {
           return;
         }
         enemiesBullets.push(
           new Bullet(
-            Math.floor(enemy.x + enemy.width / 2) - 10,
-            enemy.y + enemy.height,
-            20,
-            20
+            Math.floor(enm.x + enm.width / 2) - enemyBullet.width / 2,
+            enm.y + enm.height,
+            enemyBullet.width,
+            enemyBullet.height,
           )
         );
       });
-    }, 1000);
+    }, enemyBullet.interval);
   }
 
   generateShipBullets() {
     this.shipBulletsIntervalId = setInterval(() => {
-      const { ship, shipBullets } = this.gameState;
+      const { ship: gameShip, shipBullets } = this.gameState;
       shipBullets.push(
         new Bullet(
-          Math.floor(ship.x + ship.width / 2) - 10,
-          ship.y - 20,
-          20,
-          20
+          Math.floor(gameShip.x + gameShip.width / 2) - shipBullet.width / 2,
+          gameShip.y - 20,
+          shipBullet.width,
+          shipBullet.height,
         )
       );
-    }, 500);
+    }, shipBullet.interval);
   }
 
   start() {

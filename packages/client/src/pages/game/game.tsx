@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
+
 import Canvas from './components/canvas';
 import Enemies from './components/enemies';
 import Ship from './components/ship';
 import ShipBullets from './components/ship-bullets';
-
 import game from './engine/game-engine';
 import CollisionChecker from './components/collision-checker';
 import EnemiesBullets from './components/enemies-bullets';
+import GAME_SETTINGS from './game-settings';
+
+const {canvas} = GAME_SETTINGS;
 
 function Game() {
   const [isStarted, setIsStarted] = useState<boolean>(false);
@@ -32,7 +35,7 @@ function Game() {
         {isStarted ? 'stop' : 'start'}
       </button>
       {isStarted.toString()}
-      <Canvas width={600} height={800} isAnimating={isStarted}>
+      <Canvas width={canvas.width} height={canvas.height} isAnimating={isStarted}>
         <Enemies />
         <EnemiesBullets />
         <ShipBullets />
