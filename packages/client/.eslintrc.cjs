@@ -4,18 +4,14 @@ module.exports = {
     es2020: true,
     node: true,
   },
-  extends: [
-    'airbnb',
-    'airbnb-typescript',
-    'prettier',
-  ],
+  extends: ['airbnb', 'airbnb-typescript', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 11,
-    project: './tsconfig.json',
+    project: './packages/client/tsconfig.json',
   },
   plugins: ['@typescript-eslint'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 1,
   },
-}
+};
