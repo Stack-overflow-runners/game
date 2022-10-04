@@ -4,10 +4,6 @@ import { withNaming } from '@bem-react/classname';
 import { useNavigate } from 'react-router-dom';
 import './style.css';
 
-interface SignInPageProps {
-  className?: string;
-}
-
 interface FormData {
   username: string;
   password: string;
@@ -21,29 +17,31 @@ const cn = (block: string, element?: string, modifier?: any) => {
   return baseCn(block, element)(modifier);
 };
 
-const SignInPage: React.FC<SignInPageProps> = ({ className }): JSX.Element => {
+const fakeUserFetch = (data: FormData) =>
+  new Promise(resolve => {
+    setTimeout(() => {
+      resolve(data ? { username: 'Ivan' } : null);
+    }, 1000);
+  });
+  
+function SignInPage(): JSX.Element {
   const navigate = useNavigate();
 
   const handleFormFinish = useCallback((data: FormData): void => {
-    const fakeUserFetch = new Promise(resolve => {
-      setTimeout(() => {
-        resolve({ username: 'Ivan' });
-      }, 1000);
-    });
-
-    fakeUserFetch.then(user => {
+    fakeUserFetch(data).then(user => {
       if (user) {
         navigate('/profile');
       }
     });
   }, []);
 
-  const initialValues: Partial<FormData> = useMemo(() => {
-    return { remember: true };
-  }, []);
+  const initialValues: Partial<FormData> = useMemo(
+    () => ({ remember: true }),
+    []
+  );
 
   return (
-    <div className={`${className} ${cn('sign-in')}`}>
+    <div className={cn('sign-in')}>
       <Form
         className={cn('sign-in', 'form')}
         name="basic"
@@ -82,6 +80,6 @@ const SignInPage: React.FC<SignInPageProps> = ({ className }): JSX.Element => {
       </Form>
     </div>
   );
-};
+}
 
 export default SignInPage;
