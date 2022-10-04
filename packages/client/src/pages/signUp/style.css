@@ -1,0 +1,28 @@
+.sign-up {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .sign-up__form-title {
+    font-size: 20px;
+    margin-top: 0;
+    text-align: center;
+  }
+}
+
+.sign-up__form {
+  padding: 50px 40px 40px;
+  border-radius: 12px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+  max-width: 340px;
+  flex-grow: 1;
+}
+
+.sign-up__form-item {
+  margin: 0;
+}
+
+.sign-up__form-item + .sign-up__form-item {
+  margin-top: 24px;
+}
