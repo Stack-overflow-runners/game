@@ -1,4 +1,4 @@
-import { Leader } from "./types";
+import { Leader } from './types';
 
 const data: Leader[] = [
   {

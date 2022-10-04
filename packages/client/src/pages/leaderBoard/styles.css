@@ -4,6 +4,11 @@
   align-items: center;
   padding: 70px 30px;
 
+  .title {
+    font-size: 27px;
+    margin-bottom: 30px;
+  }
+
   &__button {
     margin-right: 10px;
     margin-bottom: 20px;
