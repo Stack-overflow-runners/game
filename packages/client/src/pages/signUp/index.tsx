@@ -16,7 +16,73 @@ interface FormData {
   passwordRepeat: string;
 }
 
-// todo заменить на from utils
+const inputRules = {
+  email: [
+    {
+      type: 'email',
+      message: 'Введите корректный адрес почты',
+    },
+    {
+      required: true,
+      message: 'Введите почту',
+    },
+  ],
+  login: [
+    { required: true, message: 'Введите логин' },
+    {
+      pattern: /^[a-zA-Z][a-zA-Z0-9-_]*$/g,
+      message: 'Введите корректный логин',
+    },
+    { min: 3, message: 'Не менее 3 символов' },
+  ],
+  firsName: [
+    {
+      pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
+      message: 'латиница или кириллица',
+    },
+  ],
+  phone: [
+    {
+      required: true,
+      message: 'Введите телефон',
+    },
+    {
+      pattern: /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/,
+      message: 'Введите корректный телефон',
+    },
+  ],
+  password: [
+    {
+      required: true,
+      message: 'Введите пароль',
+    },
+    { min: 8, message: 'Не менее 8 символов' },
+    {
+      pattern: /(?=.*[A-Z])/,
+      message: 'Не менее 1 заглавной буквы',
+    },
+    {
+      pattern: /(?=.*\d)/,
+      message: 'Должен содержать хотя бы одну цифру',
+    },
+  ],
+  passwordRepeat: [
+    {
+      required: true,
+      message: 'Введите пароль еще раз',
+    },
+    ({ getFieldValue }) => ({
+      validator(_, value) {
+        if (!value || getFieldValue('password') === value) {
+          return Promise.resolve();
+        }
+        return Promise.reject(new Error('Пароли не совпадают'));
+      },
+    }),
+  ],
+};
+
+// todo заменить на from utils когда будет готов
 const cn = (block: string, element?: string, modifier?: any) => {
   const preset = { e: '__', m: '_', v: '_' };
   const baseCn = withNaming(preset);
@@ -45,115 +111,53 @@ function SignUpPage(): JSX.Element {
           className={cn('sign-up', 'form-item')}
           label="Почта"
           name="email"
-          rules={[
-            {
-              type: 'email',
-              message: 'Введите корректный адрес почты',
-            },
-            {
-              required: true,
-              message: 'Введите почту',
-            },
-          ]}>
+          rules={inputRules.email}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           label="Логин"
           name="login"
-          rules={[
-            { required: true, message: 'Введите логин' },
-            {
-              pattern: /^[a-zA-Z][a-zA-Z0-9-_]*$/g,
-              message: 'Введите корректный логин',
-            },
-            { min: 3, message: 'Не менее 3 символов' },
-          ]}>
+          rules={inputRules.login}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           label="Имя"
           name="first_name"
-          rules={[
-            {
-              pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
-              message: 'латиница или кириллица',
-            },
-          ]}>
+          rules={inputRules.firsName}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           label="Фамилия"
           name="second_name"
-          rules={[
-            {
-              pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
-              message: 'латиница или кириллица',
-            },
-          ]}>
+          rules={inputRules.firsName}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           label="Телефон"
           name="phone"
-          rules={[
-            {
-              required: true,
-              message: 'Введите телефон',
-            },
-            {
-              pattern: /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/,
-              message: 'Введите корректный телефон',
-            },
-          ]}>
+          rules={inputRules.phone}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           name="password"
           label="Пароль"
-          rules={[
-            {
-              required: true,
-              message: 'Введите пароль',
-            },
-            { min: 8, message: 'Не менее 8 символов' },
-            {
-              pattern: /(?=.*[A-Z])/,
-              message: 'Не менее 1 заглавной буквы',
-            },
-            {
-              pattern: /(?=.*\d)/,
-              message: 'Должен содержать хотя бы одну цифру',
-            },
-          ]}
+          rules={inputRules.password}
           hasFeedback>
           <Input.Password />
         </Form.Item>
 
         <Form.Item
           className={cn('sign-up', 'form-item')}
-          name="confirm"
+          name="passwordRepeat"
           label="Пароль (еще раз)"
           dependencies={['password']}
           hasFeedback
-          rules={[
-            {
-              required: true,
-              message: 'Введите пароль еще раз',
-            },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue('password') === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject(new Error('Пароли не совпадают'));
-              },
-            }),
-          ]}>
+          rules={inputRules.passwordRepeat}>
           <Input.Password />
         </Form.Item>
         <Form.Item className={cn('sign-up', 'form-item')}>
