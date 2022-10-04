@@ -66,20 +66,6 @@ const inputRules = {
       message: 'Должен содержать хотя бы одну цифру',
     },
   ],
-  passwordRepeat: [
-    {
-      required: true,
-      message: 'Введите пароль еще раз',
-    },
-    ({ getFieldValue }) => ({
-      validator(_, value) {
-        if (!value || getFieldValue('password') === value) {
-          return Promise.resolve();
-        }
-        return Promise.reject(new Error('Пароли не совпадают'));
-      },
-    }),
-  ],
 };
 
 // todo заменить на from utils когда будет готов
@@ -157,7 +143,20 @@ function SignUpPage(): JSX.Element {
           label="Пароль (еще раз)"
           dependencies={['password']}
           hasFeedback
-          rules={inputRules.passwordRepeat}>
+          rules={[
+            {
+              required: true,
+              message: 'Введите пароль еще раз',
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('Пароли не совпадают'));
+              },
+            }),
+          ]}>
           <Input.Password />
         </Form.Item>
         <Form.Item className={cn('sign-up', 'form-item')}>
