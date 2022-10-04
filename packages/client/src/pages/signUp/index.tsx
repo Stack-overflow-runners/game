@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router';
 import { Rule } from 'antd/lib/form';
 import 'antd/dist/antd.css';
 import './style.css';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { withNaming } from '@bem-react/classname';
 
 interface FormData {
