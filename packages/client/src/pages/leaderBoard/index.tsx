@@ -5,7 +5,7 @@ import data from './mock';
 import cup from '../../assets/cup.svg';
 import 'antd/dist/antd.css';
 import './styles.css';
-import cn from '../../utils/bemclassname';
+import cn from '../../utils/bemClassName';
 
 const { Title } = Typography;
 const lb = cn('leader-board');
