@@ -1,5 +1,5 @@
 test('Example test', () => {
-  expect("Example").toBe("Example");
+  expect('Example').toBe('Example');
 });
 
-export {}
+export {};
