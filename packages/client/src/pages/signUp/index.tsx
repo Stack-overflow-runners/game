@@ -1,10 +1,11 @@
-import React from 'react';
-import { Form, Input, Button, Typography } from 'antd';
+import React, { useCallback } from 'react';
+import { Form, Input, Button } from 'antd';
 import { useNavigate } from 'react-router';
 import { Rule } from 'antd/lib/form';
 import 'antd/dist/antd.css';
 import './style.css';
 import { withNaming } from '@bem-react/classname';
+import signUpRules from './validator';
 
 interface FormData {
   email: string;
@@ -16,58 +17,6 @@ interface FormData {
   passwordRepeat: string;
 }
 
-const inputRules = {
-  email: [
-    {
-      type: 'email',
-      message: 'Введите корректный адрес почты',
-    },
-    {
-      required: true,
-      message: 'Введите почту',
-    },
-  ],
-  login: [
-    { required: true, message: 'Введите логин' },
-    {
-      pattern: /^[a-zA-Z][a-zA-Z0-9-_]*$/g,
-      message: 'Введите корректный логин',
-    },
-    { min: 3, message: 'Не менее 3 символов' },
-  ],
-  firsName: [
-    {
-      pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
-      message: 'латиница или кириллица',
-    },
-  ],
-  phone: [
-    {
-      required: true,
-      message: 'Введите телефон',
-    },
-    {
-      pattern: /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/,
-      message: 'Введите корректный телефон',
-    },
-  ],
-  password: [
-    {
-      required: true,
-      message: 'Введите пароль',
-    },
-    { min: 8, message: 'Не менее 8 символов' },
-    {
-      pattern: /(?=.*[A-Z])/,
-      message: 'Не менее 1 заглавной буквы',
-    },
-    {
-      pattern: /(?=.*\d)/,
-      message: 'Должен содержать хотя бы одну цифру',
-    },
-  ],
-};
-
 // todo заменить на from utils когда будет готов
 const cn = (block: string, element?: string, modifier?: any) => {
   const preset = { e: '__', m: '_', v: '_' };
@@ -78,7 +27,9 @@ const cn = (block: string, element?: string, modifier?: any) => {
 
 function SignUpPage(): JSX.Element {
   const navigate = useNavigate();
-
+  const onLoginClick = useCallback((): void => {
+    navigate('/sign-in');
+  }, []);
   const handleSubmit = (values: FormData) => {
     console.log('Submit:', values);
   };
@@ -90,49 +41,47 @@ function SignUpPage(): JSX.Element {
         layout="vertical"
         initialValues={{ remember: true }}
         onFinish={handleSubmit}>
-        <Typography.Title className={cn('sign-up', 'form-title')}>
-          Регистрация
-        </Typography.Title>
+        <h1 className={cn('sign-up', 'form-title')}>Регистрация</h1>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           label="Почта"
           name="email"
-          rules={inputRules.email as Rule[]}>
+          rules={signUpRules.email as Rule[]}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           label="Логин"
           name="login"
-          rules={inputRules.login}>
+          rules={signUpRules.login}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           label="Имя"
           name="first_name"
-          rules={inputRules.firsName}>
+          rules={signUpRules.firsName}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           label="Фамилия"
           name="second_name"
-          rules={inputRules.firsName}>
+          rules={signUpRules.firsName}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           label="Телефон"
           name="phone"
-          rules={inputRules.phone}>
+          rules={signUpRules.phone}>
           <Input />
         </Form.Item>
         <Form.Item
           className={cn('sign-up', 'form-item')}
           name="password"
           label="Пароль"
-          rules={inputRules.password}
+          rules={signUpRules.password}
           hasFeedback>
           <Input.Password />
         </Form.Item>
@@ -166,11 +115,7 @@ function SignUpPage(): JSX.Element {
         </Form.Item>
 
         <Form.Item className={cn('sign-up', 'form-item')}>
-          <Button
-            type="link"
-            htmlType="button"
-            block
-            onClick={() => navigate('/sign-in')}>
+          <Button type="link" htmlType="button" block onClick={onLoginClick}>
             Войти
           </Button>
         </Form.Item>
