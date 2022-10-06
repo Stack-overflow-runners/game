@@ -11,6 +11,7 @@
     "test": "jest ./"
   },
   "dependencies": {
+    "@bem-react/classname": "^1.5.12",
     "@reduxjs/toolkit": "^1.8.5",
     "antd": "^4.23.3",
     "dotenv": "^16.0.2",
@@ -25,7 +26,6 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@bem-react/classname": "^1.5.12",
     "@testing-library/react": "^13.3.0",
     "@types/jest": "^28.1.8",
     "@types/lodash": "^4.14.186",
