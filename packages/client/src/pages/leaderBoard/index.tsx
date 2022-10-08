@@ -6,6 +6,7 @@ import cup from '../../assets/cup.svg';
 import 'antd/dist/antd.css';
 import './styles.css';
 import cn from '../../utils/bemClassName';
+import Layout from '../../components/layout';
 
 const { Title } = Typography;
 const lb = cn('leader-board');
@@ -34,25 +35,26 @@ const columns: ColumnsType<Leader> = [
 ];
 
 function LeaderBoardPage() {
-
   return (
-    <div className={lb()}>
-      <img src={cup} alt='cup' />
-      <Title className='title'>Таблица лидеров</Title>
-      <div>
-        <Button className={lb('button')}>Сегодня</Button>
-        <Button className={lb('button')}>Месяц</Button>
-        <Button className={lb('button')}>Всё время</Button>
+    <Layout>
+      <div className={lb()}>
+        <img src={cup} alt="cup" />
+        <Title className="title">Таблица лидеров</Title>
+        <div>
+          <Button className={lb('button')}>Сегодня</Button>
+          <Button className={lb('button')}>Месяц</Button>
+          <Button className={lb('button')}>Всё время</Button>
+        </div>
+        <Table
+          className="table"
+          columns={columns}
+          dataSource={data}
+          pagination={false}
+          rowKey={record => record.score}
+        />
       </div>
-      <Table 
-        className='table'
-        columns={columns} 
-        dataSource={data}
-        pagination={false}
-        rowKey={(record) => record.score}
-      />
-    </div>
+    </Layout>
   );
-};
+}
 
 export default LeaderBoardPage;
