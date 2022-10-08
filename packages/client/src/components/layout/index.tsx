@@ -17,7 +17,7 @@ const cn = createCn('layout');
 
 const items: ItemType[] = [
   { label: <Link to="/">Home</Link>, key: 'home' },
-  { label: <Link to="leader-board">Leader-board</Link>, key: 'leader-board' },
+  { label: <Link to="/leader-board">Leader-board</Link>, key: 'leader-board' },
 ];
 
 function Layout({ children }: LayoutProps): JSX.Element {
