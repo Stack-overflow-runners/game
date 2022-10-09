@@ -17,11 +17,11 @@
 
   &__logo {
     display: flex;
+  }
 
-    &-image {
-      width: auto;
-      height: 48px;
-    }
+  &__logo-image {
+    width: auto;
+    height: 48px;
   }
 
   &__main {
