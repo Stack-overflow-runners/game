@@ -7,7 +7,7 @@ import './style.css';
 import { withNaming } from '@bem-react/classname';
 import signUpRules from './validator';
 
-interface FormData {
+type FormData = {
   email: string;
   login: string;
   name?: boolean;
