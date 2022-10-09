@@ -5,11 +5,11 @@ import data from './mock';
 import cup from '../../assets/cup.svg';
 import 'antd/dist/antd.css';
 import './styles.css';
-import cn from '../../utils/bemClassName';
 import Layout from '../../components/layout';
+import createCn from '../../utils/create-cn';
 
 const { Title } = Typography;
-const lb = cn('leader-board');
+const cn = createCn('leader-board');
 
 const columns: ColumnsType<Leader> = [
   {
@@ -37,13 +37,13 @@ const columns: ColumnsType<Leader> = [
 function LeaderBoardPage() {
   return (
     <Layout>
-      <div className={lb()}>
+      <div className={cn()}>
         <img src={cup} alt="cup" />
         <Title className="title">Таблица лидеров</Title>
         <div>
-          <Button className={lb('button')}>Сегодня</Button>
-          <Button className={lb('button')}>Месяц</Button>
-          <Button className={lb('button')}>Всё время</Button>
+          <Button className={cn('button')}>Сегодня</Button>
+          <Button className={cn('button')}>Месяц</Button>
+          <Button className={cn('button')}>Всё время</Button>
         </div>
         <Table
           className="table"
