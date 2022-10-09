@@ -6,7 +6,7 @@ import createCn from '../../utils/create-cn';
 import 'antd/dist/antd.css';
 import './style.css';
 
-interface FormData {
+type FormData = {
   username: string;
   password: string;
   remember: boolean;
