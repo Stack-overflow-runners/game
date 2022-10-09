@@ -22,42 +22,76 @@ class HttpService {
   };
 
   get = async (url: string) => {
-    const response = await fetch(`${this.endPoint}${url}`, {
-      credentials: 'include',
-    });
-    return HttpService.returnResponse(response);
+    try {
+      const response = await fetch(`${this.endPoint}${url}`, {
+        credentials: 'include',
+      });
+      return await HttpService.returnResponse(response);
+    } catch (e: any) {
+      return HttpService.returnResponse(
+        new Response(JSON.stringify({ reason: e.message }), {
+          status: 500,
+          statusText: e.message,
+        })
+      );
+    }
   };
 
   post = async (url: string, body: any) => {
-    const response = await fetch(`${this.endPoint}${url}`, {
-      method: 'POST',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
-    return HttpService.returnResponse(response);
+    try {
+      const response = await fetch(`${this.endPoint}${url}`, {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json' },
+      });
+      return await HttpService.returnResponse(response);
+    } catch (e: any) {
+      return HttpService.returnResponse(
+        new Response(JSON.stringify({ reason: e.message }), {
+          status: 500,
+          statusText: e.message,
+        })
+      );
+    }
   };
 
   put = async (url: string, body: any) => {
-    const response = await fetch(`${this.endPoint}${url}`, {
-      method: 'PUT',
-      body: JSON.stringify(body),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    });
-    return HttpService.returnResponse(response);
+    try {
+      const response = await fetch(`${this.endPoint}${url}`, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+      return await HttpService.returnResponse(response);
+    } catch (e: any) {
+      return HttpService.returnResponse(
+        new Response(JSON.stringify({ reason: e.message }), {
+          status: 500,
+          statusText: e.message,
+        })
+      );
+    }
   };
 
   delete = async (url: string) => {
-    const response = await fetch(`${this.endPoint}${url}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
-    return HttpService.returnResponse(response);
+    try {
+      const response = await fetch(`${this.endPoint}${url}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      return await HttpService.returnResponse(response);
+    } catch (e: any) {
+      return HttpService.returnResponse(
+        new Response(JSON.stringify({ reason: e.message }), {
+          status: 500,
+          statusText: e.message,
+        })
+      );
+    }
   };
 }
 
