@@ -4,17 +4,15 @@ import { ApiResponse } from '../../../types/api';
 import { UserDTO } from '../../../types/user';
 
 const signUp = async (payload: SignUpDTO): ApiResponse<UserDTO> => {
-  const api = new AuthAPI();
-  const response = await api.signUp(payload);
+  const response = await AuthAPI.signUp(payload);
   if (response.error) {
     return response;
   }
-  const userRes = await api.getUser();
+  const userRes = await AuthAPI.getUser();
   if (userRes.error) {
     return userRes;
   }
-  const user = userRes.data;
-  return { ...userRes, data: user };
+  return { data: userRes.data };
 };
 
 export default signUp;
