@@ -112,11 +112,11 @@ function SignUpPage(): JSX.Element {
           <Input.Password />
         </Form.Item>
         {formAlert && (
-          <>
-            <br />
-            <Alert message={formAlert} type="error" />
-            <br />
-          </>
+          <Alert
+            message={formAlert}
+            type="error"
+            className={cn('form-alert')}
+          />
         )}
         <Form.Item className={cn('form-item')}>
           <Button type="primary" htmlType="submit" block>

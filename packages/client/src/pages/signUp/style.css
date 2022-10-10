@@ -25,4 +25,8 @@
   &__form-item + &__form-item {
     margin-top: 24px;
   }
+
+  &__form-alert {
+    margin: 15px 0 15px;
+  }
 }
