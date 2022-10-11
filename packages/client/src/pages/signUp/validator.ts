@@ -17,7 +17,15 @@ const signUpRules = {
     },
     { min: 3, message: 'Не менее 3 символов' },
   ],
-  firsName: [
+  firstName: [
+    { required: true, message: 'Введите имя' },
+    {
+      pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
+      message: 'латиница или кириллица',
+    },
+  ],
+  secondName: [
+    { required: true, message: 'Введите фамилию' },
     {
       pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
       message: 'латиница или кириллица',
