@@ -1,23 +1,17 @@
-import { useCallback } from 'react';
-import { Button, Checkbox, Form, Input, Typography } from 'antd';
+import React, { useCallback } from 'react';
+import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Rule } from 'antd/lib/form';
 import createCn from '../../utils/create-cn';
 import 'antd/dist/antd.css';
 import './style.css';
+import signIn from './services/signin-service';
 
-interface FormData {
+type FormData = {
   username: string;
   password: string;
   remember: boolean;
-}
-
-const fakeUserFetch = (data: FormData): Promise<{ username: string } | null> =>
-  new Promise(resolve => {
-    setTimeout(() => {
-      resolve(data ? { username: 'Ivan' } : null);
-    }, 1000);
-  });
+};
 
 const cn = createCn('sign-in');
 
@@ -27,14 +21,24 @@ const passwordRules: Rule[] = [{ required: true, message: 'Введите пар
 
 function SignInPage(): JSX.Element {
   const navigate = useNavigate();
-
-  const handleFormFinish = useCallback((data: FormData): void => {
-    fakeUserFetch(data).then(user => {
-      if (user) {
-        navigate('/profile');
+  const [formAlert, setFormAlert] = React.useState<string | null>(null);
+  const handleFormFinish = useCallback(
+    async (data: FormData): Promise<void> => {
+      const res = await signIn({
+        login: data.username,
+        password: data.password,
+        remember: data.remember,
+      });
+      if (res.error) {
+        setFormAlert(res.error);
+        return;
       }
-    });
-  }, []);
+      if (res.data?.id) {
+        navigate('/');
+      }
+    },
+    []
+  );
 
   return (
     <div className={cn()}>
@@ -61,6 +65,14 @@ function SignInPage(): JSX.Element {
           rules={passwordRules}>
           <Input.Password />
         </Form.Item>
+
+        {formAlert && (
+          <>
+            <br />
+            <Alert message={formAlert} type="error" />
+            <br />
+          </>
+        )}
 
         <Form.Item className={cn('form-item')}>
           <Button type="primary" htmlType="submit" block>
