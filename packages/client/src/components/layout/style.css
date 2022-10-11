@@ -1,0 +1,38 @@
+.layout {
+  display: flex;
+  flex-flow: column;
+  min-height: 100vh;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: auto;
+    padding: 12px 24px;
+
+    @media screen and (min-width: 768px) {
+      padding: 12px 50px;
+    }
+  }
+
+  &__logo {
+    display: flex;
+  }
+
+  &__logo-image {
+    width: auto;
+    height: 48px;
+  }
+
+  &__main {
+    flex: 1;
+  }
+
+  &__container {
+    padding: 0 24px;
+
+    @media screen and (min-width: 768px) {
+      padding: 0 50px;
+    }
+  }
+}
