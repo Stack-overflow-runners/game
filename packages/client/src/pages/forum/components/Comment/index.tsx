@@ -6,24 +6,21 @@ type Props = {
 };
 
 function Comment({ comment }: Props) {
+  const { author, avatar = 'https://joeschmoe.io/api/v1/random', content, datetime } = comment;
 
   return (
     <Commentary
-      author={<p>{comment.author}</p>}
+      author={<p>{author}</p>}
       avatar={
         <Avatar
-          src={
-            comment.avatar
-              ? comment.avatar
-              : 'https://joeschmoe.io/api/v1/random'
-          }
-          alt={`Аватар ${comment.author}`}
+          src={avatar}
+          alt={`Аватар ${author}`}
         />
       }
-      content={comment.content}
-      datetime={comment.datetime}
+      content={content}
+      datetime={datetime}
     />
   );
-};
+}
 
 export default Comment;
