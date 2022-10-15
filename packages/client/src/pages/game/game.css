@@ -11,13 +11,6 @@
     display: none;
   }
 
-  &__start-stop {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
   &__canvas {
     border: 1px solid black;
   }

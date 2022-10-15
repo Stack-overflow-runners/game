@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from 'antd';
 
 import Canvas from './components/canvas';
 import Enemies from './components/enemies';
@@ -11,10 +10,12 @@ import EnemiesBullets from './components/enemies-bullets';
 import Images from './components/images';
 import GAME_SETTINGS from './game-settings';
 import createCn from '../../utils/bemClassName';
-import usePreloadedImagesRefs from './hooks/use-preloaded-images-refs'
-import Background from './components/background/background'
+import usePreloadedImagesRefs from './hooks/use-preloaded-images-refs';
+import Background from './components/background/background';
+import StartScreen from './components/start-screen';
 
 import './game.css';
+import GameOverScreen from './components/game-over-screen';
 
 const cn = createCn('game');
 const { canvas } = GAME_SETTINGS;
@@ -56,24 +57,28 @@ function Game() {
   return (
     <div className={cn()}>
       <div className={cn('game-container')}>
-        {!isStarted && (
-          <Button onClick={handleToggleGameRun} className={cn('start-stop')}>
-            {isNewGame ? 'start' : 'restart'}
-          </Button>
+        {isNewGame && <StartScreen onStart={handleToggleGameRun} />}
+        {!isStarted && !isNewGame && (
+          <GameOverScreen onGameOver={handleToggleGameRun} />
         )}
         <Images refs={refs} />
-        <Canvas
-          width={canvas.width}
-          height={canvas.height}
-          isAnimating={isStarted}
-          className={cn('canvas')}>
-          <Enemies refs={refs} />
-          <EnemiesBullets refs={refs} />
-          <ShipBullets refs={refs} />
-          <Ship isAnimating={isStarted} mainShipFullHealthRef={refs.mainShipFullHealthRef}/>
-          <Background refs={refs} />
-          <CollisionChecker handleStopGame={handleStopGame} />
-        </Canvas>
+        {isStarted && (
+          <Canvas
+            width={canvas.width}
+            height={canvas.height}
+            isAnimating={isStarted}
+            className={cn('canvas')}>
+            <Enemies refs={refs} />
+            <EnemiesBullets refs={refs} />
+            <ShipBullets refs={refs} />
+            <Ship
+              isAnimating={isStarted}
+              mainShipFullHealthRef={refs.mainShipFullHealthRef}
+            />
+            <Background refs={refs} />
+            <CollisionChecker handleStopGame={handleStopGame} />
+          </Canvas>
+        )}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ class Enemy extends GameObject {
       this.isExploded = true;
       setTimeout(() => {
         this.isAlive = false;
-      }, 1000)
+      }, 500)
     }
   }
 }
