@@ -23,9 +23,7 @@ class AuthAPI extends BaseAPI {
   }
 
   getUser(): ApiResponse<UserDTO> {
-    return this.httpService.get('/user', {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return this.httpService.get('/user');
   }
 
   logout(): ApiResponse<void> {
