@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Drawer, Layout as BaseLayout, Menu } from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
 import { MenuOutlined } from '@ant-design/icons';
@@ -11,12 +11,13 @@ import './style.css';
 
 type LayoutProps = {
   children: React.ReactNode;
-}
+};
 
 const cn = createCn('layout');
 
 const items: ItemType[] = [
   { label: <Link to="/">Home</Link>, key: 'home' },
+  { label: <Link to="/game">Game</Link>, key: 'game' },
   { label: <Link to="/leader-board">Leader-board</Link>, key: 'leader-board' },
 ];
 
