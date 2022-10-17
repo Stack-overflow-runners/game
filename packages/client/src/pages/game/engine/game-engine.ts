@@ -24,12 +24,16 @@ class GameEngine {
 
   private objectsCleanerIntervalId: IntervalId | undefined;
 
-  gameState: GameState = {
-    ship: new Ship(canvas.width / 2 - ship.width / 2, canvas.height - ship.height, ship.width, ship.height),
-    enemies: [],
-    enemiesBullets: [],
-    shipBullets: [],
-  };
+  gameState: GameState = GameEngine.getInitGameState();
+
+  private static getInitGameState() {
+    return {
+      ship: new Ship(canvas.width / 2 - ship.width / 2, canvas.height - ship.height, ship.width, ship.height),
+      enemies: [],
+      enemiesBullets: [],
+      shipBullets: [],
+    }
+  }
 
   objectsCleaner() {
     this.objectsCleanerIntervalId = setInterval(() => {
@@ -102,6 +106,11 @@ class GameEngine {
     clearInterval(this.enemiesBulletsIntervalId);
   }
 
+  restart() {
+    this.gameState = GameEngine.getInitGameState();
+    this.start();
+  }
+
   checkEnemyShipBulletsCollision() {
     const { enemies, shipBullets } = this.gameState;
     for (let i = 0; i < enemies.length; i += 1) {
@@ -111,7 +120,7 @@ class GameEngine {
           shipBullets[j].isAlive &&
           checkObjectsIntersect(shipBullets[j], enemies[i])
         ) {
-          enemies[i].isAlive = false;
+          enemies[i].exploded = true;
           shipBullets[j].isAlive = false;
         }
       }

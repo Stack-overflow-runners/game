@@ -4,38 +4,26 @@ import { UserDTO } from '../types/user';
 import { ApiResponse } from '../types/api';
 
 class AuthAPI extends BaseAPI {
-  private static instance: AuthAPI;
-
-  private constructor() {
+  constructor() {
     super('/auth');
   }
 
-  public static getInstance(): AuthAPI {
-    if (!AuthAPI.instance) {
-      AuthAPI.instance = new AuthAPI();
-    }
-
-    return AuthAPI.instance;
-  }
-
-  signIn(payload: SignInDTO): ApiResponse<UserDTO> {
+  signIn(body: SignInDTO): ApiResponse<UserDTO> {
     return this.httpService.post('/signin', {
-      body: JSON.stringify(payload),
+      body,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  signUp(payload: SignUpDTO): ApiResponse<UserDTO> {
+  signUp(body: SignUpDTO): ApiResponse<UserDTO> {
     return this.httpService.post('/signup', {
-      body: JSON.stringify(payload),
+      body,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
   getUser(): ApiResponse<UserDTO> {
-    return this.httpService.get('/user', {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return this.httpService.get('/user');
   }
 
   logout(): ApiResponse<void> {
@@ -43,6 +31,6 @@ class AuthAPI extends BaseAPI {
   }
 }
 
-const authAPI = AuthAPI.getInstance();
+const authAPI = new AuthAPI();
 
 export default authAPI;

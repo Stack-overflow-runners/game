@@ -1,28 +1,28 @@
 const GAME_SETTINGS = {
   canvas: {
-    width: 600,
-    height: 800,
+    width: 400,
+    height: 600,
   },
   ship: {
-    width: 50,
-    height: 50,
+    width: 32,
+    height: 30,
   },
   enemy: {
-    width: 100,
-    height: 100,
+    width: 76,
+    height: 90,
     speed: 0.5,
   },
   enemyBullet: {
-    width: 20,
-    height: 20,
+    width: 6,
+    height: 18,
     speed: 3,
     interval: 1000,
   },
   shipBullet: {
-    width: 20,
-    height: 20,
+    width: 6,
+    height: 18,
     speed: 3,
-    interval: 500,
+    interval: 700,
   },
   cleanerInterval: 10000,
 };

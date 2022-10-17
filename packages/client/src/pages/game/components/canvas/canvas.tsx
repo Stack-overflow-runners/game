@@ -9,9 +9,10 @@ type Props = {
   isAnimating: boolean;
   // eslint-disable-next-line react/require-default-props
   children?: React.ReactNode;
+  className: string;
 };
 
-function Canvas({ height, width, isAnimating, children }: Props) {
+function Canvas({ height, width, isAnimating, children, className }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // the canvas' context is stored once it's created
@@ -27,7 +28,7 @@ function Canvas({ height, width, isAnimating, children }: Props) {
   }, []);
 
   // making the component and the context re-render at every frame
-  const [frameCount, setFrameCount] = React.useState(0);
+  const [frameCount, setFrameCount] = useState(0);
   useEffect(() => {
     let frameId: number;
     if (isAnimating) {
@@ -58,7 +59,8 @@ function Canvas({ height, width, isAnimating, children }: Props) {
           ref={canvasRef}
           height={height}
           width={width}
-          style={{ width, height, border: '1px solid black' }}
+          style={{ width, height}}
+          className={className}
         />
         {children}
       </FrameContext.Provider>

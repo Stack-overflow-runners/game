@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { useCanvas } from '../../hooks';
 import BulletObject from '../../engine/bullet';
 import GAME_SETTINGS from '../../game-settings';
@@ -5,9 +7,10 @@ import GAME_SETTINGS from '../../game-settings';
 type Props = {
   bullet: BulletObject;
   type: 'enemy' | 'ship';
+  imageRef: React.RefObject<CanvasImageSource>;
 };
 
-function Bullet({ bullet, type }: Props) {
+function Bullet({ bullet, type, imageRef }: Props) {
   const context = useCanvas();
 
   bullet.setCoord(
@@ -18,9 +21,14 @@ function Bullet({ bullet, type }: Props) {
         : -GAME_SETTINGS.shipBullet.speed)
   );
 
-  if (context !== null && bullet.isAlive) {
-    context.fillStyle = 'black';
-    context.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+  if (context !== null && bullet.isAlive && imageRef.current !== null) {
+    context.drawImage(
+      imageRef.current,
+      bullet.x,
+      bullet.y,
+      bullet.width,
+      bullet.height
+    );
   }
 
   return null;

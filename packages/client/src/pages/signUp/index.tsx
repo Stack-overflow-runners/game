@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Form, Input, Button, Alert } from 'antd';
 import { useNavigate } from 'react-router';
 import { Rule } from 'antd/lib/form';
@@ -22,7 +22,7 @@ const cn = createCn('sign-up');
 
 function SignUpPage(): JSX.Element {
   const navigate = useNavigate();
-  const [formAlert, setFormAlert] = React.useState<string | null>(null);
+  const [formAlert, setFormAlert] = useState<string | null>(null);
   const onLoginClick = useCallback((): void => {
     navigate('/sign-in');
   }, []);

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Rule } from 'antd/lib/form';
@@ -21,7 +21,7 @@ const passwordRules: Rule[] = [{ required: true, message: 'Введите пар
 
 function SignInPage(): JSX.Element {
   const navigate = useNavigate();
-  const [formAlert, setFormAlert] = React.useState<string | null>(null);
+  const [formAlert, setFormAlert] = useState<string | null>(null);
   const handleFormFinish = useCallback(
     async (data: FormData): Promise<void> => {
       const res = await signIn({
