@@ -30,8 +30,8 @@ describe('http service', () => {
     };
 
     const data = await httpService.post('/todos', {
-      body: JSON.stringify(payload),
-      headers: { 'Content-Type': 'application/json' },
+      body: payload,
+      headers: { 'Content-type': 'application/json' },
     });
     expect(data).toEqual(
       expect.objectContaining({
@@ -47,7 +47,7 @@ describe('http service', () => {
     };
 
     const data = await httpService.put('/todos/1', {
-      body: JSON.stringify(payload),
+      body: payload,
       headers: { 'Content-Type': 'application/json' },
     });
     expect(data).toEqual(

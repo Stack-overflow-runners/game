@@ -9,7 +9,7 @@ import CollisionChecker from './components/collision-checker';
 import EnemiesBullets from './components/enemies-bullets';
 import Images from './components/images';
 import GAME_SETTINGS from './game-settings';
-import createCn from '../../utils/bemClassName';
+import createCn from '../../utils/create-cn';
 import usePreloadedImagesRefs from './hooks/use-preloaded-images-refs';
 import Background from './components/background/background';
 import StartScreen from './components/start-screen';
