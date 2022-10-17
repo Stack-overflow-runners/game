@@ -1,21 +1,23 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+
 import { useCanvas, useAnimation } from '../../hooks';
 import game from '../../engine/game-engine';
 
 type Props = {
-  initialXPosition: number;
   isAnimating: boolean;
+  mainShipFullHealthRef: React.RefObject<CanvasImageSource>;
 };
 
-function Ship({ initialXPosition, isAnimating }: Props) {
+function Ship({ isAnimating, mainShipFullHealthRef }: Props) {
   const context = useCanvas();
   const isControl = useRef<boolean>(false);
   const initialXClick = useRef<number | null>(null);
   const delta = useRef<number>(0);
+  const initialXPosition = useRef<number>(game.gameState.ship.x);
 
   const animatedXPosition = useAnimation(
     0,
-    () => initialXPosition - delta.current
+    () => initialXPosition.current - delta.current
   );
 
   const handleMouseDown = (event: MouseEvent) => {
@@ -27,7 +29,7 @@ function Ship({ initialXPosition, isAnimating }: Props) {
     if (isControl.current && isAnimating && initialXClick.current) {
       delta.current = initialXClick.current - event.clientX;
       game.gameState.ship.setCoord(
-        initialXPosition - delta.current,
+        initialXPosition.current - delta.current,
         game.gameState.ship.y
       );
     }
@@ -48,9 +50,10 @@ function Ship({ initialXPosition, isAnimating }: Props) {
     };
   }, [isAnimating]);
 
-  if (context !== null) {
+  if (context !== null && mainShipFullHealthRef.current !== null) {
     context.fillStyle = 'red';
-    context.fillRect(
+    context.drawImage(
+      mainShipFullHealthRef.current,
       animatedXPosition,
       game.gameState.ship.y,
       game.gameState.ship.width,

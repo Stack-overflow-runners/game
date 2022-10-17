@@ -1,0 +1,17 @@
+.game {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  &__game-container {
+    position: relative;
+  }
+
+  &__ref-image {
+    display: none;
+  }
+
+  &__canvas {
+    border: 1px solid black;
+  }
+}
