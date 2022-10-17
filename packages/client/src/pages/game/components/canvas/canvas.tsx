@@ -28,7 +28,7 @@ function Canvas({ height, width, isAnimating, children, className }: Props) {
   }, []);
 
   // making the component and the context re-render at every frame
-  const [frameCount, setFrameCount] = React.useState(0);
+  const [frameCount, setFrameCount] = useState(0);
   useEffect(() => {
     let frameId: number;
     if (isAnimating) {

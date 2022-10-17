@@ -29,6 +29,20 @@ module.exports = {
         "ts": "never",
         "tsx": "never"
       }
-   ]
+   ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "test.{ts,tsx}",
+          "test-*.{ts,tsx}",
+          "**/*{.,_}{test,spec}.{ts,tsx}",
+          "**/jest.config.js",
+          "**/setup-tests.ts",
+          "**/tests/utils/*.{ts,tsx}"
+        ],
+        "optionalDependencies": false
+      }
+    ]
   }
 }
