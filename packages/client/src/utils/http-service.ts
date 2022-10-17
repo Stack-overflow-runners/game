@@ -17,8 +17,15 @@ export type RequestOptions<Data> = {
 class HttpService {
   constructor(private endPoint: string) {}
 
-  query = (url: string, options?: RequestOptions<any>): ApiResponse<any> =>
-    fetch(`${this.endPoint}${url}`, options)
+  query = (url: string, options?: RequestOptions<any>): ApiResponse<any> => {
+    const preparedOptions = options?.body
+      ? {
+          ...options,
+          body: JSON.stringify(options.body),
+        }
+      : options;
+
+    return fetch(`${this.endPoint}${url}`, preparedOptions)
       .then(async response => {
         if (!response.ok) {
           return Promise.reject(response);
@@ -38,32 +45,33 @@ class HttpService {
         }
         return { error };
       });
+  };
 
   get = (url: string, options?: RequestOptions<any>): Promise<any> =>
     this.query(url, {
-      ...options,
       credentials: 'include',
+      ...options,
       method: METHODS.GET,
     });
 
   post = (url: string, options?: RequestOptions<any>): Promise<any> =>
     this.query(url, {
-      ...options,
       credentials: 'include',
+      ...options,
       method: METHODS.POST,
     });
 
   put = (url: string, options?: RequestOptions<any>): Promise<any> =>
     this.query(url, {
-      ...options,
       credentials: 'include',
+      ...options,
       method: METHODS.PUT,
     });
 
   delete = (url: string, options?: RequestOptions<any>): Promise<any> =>
     this.query(url, {
-      ...options,
       credentials: 'include',
+      ...options,
       method: METHODS.DELETE,
     });
 }

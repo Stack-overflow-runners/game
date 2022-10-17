@@ -5,6 +5,6 @@ export default class BaseAPI {
   httpService: HttpService;
 
   constructor(endPoint: string) {
-    this.httpService = new HttpService(CONSTS.API_URL + endPoint);
+    this.httpService = new HttpService(`${CONSTS.API_URL}${endPoint}`);
   }
 }
