@@ -11,19 +11,16 @@ const initialState: LeaderBoardState = {
   isLoading: false,
   board: null,
 };
-
+/* eslint-disable no-param-reassign */
 const leaderBoardSlice = createSlice({
   name: 'leaderBoard',
   initialState,
   reducers: {
     setLoadingStatus(state: LeaderBoardState, action: PayloadAction<boolean>) {
-      return { ...state, isLoading: action.payload };
+      state.isLoading = action.payload;
     },
     setLeaderBoard(state: LeaderBoardState, action: PayloadAction<Leader[]>) {
-      return {
-        ...state,
-        board: action.payload,
-      };
+      state.board = action.payload;
     },
   },
 });

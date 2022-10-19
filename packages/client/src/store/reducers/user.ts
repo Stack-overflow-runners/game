@@ -13,33 +13,24 @@ const initialState: UserState = {
   isLoading: false,
   isLoggedIn: false,
 };
-
+/* eslint-disable no-param-reassign */
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
     setLoadingStatus(state: UserState, action: PayloadAction<boolean>) {
-      return { ...state, isLoading: action.payload };
+      state.isLoading = action.payload;
     },
     setUser(state: UserState, action: PayloadAction<UserDTO>) {
-      return {
-        ...state,
-        user: action.payload,
-        isLoggedIn: true,
-      };
+      state.user = action.payload;
+      state.isLoggedIn = true;
     },
     removeUser(state: UserState) {
-      return {
-        ...state,
-        user: null,
-        isLoggedIn: false,
-      };
+      state.user = null;
+      state.isLoggedIn = false;
     },
     updateUser(state: UserState, action: PayloadAction<UserDTO>) {
-      return {
-        ...state,
-        user: { ...state.user, ...action.payload },
-      };
+      state.user = action.payload;
     },
   },
 });
