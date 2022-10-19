@@ -1,4 +1,4 @@
-import { Action, LoadingActionTypes, UserActionTypes } from '../actions/user';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserDTO } from '../../types/user';
 import { Nullable } from '../../types/common';
 
@@ -8,43 +8,43 @@ type UserState = {
   isLoggedIn: boolean;
 };
 
-const defaultState: UserState = {
+const initialState: UserState = {
   user: null,
   isLoading: false,
   isLoggedIn: false,
 };
 
-const userReducer = (
-  /* eslint-disable-next-line @typescript-eslint/default-param-last */
-  state: UserState = defaultState,
-  { type, payload }: Action
-): UserState => {
-  switch (type) {
-    case LoadingActionTypes.SET_LOADING_STATUS:
+const userSlice = createSlice({
+  name: 'user',
+  initialState,
+  reducers: {
+    setLoadingStatus(state: UserState, action: PayloadAction<boolean>) {
+      return { ...state, isLoading: action.payload };
+    },
+    setUser(state: UserState, action: PayloadAction<UserDTO>) {
       return {
         ...state,
-        isLoading: payload,
-      };
-    case UserActionTypes.SET_USER:
-      return {
-        ...state,
-        user: payload,
+        user: action.payload,
         isLoggedIn: true,
       };
-    case UserActionTypes.REMOVE_USER:
+    },
+    removeUser(state: UserState) {
       return {
         ...state,
         user: null,
         isLoggedIn: false,
       };
-    case UserActionTypes.UPDATE_USER:
+    },
+    updateUser(state: UserState, action: PayloadAction<UserDTO>) {
       return {
         ...state,
-        user: payload ? { ...state.user, ...payload } : state.user,
+        user: { ...state.user, ...action.payload },
       };
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-export default userReducer;
+export const { setLoadingStatus, setUser, removeUser, updateUser } =
+  userSlice.actions;
+
+export default userSlice.reducer;
