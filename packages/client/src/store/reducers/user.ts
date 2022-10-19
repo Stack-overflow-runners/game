@@ -29,8 +29,10 @@ const userSlice = createSlice({
       state.user = null;
       state.isLoggedIn = false;
     },
-    updateUser(state: UserState, action: PayloadAction<UserDTO>) {
-      state.user = action.payload;
+    updateUser(state: UserState, action: PayloadAction<Partial<UserDTO>>) {
+      if (!state.user) return;
+
+      state.user = { ...state.user, ...action.payload };
     },
   },
 });
