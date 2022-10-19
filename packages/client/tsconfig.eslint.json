@@ -4,6 +4,7 @@
   "include": [
       // repeated from base config's "include" setting
       "src",
+      "public",
       // these are the eslint-only inclusions
       ".eslintrc.cjs",
       "./jest.config.js"

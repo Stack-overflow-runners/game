@@ -51,15 +51,15 @@ describe('App', () => {
 
   test('app game canvas', () => {
     render(<Game />);
+    const buttonStart = screen.getByTestId("startGame");
+    fireEvent.click(buttonStart);
     const canvas = document.querySelector('canvas') as HTMLElement;
     expect(canvas).toBeInTheDocument();
   });
 
-  test('app game start-stop', () => {
+  test('app game start button', () => {
     render(<Game />);
-    const buttonStart = screen.getByText(/start/i);
+    const buttonStart = screen.getByTestId("startGame");
     expect(buttonStart).toBeInTheDocument();
-    fireEvent.click(buttonStart);
-    expect(buttonStart.textContent).toBe('stop');
   });
 });
