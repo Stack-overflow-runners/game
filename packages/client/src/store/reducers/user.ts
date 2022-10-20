@@ -13,7 +13,7 @@ const initialState: UserState = {
   isLoading: false,
   isLoggedIn: false,
 };
-/* eslint-disable no-param-reassign */
+
 const userSlice = createSlice({
   name: 'user',
   initialState,

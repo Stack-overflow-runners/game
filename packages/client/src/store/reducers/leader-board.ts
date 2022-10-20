@@ -11,7 +11,7 @@ const initialState: LeaderBoardState = {
   isLoading: false,
   board: null,
 };
-/* eslint-disable no-param-reassign */
+
 const leaderBoardSlice = createSlice({
   name: 'leaderBoard',
   initialState,
