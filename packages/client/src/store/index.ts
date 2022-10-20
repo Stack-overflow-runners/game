@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import leaderBoardReducer from './reducers/leader-board';
+import userReducer from './reducers/user';
 
 export const store = configureStore({
   reducer: {
-    // users: usersReducer,
+    user: userReducer,
+    leaderBoard: leaderBoardReducer,
   },
   devTools: true,
 });
