@@ -1,5 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import Game from './pages/game';
+import { fireEvent, screen } from '@testing-library/react';
 import renderWithRouter from './tests/utils/render-with-router';
 
 describe('App', () => {
@@ -50,7 +49,7 @@ describe('App', () => {
   });
 
   test('app game canvas', () => {
-    render(<Game />);
+    renderWithRouter('/game');
     const buttonStart = screen.getByTestId("startGame");
     fireEvent.click(buttonStart);
     const canvas = document.querySelector('canvas') as HTMLElement;
@@ -58,7 +57,7 @@ describe('App', () => {
   });
 
   test('app game start button', () => {
-    render(<Game />);
+    renderWithRouter('/game');
     const buttonStart = screen.getByTestId("startGame");
     expect(buttonStart).toBeInTheDocument();
   });
