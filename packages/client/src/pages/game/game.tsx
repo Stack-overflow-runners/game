@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
+import { Button } from 'antd';
 import Canvas from './components/canvas';
 import Enemies from './components/enemies';
 import Ship from './components/ship';
@@ -13,18 +14,22 @@ import createCn from '../../utils/create-cn';
 import usePreloadedImagesRefs from './hooks/use-preloaded-images-refs';
 import Background from './components/background/background';
 import StartScreen from './components/start-screen';
+import Layout from '../../components/layout';
+import toggleFullscreen from '../../utils/fullscreen-toggle';
 import Score from './components/score';
+import GameOverScreen from './components/game-over-screen';
 
 import './game.css';
-import GameOverScreen from './components/game-over-screen';
 
 const cn = createCn('game');
 const { canvas } = GAME_SETTINGS;
 
 function Game() {
   const refs = usePreloadedImagesRefs();
+  const gameRef = useRef<HTMLDivElement>(null);
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [isNewGame, setIsNewGame] = useState<boolean>(true);
+  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
 
   const handleStopGame = () => {
     setIsStarted(false);
@@ -42,34 +47,47 @@ function Game() {
     game.start();
   }
 
+  const handleClickFullScreenBtn = () => {
+    toggleFullscreen(gameRef.current, setIsFullScreen)
+  }
+
   return (
-    <div className={cn()}>
-      <div className={cn('game-container')}>
-        {isNewGame && <StartScreen onStart={handleStartGame} />}
-        {!isStarted && !isNewGame && (
-          <GameOverScreen onGameOver={handleRestartGame} />
-        )}
-        <Images refs={refs} />
-        {isStarted && (
-          <Canvas
-            width={canvas.width}
-            height={canvas.height}
-            isAnimating={isStarted}
-            className={cn('canvas')}>
-            <Score />
-            <Enemies refs={refs} />
-            <EnemiesBullets refs={refs} />
-            <ShipBullets refs={refs} />
-            <Ship
+    <Layout>
+      <div className={cn()} ref={gameRef}>
+        <div className={cn('game-container')}>
+          <Button
+            className={cn('fullscreen-btn')}
+            type="primary"
+            onClick={handleClickFullScreenBtn}
+          >
+            {isFullScreen ? 'Обычный экран' : 'Полный экран'}
+          </Button>
+          {isNewGame && <StartScreen onStart={handleStartGame} />}
+          {!isStarted && !isNewGame && (
+            <GameOverScreen onGameOver={handleRestartGame} />
+          )}
+          <Images refs={refs} />
+          {isStarted && (
+            <Canvas
+              width={canvas.width}
+              height={canvas.height}
               isAnimating={isStarted}
-              mainShipFullHealthRef={refs.mainShipFullHealthRef}
-            />
-            <Background refs={refs} />
-            <CollisionChecker handleStopGame={handleStopGame} />
-          </Canvas>
-        )}
+              className={cn('canvas')}>
+              <Score />
+              <Enemies refs={refs} />
+              <EnemiesBullets refs={refs} />
+              <ShipBullets refs={refs} />
+              <Ship
+                isAnimating={isStarted}
+                mainShipFullHealthRef={refs.mainShipFullHealthRef}
+              />
+              <Background refs={refs} />
+              <CollisionChecker handleStopGame={handleStopGame} />
+            </Canvas>
+          )}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

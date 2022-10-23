@@ -3,6 +3,13 @@
   display: flex;
   justify-content: center;
 
+  &__fullscreen-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 50px;
+    z-index: 1;
+  }
+
   &__game-container {
     position: relative;
   }
