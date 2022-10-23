@@ -71,5 +71,6 @@ const actions = {
   fetchUser,
   signIn,
   signUp,
+  signOut,
 };
 export default actions;

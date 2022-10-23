@@ -1,44 +1,36 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
 import renderWithRouter from './tests/utils/render-with-router';
 
 describe('App', () => {
   test('app rendering', () => {
-    renderWithRouter();
+    act(() => {
+      renderWithRouter('/');
+    });
     expect(window.location.pathname).toBe('/');
-    expect(screen.getByText(/Играть/i)).toBeInTheDocument();
+    expect(document.querySelector('.App')).toBeInTheDocument();
   });
 
-  test('app menu', () => {
+  test('app protected mainPage', async () => {
+    act(() => {
+      renderWithRouter('/');
+    });
+    await waitFor(() => {
+      expect(window.location.pathname).toBe('/sign-in');
+      const title = screen.getByText(/вход/i);
+      expect(title).toBeInTheDocument();
+    });
+  });
+
+  test('app menu', async () => {
     renderWithRouter('/leader-board');
     expect(window.location.pathname).toBe('/leader-board');
     const menuButton = document.querySelector('.anticon-menu') as HTMLElement;
     expect(menuButton).toBeInTheDocument();
   });
 
-  test('app menu navigation', async () => {
-    renderWithRouter('/leader-board');
-    const menuButton = document.querySelector('.anticon-menu') as HTMLElement;
-    expect(menuButton).toBeInTheDocument();
-    fireEvent.click(menuButton);
-    const homeLink = document.querySelector(
-      "[data-menu-id='rc-menu-uuid-test-home'] span a"
-    ) as HTMLElement;
-    expect(homeLink).toBeInTheDocument();
-    fireEvent.click(homeLink);
-    expect(screen.getByText(/Играть/i)).toBeInTheDocument();
-    expect(window.location.pathname).toBe('/');
-  });
-
   test('app redirect', () => {
     renderWithRouter('/test');
     expect(window.location.pathname).toBe('/');
-  });
-
-  test('app sign-in', () => {
-    renderWithRouter('/sign-in');
-    expect(window.location.pathname).toBe('/sign-in');
-    const title = screen.getByText(/вход/i);
-    expect(title).toBeInTheDocument();
   });
 
   test('app sign-up', () => {
@@ -50,7 +42,7 @@ describe('App', () => {
 
   test('app game canvas', () => {
     renderWithRouter('/game');
-    const buttonStart = screen.getByTestId("startGame");
+    const buttonStart = screen.getByTestId('startGame');
     fireEvent.click(buttonStart);
     const canvas = document.querySelector('canvas') as HTMLElement;
     expect(canvas).toBeInTheDocument();
@@ -58,7 +50,7 @@ describe('App', () => {
 
   test('app game start button', () => {
     renderWithRouter('/game');
-    const buttonStart = screen.getByTestId("startGame");
+    const buttonStart = screen.getByTestId('startGame');
     expect(buttonStart).toBeInTheDocument();
   });
 });
