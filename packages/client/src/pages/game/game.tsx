@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import Canvas from './components/canvas';
 import Enemies from './components/enemies';
@@ -13,6 +13,7 @@ import createCn from '../../utils/create-cn';
 import usePreloadedImagesRefs from './hooks/use-preloaded-images-refs';
 import Background from './components/background/background';
 import StartScreen from './components/start-screen';
+import Score from './components/score';
 
 import './game.css';
 import GameOverScreen from './components/game-over-screen';
@@ -24,42 +25,29 @@ function Game() {
   const refs = usePreloadedImagesRefs();
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [isNewGame, setIsNewGame] = useState<boolean>(true);
-  const handleToggleGameRun = () => {
-    setIsStarted(prevState => !prevState);
-  };
 
   const handleStopGame = () => {
     setIsStarted(false);
+    game.stop();
   };
 
-  useEffect(() => {
-    if (isNewGame && isStarted) {
-      setIsNewGame(false);
-    }
-  }, [isNewGame, isStarted]);
+  const handleRestartGame = () => {
+    setIsStarted(true);
+    game.restart();
+  }
 
-  useEffect(() => {
-    if (isNewGame && isStarted) {
-      setIsNewGame(false);
-    }
-
-    if (isStarted) {
-      if (isNewGame) {
-        game.start();
-      } else {
-        game.restart();
-      }
-    } else {
-      game.stop();
-    }
-  }, [isStarted]);
+  const handleStartGame = () => {
+    setIsStarted(true);
+    setIsNewGame(false);
+    game.start();
+  }
 
   return (
     <div className={cn()}>
       <div className={cn('game-container')}>
-        {isNewGame && <StartScreen onStart={handleToggleGameRun} />}
+        {isNewGame && <StartScreen onStart={handleStartGame} />}
         {!isStarted && !isNewGame && (
-          <GameOverScreen onGameOver={handleToggleGameRun} />
+          <GameOverScreen onGameOver={handleRestartGame} />
         )}
         <Images refs={refs} />
         {isStarted && (
@@ -68,6 +56,7 @@ function Game() {
             height={canvas.height}
             isAnimating={isStarted}
             className={cn('canvas')}>
+            <Score />
             <Enemies refs={refs} />
             <EnemiesBullets refs={refs} />
             <ShipBullets refs={refs} />

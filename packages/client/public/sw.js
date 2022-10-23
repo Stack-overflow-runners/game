@@ -1,8 +1,6 @@
-/// <reference lib="WebWorker" />
-
 const CACHE_NAME = 'site-cache-v1';
 
-const URLS = ['/*'];
+const URLS = ['/assets'];
 
 this.addEventListener('install', event => {
   event.waitUntil(
@@ -10,6 +8,7 @@ this.addEventListener('install', event => {
       .open(CACHE_NAME)
       .then(cache => {
         console.log('Opened cache');
+
         return cache.addAll(URLS);
       })
       .catch(err => {
@@ -60,5 +59,3 @@ this.addEventListener('fetch', event => {
 this.addEventListener('activate', () => {
   console.log('activate');
 });
-
-export {}

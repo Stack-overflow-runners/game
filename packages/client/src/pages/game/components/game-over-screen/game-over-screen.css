@@ -4,10 +4,31 @@
   position: relative;
   border: 1px solid black;
 
-  &__button {
+  &__score-title {
     position: absolute;
-    top: 50%;
+    top: 220px;
     left: 50%;
     transform: translateX(-50%);
+    font-size: 16px;
+    color: yellow;
+  }
+
+  &__score {
+    position: absolute;
+    top: 283px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+    color: yellow;
+  }
+
+  &__restart {
+    position: absolute;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+    background: none;
+    border: none;
   }
 }
