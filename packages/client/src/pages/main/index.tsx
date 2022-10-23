@@ -5,6 +5,7 @@ import Layout from '../../components/layout';
 import heroImage from '../../assets/hero-image.jpg';
 import 'antd/dist/antd.css';
 import './style.css';
+import withAuth from '../../hoc/withAuth';
 
 const cn = createCn('main');
 
@@ -32,4 +33,4 @@ function MainPage(): JSX.Element {
   );
 }
 
-export default MainPage;
+export default withAuth(MainPage);
