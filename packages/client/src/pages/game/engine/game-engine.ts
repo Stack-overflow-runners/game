@@ -11,6 +11,7 @@ type GameState = {
   enemies: Enemy[];
   enemiesBullets: Bullet[];
   shipBullets: Bullet[];
+  score: number;
 };
 
 const {ship, enemy, enemyBullet, shipBullet, canvas, cleanerInterval} = GAME_SETTINGS;
@@ -32,6 +33,7 @@ class GameEngine {
       enemies: [],
       enemiesBullets: [],
       shipBullets: [],
+      score: 0,
     }
   }
 
@@ -121,6 +123,7 @@ class GameEngine {
           checkObjectsIntersect(shipBullets[j], enemies[i])
         ) {
           enemies[i].exploded = true;
+          this.gameState.score += 1;
           shipBullets[j].isAlive = false;
         }
       }
