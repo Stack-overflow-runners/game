@@ -29,10 +29,10 @@ export const useAuth = () => useContext(authContext);
 
 function useAuthProvider() {
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector(state => state.user);
-  const { error } = useAppSelector(state => state.user);
-  const { isLoading } = useAppSelector(state => state.user);
-  const { isLoggedIn } = useAppSelector(state => state.user);
+
+  const { user, error, isLoading, isLoggedIn } = useAppSelector(
+    state => state.user
+  );
 
   const signUp = (credentials: SignUpDTO): void => {
     dispatch(register(credentials));
@@ -46,15 +46,9 @@ function useAuthProvider() {
     dispatch(logout());
   };
 
-  const getUser = (): void => {
-    if (!user) {
-      dispatch(fetchUser());
-    }
-  };
-
   useEffect(() => {
     if (!user) {
-      getUser();
+      dispatch(fetchUser());
     }
   }, []);
 
