@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Button } from 'antd';
 import Canvas from './components/canvas';
@@ -16,9 +16,10 @@ import Background from './components/background/background';
 import StartScreen from './components/start-screen';
 import Layout from '../../components/layout';
 import toggleFullscreen from '../../utils/fullscreen-toggle';
+import Score from './components/score';
+import GameOverScreen from './components/game-over-screen';
 
 import './game.css';
-import GameOverScreen from './components/game-over-screen';
 
 const cn = createCn('game');
 const { canvas } = GAME_SETTINGS;
@@ -29,35 +30,22 @@ function Game() {
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [isNewGame, setIsNewGame] = useState<boolean>(true);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
-  const handleToggleGameRun = () => {
-    setIsStarted(prevState => !prevState);
-  };
 
   const handleStopGame = () => {
     setIsStarted(false);
+    game.stop();
   };
 
-  useEffect(() => {
-    if (isNewGame && isStarted) {
-      setIsNewGame(false);
-    }
-  }, [isNewGame, isStarted]);
+  const handleRestartGame = () => {
+    setIsStarted(true);
+    game.restart();
+  }
 
-  useEffect(() => {
-    if (isNewGame && isStarted) {
-      setIsNewGame(false);
-    }
-
-    if (isStarted) {
-      if (isNewGame) {
-        game.start();
-      } else {
-        game.restart();
-      }
-    } else {
-      game.stop();
-    }
-  }, [isStarted]);
+  const handleStartGame = () => {
+    setIsStarted(true);
+    setIsNewGame(false);
+    game.start();
+  }
 
   const handleClickFullScreenBtn = () => {
     toggleFullscreen(gameRef.current, setIsFullScreen)
@@ -67,16 +55,16 @@ function Game() {
     <Layout>
       <div className={cn()} ref={gameRef}>
         <div className={cn('game-container')}>
-          <Button 
+          <Button
             className={cn('fullscreen-btn')}
             type="primary"
             onClick={handleClickFullScreenBtn}
           >
             {isFullScreen ? 'Обычный экран' : 'Полный экран'}
           </Button>
-          {isNewGame && <StartScreen onStart={handleToggleGameRun} />}
+          {isNewGame && <StartScreen onStart={handleStartGame} />}
           {!isStarted && !isNewGame && (
-            <GameOverScreen onGameOver={handleToggleGameRun} />
+            <GameOverScreen onGameOver={handleRestartGame} />
           )}
           <Images refs={refs} />
           {isStarted && (
@@ -85,6 +73,7 @@ function Game() {
               height={canvas.height}
               isAnimating={isStarted}
               className={cn('canvas')}>
+              <Score />
               <Enemies refs={refs} />
               <EnemiesBullets refs={refs} />
               <ShipBullets refs={refs} />
