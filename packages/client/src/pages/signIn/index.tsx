@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { Rule } from 'antd/lib/form';
 import createCn from '../../utils/create-cn';
 import 'antd/dist/antd.css';
 import './style.css';
-import signIn from './services/signin-service';
+import { useAppDispatch } from '../../hooks/store';
+import { useAuth } from '../../hooks/auth';
 
 type FormData = {
   username: string;
@@ -20,25 +21,21 @@ const usernameRules: Rule[] = [{ required: true, message: 'Введите лог
 const passwordRules: Rule[] = [{ required: true, message: 'Введите пароль!' }];
 
 function SignInPage(): JSX.Element {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [formAlert, setFormAlert] = useState<string | null>(null);
-  const handleFormFinish = useCallback(
-    async (data: FormData): Promise<void> => {
-      const res = await signIn({
+  const { user, signIn, error: formAlert } = useAuth();
+  const handleFormFinish = useCallback((data: FormData): void => {
+    dispatch(
+      signIn({
         login: data.username,
         password: data.password,
         remember: data.remember,
-      });
-      if (res.error) {
-        setFormAlert(res.error);
-        return;
-      }
-      if (res.data?.id) {
-        navigate('/');
-      }
-    },
-    []
-  );
+      })
+    );
+  }, []);
+  if (user) {
+    navigate('/');
+  }
 
   return (
     <div className={cn()}>
@@ -67,11 +64,11 @@ function SignInPage(): JSX.Element {
         </Form.Item>
 
         {formAlert && (
-          <>
-            <br />
-            <Alert message={formAlert} type="error" />
-            <br />
-          </>
+          <Alert
+            message={formAlert}
+            type="error"
+            className={cn('form-alert')}
+          />
         )}
 
         <Form.Item className={cn('form-item')}>
@@ -90,5 +87,4 @@ function SignInPage(): JSX.Element {
     </div>
   );
 }
-
 export default SignInPage;

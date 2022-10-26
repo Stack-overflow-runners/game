@@ -1,12 +1,13 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { Form, Input, Button, Alert } from 'antd';
 import { useNavigate } from 'react-router';
 import { Rule } from 'antd/lib/form';
 import 'antd/dist/antd.css';
 import './style.css';
 import signUpRules from './validator';
-import signUp from './services/signup-service';
 import createCn from '../../utils/create-cn';
+import { useAuth } from '../../hooks/auth';
+import { useAppDispatch } from '../../hooks/store';
 
 type FormData = {
   email: string;
@@ -21,21 +22,18 @@ type FormData = {
 const cn = createCn('sign-up');
 
 function SignUpPage(): JSX.Element {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [formAlert, setFormAlert] = useState<string | null>(null);
+  const { user, signUp, error: formAlert } = useAuth();
   const onLoginClick = useCallback((): void => {
     navigate('/sign-in');
   }, []);
-  const handleSubmit = useCallback(async (data: FormData) => {
-    const res = await signUp(data);
-    if (res.error) {
-      setFormAlert(res.error);
-      return;
-    }
-    if (res.data?.id) {
-      navigate('/');
-    }
+  const handleSubmit = useCallback((data: FormData): void => {
+    dispatch(signUp(data));
   }, []);
+  if (user) {
+    navigate('/');
+  }
 
   return (
     <div className={cn()}>

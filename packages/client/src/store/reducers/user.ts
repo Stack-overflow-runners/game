@@ -1,17 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserDTO } from '../../types/user';
-import { Nullable } from '../../types/common';
-
-type UserState = {
-  user: Nullable<UserDTO>;
-  isLoading: boolean;
-  isLoggedIn: boolean;
-};
+import { fetchUser, signIn, signOut, signUp } from '../action-creators/auth';
+import { setFulfilled, setPending, setRejected, UserState } from './common';
 
 const initialState: UserState = {
   user: null,
-  isLoading: false,
+  isLoading: true,
   isLoggedIn: false,
+  error: null,
 };
 
 const userSlice = createSlice({
@@ -34,6 +30,28 @@ const userSlice = createSlice({
 
       state.user = { ...state.user, ...action.payload };
     },
+  },
+  extraReducers: builder => {
+    builder.addCase(fetchUser.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(fetchUser.pending.type, setPending<UserState>);
+    builder.addCase(fetchUser.rejected.type, setRejected<UserState, string>);
+
+    builder.addCase(signIn.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(signIn.pending.type, setPending<UserState>);
+    builder.addCase(signIn.rejected.type, setRejected<UserState, string>);
+
+    builder.addCase(signUp.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(signUp.pending.type, setPending<UserState>);
+    builder.addCase(signUp.rejected.type, setRejected<UserState, string>);
+
+    builder.addCase(signOut.pending.type, setPending<UserState>);
+    builder.addCase(signOut.rejected.type, setRejected<UserState, string>);
+    builder.addCase(signOut.fulfilled.type, (state: UserState) => {
+      state.isLoading = false;
+      state.error = null;
+      state.user = null;
+      state.isLoggedIn = false;
+    });
   },
 });
 
