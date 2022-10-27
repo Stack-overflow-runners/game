@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { Alert, Button, Checkbox, Form, Input, Typography } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Alert, Button, Checkbox, Form, Input } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 import { Rule } from 'antd/lib/form';
 import createCn from '../../utils/create-cn';
 import 'antd/dist/antd.css';
@@ -46,7 +46,7 @@ function SignInPage(): JSX.Element {
         onFinish={handleFormFinish}
         layout="vertical"
         autoComplete="off">
-        <Typography.Title className={cn('form-title')}>Вход</Typography.Title>
+        <h1 className={cn('form-title')}>Вход</h1>
         <Form.Item
           className={cn('form-item')}
           label="Username"
@@ -82,6 +82,10 @@ function SignInPage(): JSX.Element {
           name="remember"
           valuePropName="checked">
           <Checkbox>Запомнить меня</Checkbox>
+        </Form.Item>
+
+        <Form.Item className={cn('form-item')}>
+          <Link to="/sign-up">Регистрация</Link>
         </Form.Item>
       </Form>
     </div>
