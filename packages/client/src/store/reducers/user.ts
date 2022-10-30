@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserDTO } from '../../types/user';
 import { fetchUser, signIn, signOut, signUp } from '../action-creators/auth';
+import { updateProfile } from '../action-creators/profile';
 import { setFulfilled, setPending, setRejected, UserState } from './common';
 
 const initialState: UserState = {
@@ -52,6 +53,10 @@ const userSlice = createSlice({
       state.user = null;
       state.isLoggedIn = false;
     });
+    
+    builder.addCase(updateProfile.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(updateProfile.pending.type, setPending<UserState>);
+    builder.addCase(updateProfile.rejected.type, setRejected<UserState, string>);
   },
 });
 
