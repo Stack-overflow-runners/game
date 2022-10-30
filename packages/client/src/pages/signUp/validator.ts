@@ -31,6 +31,13 @@ const signUpRules = {
       message: 'латиница или кириллица',
     },
   ],
+  displayName: [
+    { required: true, message: 'Введите имя в игре' },
+    {
+      pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
+      message: 'латиница или кириллица',
+    },
+  ],
   phone: [
     {
       required: true,
