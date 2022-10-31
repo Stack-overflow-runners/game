@@ -1,4 +1,4 @@
 export type Leader = {
-  player: string,
+  displayName: string,
   score: number,
 }

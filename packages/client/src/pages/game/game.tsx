@@ -18,6 +18,9 @@ import Layout from '../../components/layout';
 import toggleFullscreen from '../../utils/fullscreen-toggle';
 import Score from './components/score';
 import GameOverScreen from './components/game-over-screen';
+import { useAppDispatch } from '../../hooks/store';
+import { useAuth } from '../../hooks/auth';
+import { addLeader } from '../../store/action-creators/leaders';
 
 import './game.css';
 
@@ -30,10 +33,13 @@ function Game() {
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [isNewGame, setIsNewGame] = useState<boolean>(true);
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const { user } = useAuth();
 
   const handleStopGame = () => {
     setIsStarted(false);
     game.stop();
+    dispatch(addLeader({ displayName: user?.second_name || 'Новый игрок', score: game.gameState.score}))
   };
 
   const handleRestartGame = () => {
