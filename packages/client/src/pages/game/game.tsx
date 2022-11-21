@@ -86,8 +86,8 @@ function Game() {
 
   return (
     <Layout>
-      <div className={cn()}>
-        <div className={cn('game-container')} ref={gameRef}>
+      <div className={cn()} ref={gameRef}>
+        <div className={cn('game-container')}>
           <Button
             className={cn('fullscreen-btn')}
             type="primary"

@@ -2,6 +2,9 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  width: 400px;
+  height: 600px;
+  margin: 0 auto;
 
   &__fullscreen-btn {
     position: fixed;
@@ -15,8 +18,6 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 400px;
-    height: 600px;
   }
 
   &__ref-image {

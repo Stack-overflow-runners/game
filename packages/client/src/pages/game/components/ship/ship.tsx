@@ -41,16 +41,16 @@ function Ship({ isAnimating, mainShipFullHealthRef }: Props) {
     initialXClick.current = null;
   };
 
-  const handlePointerMove = (e: any) => {
+  const handlePointerMove = (e: MouseEvent) => {
     const { canvas } = GAME_SETTINGS;
-    const CENTER_CANVAS = canvas.width / 2;
+    const CENTER_POSITION_OF_CANVAS = canvas.width / 2;
 
     delta.current += e.movementX;
 
-    if (delta.current > CENTER_CANVAS) {
-      delta.current = -CENTER_CANVAS;
-    } else if (delta.current < -CENTER_CANVAS) {
-      delta.current = CENTER_CANVAS;
+    if (delta.current > CENTER_POSITION_OF_CANVAS) {
+      delta.current = -CENTER_POSITION_OF_CANVAS;
+    } else if (delta.current < -CENTER_POSITION_OF_CANVAS) {
+      delta.current = CENTER_POSITION_OF_CANVAS;
     }
 
     game.gameState.ship.setCoord(
