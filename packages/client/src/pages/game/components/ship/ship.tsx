@@ -46,7 +46,7 @@ function Ship({ isAnimating, mainShipFullHealthRef, canvasRef }: Props) {
     const { canvas } = GAME_SETTINGS;
     const CENTER_POSITION_OF_CANVAS = canvas.width / 2;
 
-    delta.current += e.movementX;
+    delta.current += -e.movementX;
 
     if (delta.current > CENTER_POSITION_OF_CANVAS) {
       delta.current = -CENTER_POSITION_OF_CANVAS;
