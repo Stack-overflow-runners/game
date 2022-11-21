@@ -7,9 +7,10 @@ import GAME_SETTINGS from '../../game-settings';
 type Props = {
   isAnimating: boolean;
   mainShipFullHealthRef: React.RefObject<CanvasImageSource>;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
 };
 
-function Ship({ isAnimating, mainShipFullHealthRef }: Props) {
+function Ship({ isAnimating, mainShipFullHealthRef, canvasRef }: Props) {
   const context = useCanvas();
   const isControl = useRef<boolean>(false);
   const initialXClick = useRef<number | null>(null);
@@ -60,7 +61,10 @@ function Ship({ isAnimating, mainShipFullHealthRef }: Props) {
   };
 
   const handlePointerLock = () => {
-    if (document.pointerLockElement) {
+    const hasPointerLockElement = document.pointerLockElement;
+    const isCanvas = document.pointerLockElement === canvasRef.current;
+
+    if (hasPointerLockElement && isCanvas) {
       window.addEventListener('mousemove', handlePointerMove);
     } else {
       window.removeEventListener('mousemove', handlePointerMove);

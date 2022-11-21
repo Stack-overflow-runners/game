@@ -32,6 +32,7 @@ const { canvas } = GAME_SETTINGS;
 function Game() {
   const refs = usePreloadedImagesRefs();
   const gameRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [isNewGame, setIsNewGame] = useState<boolean>(true);
   const [isFullScreen, setIsFullscreen] = useState<boolean>(false);
@@ -104,6 +105,7 @@ function Game() {
               width={canvas.width}
               height={canvas.height}
               isAnimating={isStarted}
+              ref={canvasRef}
               className={cn('canvas')}>
               <Score />
               <Enemies refs={refs} />
@@ -111,6 +113,7 @@ function Game() {
               <ShipBullets refs={refs} />
               <Ship
                 isAnimating={isStarted}
+                canvasRef={canvasRef}
                 mainShipFullHealthRef={refs.mainShipFullHealthRef}
               />
               <Background refs={refs} />
