@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 import { useCanvas, useAnimation } from '../../hooks';
 import game from '../../engine/game-engine';
+import GAME_SETTINGS from '../../game-settings';
 
 type Props = {
   isAnimating: boolean;
@@ -39,11 +40,40 @@ function Ship({ isAnimating, mainShipFullHealthRef }: Props) {
     isControl.current = false;
     initialXClick.current = null;
   };
+
+  const handlePointerMove = (e: any) => {
+    const { canvas } = GAME_SETTINGS;
+    const CENTER_CANVAS = canvas.width / 2;
+
+    delta.current += e.movementX;
+
+    if (delta.current > CENTER_CANVAS) {
+      delta.current = -CENTER_CANVAS;
+    } else if (delta.current < -CENTER_CANVAS) {
+      delta.current = CENTER_CANVAS;
+    }
+
+    game.gameState.ship.setCoord(
+      initialXPosition.current - delta.current,
+      game.gameState.ship.y
+    );
+  };
+
+  const handlePointerLock = () => {
+    if (document.pointerLockElement) {
+      window.addEventListener('mousemove', handlePointerMove);
+    } else {
+      window.removeEventListener('mousemove', handlePointerMove);
+    }
+  };
+
   useEffect(() => {
+    document.addEventListener('pointerlockchange', handlePointerLock);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
     return () => {
+      document.removeEventListener('pointerlockchange', handlePointerLock);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);

@@ -21,7 +21,7 @@ function GameOverScreen({ onGameOver }: Props) {
 
   return (
     <div className={cn()}>
-      <img src={gameCoverImg} alt="game over" width={400} height={600} />
+      <img className={cn('image')} src={gameCoverImg} alt="game over" width={400} height={600} />
       <span className={cn('score-title')}>Ваш счет</span>
       <span className={cn('score')}>{game.gameState.score}</span>
       <button

@@ -27,6 +27,10 @@ function Canvas({ height, width, isAnimating, children, className }: Props) {
     }
   }, []);
 
+  const handleCanvasClick = () => {
+    canvasRef.current?.requestPointerLock();
+  }
+
   // making the component and the context re-render at every frame
   const [frameCount, setFrameCount] = useState(0);
   useEffect(() => {
@@ -61,6 +65,7 @@ function Canvas({ height, width, isAnimating, children, className }: Props) {
           width={width}
           style={{ width, height}}
           className={className}
+          onClick={handleCanvasClick}
         />
         {children}
       </FrameContext.Provider>

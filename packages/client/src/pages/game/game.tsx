@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Button } from 'antd';
 import Canvas from './components/canvas';
@@ -15,7 +15,9 @@ import usePreloadedImagesRefs from './hooks/use-preloaded-images-refs';
 import Background from './components/background/background';
 import StartScreen from './components/start-screen';
 import Layout from '../../components/layout';
-import toggleFullscreen from '../../utils/fullscreen-toggle';
+import toggleFullscreen, {
+  checkFullscreenOpened,
+} from '../../utils/fullscreen-toggle';
 import Score from './components/score';
 import GameOverScreen from './components/game-over-screen';
 import { useAppDispatch } from '../../hooks/store';
@@ -32,40 +34,64 @@ function Game() {
   const gameRef = useRef<HTMLDivElement>(null);
   const [isStarted, setIsStarted] = useState<boolean>(false);
   const [isNewGame, setIsNewGame] = useState<boolean>(true);
-  const [isFullScreen, setIsFullScreen] = useState<boolean>(false);
+  const [isFullScreen, setIsFullscreen] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const { user } = useAuth();
 
   const handleStopGame = () => {
     setIsStarted(false);
     game.stop();
-    dispatch(addLeader({ displayName: user?.second_name || 'Новый игрок', score: game.gameState.score}))
+    dispatch(
+      addLeader({
+        displayName: user?.second_name || 'Новый игрок',
+        score: game.gameState.score,
+      })
+    );
   };
 
   const handleRestartGame = () => {
     setIsStarted(true);
     game.restart();
-  }
+  };
 
   const handleStartGame = () => {
     setIsStarted(true);
     setIsNewGame(false);
     game.start();
-  }
+  };
 
   const handleClickFullScreenBtn = () => {
-    toggleFullscreen(gameRef.current, setIsFullScreen)
-  }
+    toggleFullscreen(gameRef.current);
+  };
+
+  const handleFullcreenChange = () => {
+    const isFullscreenOpened = checkFullscreenOpened()
+
+    setIsFullscreen(isFullscreenOpened);
+  };
+
+  useEffect(() => {
+    document.documentElement.addEventListener(
+      'fullscreenchange',
+      handleFullcreenChange
+    );
+
+    return () => {
+      document.documentElement.removeEventListener(
+        'fullscreenchange',
+        handleFullcreenChange
+      );
+    };
+  }, []);
 
   return (
     <Layout>
-      <div className={cn()} ref={gameRef}>
-        <div className={cn('game-container')}>
+      <div className={cn()}>
+        <div className={cn('game-container')} ref={gameRef}>
           <Button
             className={cn('fullscreen-btn')}
             type="primary"
-            onClick={handleClickFullScreenBtn}
-          >
+            onClick={handleClickFullScreenBtn}>
             {isFullScreen ? 'Обычный экран' : 'Полный экран'}
           </Button>
           {isNewGame && <StartScreen onStart={handleStartGame} />}
