@@ -19,7 +19,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/ban-ts-comment': 1,
     "react/react-in-jsx-scope": "off",
-    'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: [ 'state', ] }],
+    'no-param-reassign': ['error', { ignorePropertyModificationsFor: [ 'state', ] }],
     "import/extensions": [
       "error",
       "ignorePackages",
