@@ -1,7 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { NavigateFunction } from 'react-router';
 import AuthApi from '../../api/auth';
 import { SignInDTO, SignUpDTO } from '../../types/auth';
-import signInService from '../../pages/signIn/services/signin-service';
+
+import signInService, {
+  signInWithProvider,
+} from '../../pages/signIn/services/signin-service';
 import signUpService from '../../pages/signUp/services/signup-service';
 
 export const fetchUser = createAsyncThunk(
@@ -67,10 +71,31 @@ export const signOut = createAsyncThunk('user/signOut', async (_, thunkAPI) => {
   }
 });
 
+export const signInOAuth = createAsyncThunk(
+  'user/signInOAuth',
+  async (payload: { code: string; navigate: NavigateFunction }, thunkAPI) => {
+    const { code, navigate } = payload;
+    try {
+      const { data, error } = await signInWithProvider(code);
+      if (error) {
+        navigate('/sign-in');
+        return thunkAPI.rejectWithValue(error);
+      }
+      return data;
+    } catch (e: any) {
+      navigate('/sign-in');
+      return thunkAPI.rejectWithValue(
+        `Не удалось авторизоваться через OAuth. ${e.message}`
+      );
+    }
+  }
+);
+
 const actions = {
   fetchUser,
   signIn,
   signUp,
   signOut,
+  signInOAuth,
 };
 export default actions;
