@@ -7,12 +7,16 @@ import 'antd/dist/antd.css';
 import './style.css';
 import { useAppDispatch } from '../../hooks/store';
 import { useAuth } from '../../hooks/auth';
+import AuthSocial from '../../components/auth-social';
+import { getOAuthProviders } from '../../utils/get-OAuth-provider';
 
 type FormData = {
   username: string;
   password: string;
   remember: boolean;
 };
+
+const providers = getOAuthProviders();
 
 const cn = createCn('sign-in');
 
@@ -76,7 +80,9 @@ function SignInPage(): JSX.Element {
             Войти
           </Button>
         </Form.Item>
-
+        <div className={cn('form-item')}>
+          <AuthSocial providers={providers} />
+        </div>
         <Form.Item
           className={cn('form-item')}
           name="remember"
