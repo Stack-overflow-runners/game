@@ -1,14 +1,17 @@
 import React, { useEffect, useContext, createContext } from 'react';
+import { NavigateFunction } from 'react-router';
 import { useAppDispatch, useAppSelector } from './store';
 import { SignInDTO, SignUpDTO } from '../types/auth';
 import {
   fetchUser,
   signIn as login,
+  signInOAuth,
   signOut as logout,
   signUp as register,
 } from '../store/action-creators/auth';
 import { UserDTO } from '../types/user';
 import { Nullable } from '../types/common';
+import { getServiceIdFromProvider } from '../pages/signIn/services/signin-service';
 
 type Props = {
   children: React.ReactNode;
@@ -22,6 +25,8 @@ type AuthContextProps = {
   error: string | null;
   isLoading: boolean;
   isLoggedIn: boolean;
+  getProviderServiceId: (providerName: string) => any;
+  signInWithProvider: (code: string, navigate: NavigateFunction) => any;
 };
 
 const authContext = createContext<AuthContextProps>({} as AuthContextProps);
@@ -46,6 +51,17 @@ function useAuthProvider() {
     dispatch(logout());
   };
 
+  const getProviderServiceId = async (providerName: string) => {
+    const response = await getServiceIdFromProvider(providerName);
+    return response;
+  };
+  const signInWithProvider = (
+    code: string,
+    navigate: NavigateFunction
+  ): void => {
+    dispatch(signInOAuth({ code, navigate }));
+  };
+
   useEffect(() => {
     if (!user) {
       dispatch(fetchUser());
@@ -60,6 +76,8 @@ function useAuthProvider() {
     error,
     isLoading,
     isLoggedIn,
+    signInWithProvider,
+    getProviderServiceId,
   };
 }
 
