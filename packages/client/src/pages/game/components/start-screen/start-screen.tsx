@@ -20,7 +20,7 @@ function StartScreen({ onStart }: Props) {
 
   return (
     <div className={cn()}>
-      <img src={gameCoverImg} alt="space runner" width={400} height={600} />
+      <img className={cn("image")} src={gameCoverImg} alt="space runner" width={400} height={600} />
       <button
         className={cn('start')}
         data-testid="startGame"
