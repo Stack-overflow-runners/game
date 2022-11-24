@@ -10,15 +10,17 @@ const withAuth = (Component: React.FC) =>
     const OAuthCode = searchParams.get('code');
     const auth = useAuth();
     const navigate = useNavigate();
-    const { isLoggedIn, isLoading } = auth;
+    const { isLoggedIn, isLoading, user } = auth;
     useEffect(() => {
-      if (!isLoggedIn && !isLoading && OAuthCode) {
-        auth.signInWithProvider(OAuthCode, navigate);
+      if (!isLoading && !isLoggedIn && !user) {
+        if (OAuthCode) {
+          searchParams.delete('code');
+          auth.signInWithProvider(OAuthCode, navigate);
+        } else {
+          navigate('/sign-in');
+        }
       }
-      if (!isLoggedIn && !isLoading && !OAuthCode) {
-        navigate('/sign-in');
-      }
-    }, [isLoggedIn, isLoading, OAuthCode]);
+    }, [isLoggedIn, user, OAuthCode]);
     // eslint-disable-next-line react/jsx-props-no-spreading
     return isLoading ? <PageLoader /> : <Component {...props} />;
   };

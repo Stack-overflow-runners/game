@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Alert, Button, Checkbox, Form, Input } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { Rule } from 'antd/lib/form';
@@ -37,9 +37,12 @@ function SignInPage(): JSX.Element {
       })
     );
   }, []);
-  if (user) {
-    navigate('/');
-  }
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user]);
 
   return (
     <div className={cn()}>

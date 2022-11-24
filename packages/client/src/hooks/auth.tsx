@@ -63,7 +63,7 @@ function useAuthProvider() {
   };
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !isLoading) {
       dispatch(fetchUser());
     }
   }, []);

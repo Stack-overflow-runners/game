@@ -11,7 +11,7 @@ import { setFulfilled, setPending, setRejected, UserState } from './common';
 
 const initialState: UserState = {
   user: null,
-  isLoading: true,
+  isLoading: false,
   isLoggedIn: false,
   error: null,
 };
