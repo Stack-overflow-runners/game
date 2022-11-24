@@ -10,7 +10,16 @@ type TStorage = {
 abstract class Storage<T extends string> {
   private readonly storage: TStorage;
 
-  public constructor(getStorage = (): TStorage => window.localStorage) {
+  public constructor(
+    getStorage = (): TStorage => {
+      if (typeof window !== 'undefined') return window.localStorage;
+      return {
+        getItem: () => null,
+        setItem: () => {},
+        removeItem: () => {},
+      };
+    }
+  ) {
     this.storage = getStorage();
   }
 
