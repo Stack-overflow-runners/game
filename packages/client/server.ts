@@ -6,6 +6,7 @@ import { ViteDevServer } from 'vite';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const isProduction = process.env.NODE_ENV === 'production';
 
 const prepareHTML = (template: string, appHtml: string, preloadedState: any) =>
   template
@@ -17,13 +18,13 @@ const prepareHTML = (template: string, appHtml: string, preloadedState: any) =>
       )}</script>`
     );
 
-async function createServer(isProd = process.env.NODE_ENV === 'production') {
+async function createServer() {
   const app = express();
   const PORT = 3000;
 
   let devServer: ViteDevServer;
 
-  if (isProd) {
+  if (isProduction) {
     const compression = await import('compression');
     const serveStatic = await import('serve-static');
     const dist = path.resolve(__dirname, 'dist/client');
@@ -50,42 +51,36 @@ async function createServer(isProd = process.env.NODE_ENV === 'production') {
       const url = req.originalUrl;
 
       let template;
-      let render;
-      let configureInitialStore;
+      let entryModule;
 
-      if (isProd) {
+      if (isProduction) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         // eslint-disable-next-line import/extensions
-        const module = await import('./dist/server/entry-server.js');
-        const rootFile = path.resolve(__dirname, 'dist/client/index.html');
+        entryModule = await import('./dist/server/entry-server.js');
 
-        template = fs.readFileSync(rootFile, 'utf-8');
-
-        render = module.render;
-
-        configureInitialStore = module.configureInitialStore;
+        template = fs.readFileSync('index.html', 'utf-8');
       } else {
-        const module = await devServer.ssrLoadModule('/src/entry-server.tsx');
-        const rootFile = path.resolve(__dirname, 'index.html');
+        entryModule = await devServer.ssrLoadModule('/src/entry-server.tsx');
 
-        template = fs.readFileSync(rootFile, 'utf-8');
+        template = fs.readFileSync('dist/client/index.html', 'utf-8');
+
         template = await devServer.transformIndexHtml(url, template);
-
-        render = module.render;
-
-        configureInitialStore = module.configureInitialStore;
       }
 
-      const store = configureInitialStore();
+      const store = entryModule.configureInitialStore();
       const preloadedState = store.getState();
-      const appHtml = await render(url, store);
+      const appHtml = await entryModule.render(url, store);
 
       const html = prepareHTML(template, appHtml, preloadedState);
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+
+      store.close();
     } catch (e: any) {
-      if (!isProd) devServer.ssrFixStacktrace(e);
+      if (!isProduction) {
+        devServer.ssrFixStacktrace(e);
+      }
 
       res.status(500).end(e.stack);
     }
