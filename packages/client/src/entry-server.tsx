@@ -1,13 +1,14 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import ReactDOMServer from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
-import { store } from './store';
+import { configureStore, Store } from '@reduxjs/toolkit';
+import leaderBoardReducer from './store/reducers/leader-board'
+import userReducer from './store/reducers/user'
 import App from './App';
 
-// eslint-disable-next-line import/prefer-default-export
-export function render(url: string) {
-  return ReactDOMServer.renderToString(
+export function render(url: string, store: Store) {
+  return renderToString(
     <React.StrictMode>
       <Provider store={store}>
         <StaticRouter location={url}>
@@ -16,4 +17,14 @@ export function render(url: string) {
       </Provider>
     </React.StrictMode>
   );
-};
+}
+
+export function configureInitialStore() {
+  return configureStore({
+    reducer: {
+      user: userReducer,
+      leaderBoard: leaderBoardReducer,
+    },
+    devTools: true
+  });
+}
