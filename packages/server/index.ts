@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
 import cors from 'cors';
-
 import express from 'express';
-import createClientAndConnect from './db';
+import { dbConnect } from './db';
+import crudCheck from './utils/crud-check';
 
 dotenv.config();
 
@@ -10,12 +10,20 @@ const app = express();
 app.use(cors());
 const port = Number(process.env.SERVER_PORT) || 3001;
 
-createClientAndConnect();
-
 app.get('/', (_, res) => {
   res.json('👋 Howdy from the server :)');
 });
 
-app.listen(port, () => {
-  console.log(`  ➜ 🎸 Server is listening on port: ${port}`);
-});
+const start = async () => {
+  try {
+    await dbConnect();
+    await crudCheck();
+    app.listen(port, () => {
+      console.log(`Server listening on port ${port}`);
+    });
+  } catch (e: any) {
+    console.error(e);
+  }
+};
+
+start();
