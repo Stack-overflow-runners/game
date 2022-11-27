@@ -1,4 +1,4 @@
-import { User } from '../models';
+import User from '../models/user.model';
 
 async function crudCheck() {
   const C = new User({
