@@ -21,27 +21,28 @@ async function createServer(isProd = process.env.NODE_ENV === 'production') {
   const app = express();
   const PORT = 3000;
 
-  let vite: ViteDevServer;
+  let devServer: ViteDevServer;
 
-  if (!isProd) {
-    vite = await (
-      await import('vite')
-    ).createServer({
+  if (isProd) {
+    const compression = await import('compression');
+    const serveStatic = await import('serve-static');
+    const dist = path.resolve(__dirname, 'dist/client');
+
+    app.use(compression.default());
+    app.use(
+      serveStatic.default(dist, {
+        index: false,
+      })
+    );
+  } else {
+    const vite = await import('vite');
+
+    devServer = await vite.createServer({
       server: { middlewareMode: true },
       appType: 'custom',
     });
 
-    app.use(vite.middlewares);
-  } else {
-    app.use((await import('compression')).default());
-    app.use(
-      (await import('serve-static')).default(
-        path.resolve(__dirname, 'dist/client'),
-        {
-          index: false,
-        }
-      )
-    );
+    app.use(devServer.middlewares);
   }
 
   app.use('*', async (req, res) => {
@@ -52,17 +53,7 @@ async function createServer(isProd = process.env.NODE_ENV === 'production') {
       let render;
       let configureInitialStore;
 
-      if (!isProd) {
-        const module = await vite.ssrLoadModule('/src/entry-server.tsx');
-        const rootFile = path.resolve(__dirname, 'index.html');
-
-        template = fs.readFileSync(rootFile, 'utf-8');
-        template = await vite.transformIndexHtml(url, template);
-
-        render = module.render;
-
-        configureInitialStore = module.configureInitialStore;
-      } else {
+      if (isProd) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         // eslint-disable-next-line import/extensions
@@ -70,6 +61,16 @@ async function createServer(isProd = process.env.NODE_ENV === 'production') {
         const rootFile = path.resolve(__dirname, 'dist/client/index.html');
 
         template = fs.readFileSync(rootFile, 'utf-8');
+
+        render = module.render;
+
+        configureInitialStore = module.configureInitialStore;
+      } else {
+        const module = await devServer.ssrLoadModule('/src/entry-server.tsx');
+        const rootFile = path.resolve(__dirname, 'index.html');
+
+        template = fs.readFileSync(rootFile, 'utf-8');
+        template = await devServer.transformIndexHtml(url, template);
 
         render = module.render;
 
@@ -84,7 +85,7 @@ async function createServer(isProd = process.env.NODE_ENV === 'production') {
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
     } catch (e: any) {
-      if (!isProd) vite.ssrFixStacktrace(e);
+      if (!isProd) devServer.ssrFixStacktrace(e);
 
       res.status(500).end(e.stack);
     }
