@@ -18,6 +18,13 @@ const prepareHTML = (template: string, appHtml: string, preloadedState: any) =>
       )}</script>`
     );
 
+const getIndexFile = () => {
+  const indexFilePath = isProduction ? 'dist/client/index.html' : 'index.html';
+  const indexFile = path.resolve(__dirname, indexFilePath);
+
+  return indexFile;
+};
+
 async function createServer() {
   const app = express();
   const PORT = 3000;
@@ -49,8 +56,9 @@ async function createServer() {
   app.use('*', async (req, res) => {
     try {
       const url = req.originalUrl;
+      const indexFile = getIndexFile();
 
-      let template;
+      let template = fs.readFileSync(indexFile, 'utf-8');
       let entryModule;
 
       if (isProduction) {
@@ -58,12 +66,8 @@ async function createServer() {
         // @ts-ignore
         // eslint-disable-next-line import/extensions
         entryModule = await import('./dist/server/entry-server.js');
-
-        template = fs.readFileSync('index.html', 'utf-8');
       } else {
         entryModule = await devServer.ssrLoadModule('/src/entry-server.tsx');
-
-        template = fs.readFileSync('dist/client/index.html', 'utf-8');
 
         template = await devServer.transformIndexHtml(url, template);
       }
@@ -75,8 +79,6 @@ async function createServer() {
       const html = prepareHTML(template, appHtml, preloadedState);
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
-
-      store.close();
     } catch (e: any) {
       if (!isProduction) {
         devServer.ssrFixStacktrace(e);
