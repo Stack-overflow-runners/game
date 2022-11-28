@@ -78,7 +78,7 @@ function LeaderBoardPage() {
         />
         <Pagination 
           defaultCurrent={1}
-          total={100} 
+          total={leaders?.length} 
           onChange={setPageNumber}
           showSizeChanger
           onShowSizeChange={onShowSizeChange}
