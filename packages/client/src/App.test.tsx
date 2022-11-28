@@ -6,7 +6,6 @@ describe('App', () => {
     act(() => {
       renderWithRouter('/');
     });
-    expect(window.location.pathname).toBe('/');
     expect(document.querySelector('.App')).toBeInTheDocument();
   });
 
