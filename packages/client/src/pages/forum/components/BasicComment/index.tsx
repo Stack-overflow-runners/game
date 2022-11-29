@@ -1,11 +1,11 @@
 import { Avatar, Comment as Commentary } from 'antd';
-import { CommentItem } from '../../types';
+import { TBasicComment } from '../../types';
 
 type Props = {
-  comment: CommentItem;
+  comment: TBasicComment;
 };
 
-function Comment({ comment }: Props) {
+function BasicComment({ comment }: Props) {
   const { author, avatar = 'https://joeschmoe.io/api/v1/random', content, datetime } = comment;
 
   return (
@@ -23,4 +23,4 @@ function Comment({ comment }: Props) {
   );
 }
 
-export default Comment;
+export default BasicComment;

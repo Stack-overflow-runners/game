@@ -1,0 +1,36 @@
+.comment {
+  &__button-action {
+    border: none;
+    padding: 3px;
+    margin-right: 5px;
+    background-color: transparent;
+
+    &:hover {
+      cursor: pointer;
+      color: #000;
+      transition: color .4s ease-out;
+    }
+  }
+
+  &__comment-action {
+    margin-left: 8px;
+  }
+
+  &__button-reply {
+    border: none;
+    padding: 3px;
+    background-color: transparent;
+
+    &:hover {
+      cursor: pointer;
+      color: #000;
+      transition: color .4s ease-out;
+    }
+  }
+  
+  &__sub-comments {
+    margin-left: 44px;
+    padding: 0 0 0 30px;
+    border-left: 2px solid #ccc;
+  }
+}
