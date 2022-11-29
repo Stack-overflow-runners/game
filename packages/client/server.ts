@@ -1,8 +1,14 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { ViteDevServer } from 'vite';
+
+const PROD_INDEX_FILE_PATH = 'dist/client/index.html';
+const DEV_INDEX_FILE_PATH = 'index.html';
+
+const PROD_ENTRY_MODULE_PATH = './dist/server/entry-server.js';
+const DEV_ENTRY_MODULE_PATH = '/src/entry-server.tsx';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -18,11 +24,30 @@ const prepareHTML = (template: string, appHtml: string, preloadedState: any) =>
       )}</script>`
     );
 
-const getIndexFile = () => {
-  const indexFilePath = isProduction ? 'dist/client/index.html' : 'index.html';
+const getTemplate = (): string => {
+  const indexFilePath = isProduction
+    ? PROD_INDEX_FILE_PATH
+    : DEV_INDEX_FILE_PATH;
   const indexFile = path.resolve(__dirname, indexFilePath);
+  const template = fs.readFileSync(indexFile, 'utf-8');
 
-  return indexFile;
+  return template;
+};
+
+const errorHandler = (error: any, req: Request, res: Response) => {
+  res.status(500).end(error.stack);
+};
+
+const errorLogger = (
+  error: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // eslint-disable-next-line no-console
+  console.log(error);
+
+  next(error);
 };
 
 async function createServer() {
@@ -33,15 +58,15 @@ async function createServer() {
 
   if (isProduction) {
     const compression = await import('compression');
-    const serveStatic = await import('serve-static');
     const dist = path.resolve(__dirname, 'dist/client');
 
+    const serveStatic = await import('serve-static');
+    const serveStaticOptions = {
+      index: false,
+    };
+
     app.use(compression.default());
-    app.use(
-      serveStatic.default(dist, {
-        index: false,
-      })
-    );
+    app.use(serveStatic.default(dist, serveStaticOptions));
   } else {
     const vite = await import('vite');
 
@@ -53,21 +78,20 @@ async function createServer() {
     app.use(devServer.middlewares);
   }
 
-  app.use('*', async (req, res) => {
+  const render = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const url = req.originalUrl;
-      const indexFile = getIndexFile();
 
-      let template = fs.readFileSync(indexFile, 'utf-8');
+      let template = getTemplate();
       let entryModule;
 
       if (isProduction) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         // eslint-disable-next-line import/extensions
-        entryModule = await import('./dist/server/entry-server.js');
+        entryModule = await import(PROD_ENTRY_MODULE_PATH);
       } else {
-        entryModule = await devServer.ssrLoadModule('/src/entry-server.tsx');
+        entryModule = await devServer.ssrLoadModule(DEV_ENTRY_MODULE_PATH);
 
         template = await devServer.transformIndexHtml(url, template);
       }
@@ -79,14 +103,12 @@ async function createServer() {
       const html = prepareHTML(template, appHtml, preloadedState);
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
-    } catch (e: any) {
-      if (!isProduction) {
-        devServer.ssrFixStacktrace(e);
-      }
-
-      res.status(500).end(e.stack);
+    } catch (error: any) {
+      next(error);
     }
-  });
+  };
+
+  app.use('*', render, errorLogger, errorHandler);
 
   return { app, PORT };
 }

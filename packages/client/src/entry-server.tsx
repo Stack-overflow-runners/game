@@ -20,11 +20,13 @@ export function render(url: string, store: Store) {
 }
 
 export function configureInitialStore() {
-  return configureStore({
+  const store = configureStore({
     reducer: {
       user: userReducer,
       leaderBoard: leaderBoardReducer,
     },
     devTools: true
   });
+
+  return store
 }
