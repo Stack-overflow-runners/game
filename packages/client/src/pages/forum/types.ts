@@ -4,6 +4,8 @@ export type TBasicComment = {
   avatar?: string;
   content: string;
   datetime: string;
+  likes: number[],
+  dislikes: number[],
 };
 
 export type TCommentWithReply = TBasicComment & {

@@ -10,6 +10,11 @@
       color: #000;
       transition: color .4s ease-out;
     }
+
+    &:disabled {
+      cursor: default;
+      color: inherit;
+    }
   }
 
   &__comment-action {

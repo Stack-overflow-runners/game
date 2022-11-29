@@ -39,6 +39,8 @@ function CommentWithReply({ comment }: Props) {
           avatar: 'https://joeschmoe.io/api/v1/random',
           content: newCommentvalue,
           datetime: '15 окт 2022 15:45:52',
+          likes: [],
+          dislikes: [],
         },
         ...subCommentsArr,
       ]);
