@@ -6,10 +6,12 @@ import {
   LikeOutlined,
 } from '@ant-design/icons';
 import { ReactElement, useState } from 'react';
+import moment from 'moment/moment';
+import 'moment/locale/ru';
 import { TBasicComment } from '../../types';
 import createCn from '../../../../utils/create-cn';
-import './styles.css';
 import { useAuth } from '../../../../hooks/auth';
+import './styles.css';
 
 type Props = {
   comment: TBasicComment;
@@ -61,7 +63,7 @@ function BasicComment({ comment, additionalActions = [] }: Props) {
         />
       }
       content={content}
-      datetime={datetime}
+      datetime={moment(datetime).format('D MMM YYYY в HH:MM')}
       className={cn()}
     />
   );

@@ -3,7 +3,7 @@ export type TBasicComment = {
   author: string;
   avatar?: string;
   content: string;
-  datetime: string;
+  datetime: Date;
   likes: number[],
   dislikes: number[],
 };
