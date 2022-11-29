@@ -28,7 +28,5 @@ export async function configureInitialStore() {
     devTools: true
   });
 
-  // some dispatch
-
   return store
 }
