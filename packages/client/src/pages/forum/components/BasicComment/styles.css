@@ -1,7 +1,8 @@
-.comment {
-  &__button-reply {
+.basic-comment {
+  &__button-action {
     border: none;
     padding: 3px;
+    margin-right: 5px;
     background-color: transparent;
 
     &:hover {
@@ -10,10 +11,8 @@
       transition: color .4s ease-out;
     }
   }
-  
-  &__sub-comments {
-    margin-left: 44px;
-    padding: 0 0 0 30px;
-    border-left: 2px solid #ccc;
+
+  &__comment-action {
+    margin-left: 8px;
   }
 }
