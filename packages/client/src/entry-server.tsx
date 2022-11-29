@@ -19,7 +19,7 @@ export function render(url: string, store: Store) {
   );
 }
 
-export function configureInitialStore() {
+export async function configureInitialStore() {
   const store = configureStore({
     reducer: {
       user: userReducer,
@@ -27,6 +27,8 @@ export function configureInitialStore() {
     },
     devTools: true
   });
+
+  // some dispatch
 
   return store
 }

@@ -50,55 +50,29 @@ const errorLogger = (
   next(error);
 };
 
-async function createServer() {
+async function createDevelopmentServer() {
   const app = express();
   const PORT = 3000;
 
-  let devServer: ViteDevServer;
+  const vite = await import('vite');
 
-  if (isProduction) {
-    const compression = await import('compression');
-    const dist = path.resolve(__dirname, 'dist/client');
+  const devServer: ViteDevServer = await vite.createServer({
+    server: { middlewareMode: true },
+    appType: 'custom',
+  });
 
-    const serveStatic = await import('serve-static');
-    const serveStaticOptions = {
-      index: false,
-    };
-
-    app.use(compression.default());
-    app.use(serveStatic.default(dist, serveStaticOptions));
-  } else {
-    const vite = await import('vite');
-
-    devServer = await vite.createServer({
-      server: { middlewareMode: true },
-      appType: 'custom',
-    });
-
-    app.use(devServer.middlewares);
-  }
+  app.use(devServer.middlewares);
 
   const render = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const url = req.originalUrl;
 
-      let template = getTemplate();
-      let entryModule;
+      const template = await devServer.transformIndexHtml(url, getTemplate());
+      const entryModule = await devServer.ssrLoadModule(DEV_ENTRY_MODULE_PATH);
 
-      if (isProduction) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        // eslint-disable-next-line import/extensions
-        entryModule = await import(PROD_ENTRY_MODULE_PATH);
-      } else {
-        entryModule = await devServer.ssrLoadModule(DEV_ENTRY_MODULE_PATH);
-
-        template = await devServer.transformIndexHtml(url, template);
-      }
-
-      const store = entryModule.configureInitialStore();
+      const store = await entryModule.configureInitialStore();
       const preloadedState = store.getState();
-      const appHtml = await entryModule.render(url, store);
+      const appHtml = entryModule.render(url, store);
 
       const html = prepareHTML(template, appHtml, preloadedState);
 
@@ -112,6 +86,52 @@ async function createServer() {
 
   return { app, PORT };
 }
+
+async function createProductionServer() {
+  const app = express();
+  const PORT = 3000;
+
+  const compression = await import('compression');
+  const dist = path.resolve(__dirname, 'dist/client');
+
+  const serveStatic = await import('serve-static');
+  const serveStaticOptions = {
+    index: false,
+  };
+
+  app.use(compression.default());
+  app.use(serveStatic.default(dist, serveStaticOptions));
+
+  const render = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const url = req.originalUrl;
+      const template = getTemplate();
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // eslint-disable-next-line import/extensions
+      const entryModule = await import(PROD_ENTRY_MODULE_PATH);
+
+      const store = await entryModule.configureInitialStore();
+      const preloadedState = store.getState();
+      const appHtml = entryModule.render(url, store);
+
+      const html = prepareHTML(template, appHtml, preloadedState);
+
+      res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+    } catch (error: any) {
+      next(error);
+    }
+  };
+
+  app.use('*', render, errorLogger, errorHandler);
+
+  return { app, PORT };
+}
+
+const createServer = isProduction
+  ? createProductionServer
+  : createDevelopmentServer;
 
 createServer().then(({ app, PORT }) =>
   app.listen(PORT, () => {
