@@ -53,10 +53,12 @@ function Topic({ commentWithReply }: Props) {
   return (
     <div className={cn()}>
       <Button
-        type={isOpenEditor ? 'text' : 'primary'}
+        type={isOpenEditor ? 'text' : 'dashed'}
         className={cn('button')}
-        onClick={toogleEditor}>
-        {isOpenEditor ? 'Скрыть' : 'Написать комментарий'}
+        onClick={toogleEditor}
+        size='small'
+      >
+        {isOpenEditor ? 'Скрыть' : 'Добавить комментарий'}
       </Button>
       {isOpenEditor && (
         <Editor
