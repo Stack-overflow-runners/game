@@ -118,6 +118,12 @@ class Post extends Model<Partial<TPost>> {
 
   @HasMany(() => Comment, 'postId')
   comments: Comment[];
+
+  @HasMany(() => PostLike, 'postId')
+  likes: PostLike[];
+
+  @HasMany(() => PostDislike, 'postId')
+  dislikes: PostDislike[];
 }
 
 @Table({
@@ -161,6 +167,12 @@ class Comment extends Model<Partial<TComment>> {
 
   @BelongsTo(() => User, 'userId')
   user: User;
+
+  @HasMany(() => CommentLike, 'commentId')
+  likes: CommentLike[];
+
+  @HasMany(() => CommentDislike, 'commentId')
+  dislikes: CommentDislike[];
 }
 
 @Table({
