@@ -5,6 +5,7 @@ import { UserDTO } from '../../../types/user';
 import OAuthYandexAPI from '../../../api/OAuth';
 import getOAuthProvider from '../../../utils/get-OAuth-provider';
 import LocalStorageService from '../../../utils/localstorage-service';
+import { OAUTH_PROVIDERS } from '../../../utils/consts';
 
 const signIn = async (payload: SignInDTO): ApiResponse<UserDTO> => {
   const response = await AuthAPI.signIn(payload);
@@ -27,7 +28,7 @@ export const signInWithProvider = async (
   }
   const provider = getOAuthProvider(providerName);
   if (provider) {
-    if (provider.name === 'Yandex') {
+    if (provider.name === OAUTH_PROVIDERS.yandex.name) {
       const response = await OAuthYandexAPI.signIn({
         code,
         redirect_uri: provider.redirectURI,
