@@ -218,7 +218,6 @@ class ThreadDislike extends Model {
   user: User;
 }
 
-// Post likes
 @Table({
   timestamps: false,
   paranoid: false,
@@ -275,7 +274,6 @@ class PostDislike extends Model {
   user: User;
 }
 
-// Comment likes
 @Table({
   timestamps: false,
   paranoid: false,
