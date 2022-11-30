@@ -15,7 +15,7 @@ import './styles.css';
 
 type Props = {
   comment: TBasicComment;
-  additionalActions: ReactElement[]
+  additionalActions?: ReactElement[];
 };
 
 const cn = createCn('basic-comment');
@@ -30,22 +30,28 @@ function BasicComment({ comment, additionalActions = [] }: Props) {
 
   const filterUserId = (userIds: number[]) => userIds.filter((userId) => userId !== user?.id)
 
-  const like = () => {
-    setLikes(addUserId);
-    setDislikes(filterUserId);
+  const like = (event: any) => {
+    event.stopPropagation();
+    if (!!user?.id && !likes.includes(user.id)) {
+      setLikes(addUserId);
+      setDislikes(filterUserId);
+    }
   };
 
-  const dislike = () => {
-    setLikes(filterUserId);
-    setDislikes(addUserId);
+  const dislike = (event: any) => {
+    event.stopPropagation();
+    if (!!user?.id && !dislikes.includes(user.id)) {
+      setLikes(filterUserId);
+      setDislikes(addUserId);
+    }
   };
 
   const actions = [
-    <button className={cn('button-action')} type="button" onClick={like} disabled={!!user?.id && likes.includes(user.id)}>
+    <button className={cn('button-action')} type="button" onClick={like}>
       {user?.id && likes.includes(user.id) ? <LikeFilled /> : <LikeOutlined />}
       <span className={cn('comment-action')}>{likes.length}</span>
     </button>,
-    <button className={cn('button-action')} type="button" onClick={dislike} disabled={!!user?.id && dislikes.includes(user.id)} >
+    <button className={cn('button-action')} type="button" onClick={dislike}>
       {user?.id && dislikes.includes(user.id) ? <DislikeFilled /> : <DislikeOutlined />}
       <span className={cn('comment-action')}>{dislikes.length}</span>
     </button>,
@@ -68,5 +74,9 @@ function BasicComment({ comment, additionalActions = [] }: Props) {
     />
   );
 }
+
+BasicComment.defaultProps = {
+  additionalActions: []
+};
 
 export default BasicComment;

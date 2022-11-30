@@ -1,4 +1,4 @@
-.forum {
+.topic {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -13,11 +13,5 @@
 
   &__button {
     margin: 10px auto;
-  }
-
-  &__header {
-    .ant-comment-inner {
-      padding: 0;
-    }
   }
 }

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import createCn from '../../../../utils/create-cn';
 import { TBasicComment, TCommentWithReply } from '../../types';
@@ -18,7 +17,8 @@ function CommentWithReply({ comment }: Props) {
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
   const [newCommentvalue, setNewCommentvalue] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  const [subCommentsArr, setSubCommentsArr] = useState<TBasicComment[]>(subComments);
+  const [subCommentsArr, setSubCommentsArr] =
+    useState<TBasicComment[]>(subComments);
 
   const toogleEditor = () => setIsOpenEditor(!isOpenEditor);
 
@@ -62,7 +62,7 @@ function CommentWithReply({ comment }: Props) {
 
   return (
     <div className={cn()}>
-      <BasicComment comment={comment} additionalActions={additionalActions}/>
+      <BasicComment comment={comment} additionalActions={additionalActions} />
       <div className={cn('sub-comments')}>
         {isOpenEditor && (
           <Editor
@@ -72,7 +72,9 @@ function CommentWithReply({ comment }: Props) {
             value={newCommentvalue}
           />
         )}
-        {subCommentsArr.map((subComment) => <BasicComment key={subComment.id} comment={subComment} additionalActions={[]} />)}
+        {subCommentsArr.map(subComment => (
+          <BasicComment key={subComment.id} comment={subComment} />
+        ))}
       </div>
     </div>
   );

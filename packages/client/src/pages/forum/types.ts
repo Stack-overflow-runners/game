@@ -11,3 +11,7 @@ export type TBasicComment = {
 export type TCommentWithReply = TBasicComment & {
   subComments: TBasicComment[]
 }
+
+export type TTopic = TBasicComment & {
+  comments: TCommentWithReply[];
+}
