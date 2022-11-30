@@ -13,39 +13,25 @@ type Props = {
 };
 
 function Topic({ commentWithReply }: Props) {
-  const [newCommentvalue, setNewCommentvalue] = useState('');
-  const [submitting, setSubmitting] = useState(false);
   const [comments, setComments] =
     useState<TCommentWithReply[]>(commentWithReply);
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNewCommentvalue(e.target.value);
-  };
-
-  const handleSubmit = () => {
-    if (!newCommentvalue) return;
-
-    setSubmitting(true);
-
-    setTimeout(() => {
-      setComments([
-        {
-          id: comments.length,
-          author: 'Han Solo',
-          avatar: 'https://joeschmoe.io/api/v1/random',
-          content: newCommentvalue,
-          datetime: new Date(),
-          subComments: [],
-          likes: [],
-          dislikes: [],
-        },
-        ...comments,
-      ]);
-      setNewCommentvalue('');
-      setIsOpenEditor(false);
-      setSubmitting(false);
-    }, 1000);
+  const handleSubmitNewComment = (newComment: string) => {
+    setComments([
+      {
+        id: comments.length,
+        author: 'Han Solo',
+        avatar: 'https://joeschmoe.io/api/v1/random',
+        content: newComment,
+        datetime: new Date(),
+        subComments: [],
+        likes: [],
+        dislikes: [],
+      },
+      ...comments,
+    ]);
+    setIsOpenEditor(false);
   };
 
   const toogleEditor = () => setIsOpenEditor(!isOpenEditor);
@@ -56,16 +42,12 @@ function Topic({ commentWithReply }: Props) {
         type={isOpenEditor ? 'text' : 'dashed'}
         className={cn('button')}
         onClick={toogleEditor}
-        size='small'
-      >
+        size="small">
         {isOpenEditor ? 'Скрыть' : 'Добавить комментарий'}
       </Button>
       {isOpenEditor && (
         <Editor
-          onChange={handleChange}
-          onSubmit={handleSubmit}
-          submitting={submitting}
-          value={newCommentvalue}
+          onSubmit={handleSubmitNewComment}
         />
       )}
       {comments.map(comment => (
@@ -73,6 +55,6 @@ function Topic({ commentWithReply }: Props) {
       ))}
     </div>
   );
-};
+}
 
 export default Topic;

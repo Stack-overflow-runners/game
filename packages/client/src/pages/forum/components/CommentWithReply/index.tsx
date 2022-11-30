@@ -15,39 +15,25 @@ function CommentWithReply({ comment }: Props) {
   const { subComments } = comment;
 
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
-  const [newCommentvalue, setNewCommentvalue] = useState('');
-  const [submitting, setSubmitting] = useState(false);
   const [subCommentsArr, setSubCommentsArr] =
     useState<TBasicComment[]>(subComments);
 
   const toogleEditor = () => setIsOpenEditor(!isOpenEditor);
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNewCommentvalue(e.target.value);
-  };
-
-  const handleSubmit = () => {
-    if (!newCommentvalue) return;
-
-    setSubmitting(true);
-
-    setTimeout(() => {
-      setSubCommentsArr([
-        {
-          id: subCommentsArr.length,
-          author: 'Han Solo',
-          avatar: 'https://joeschmoe.io/api/v1/random',
-          content: newCommentvalue,
-          datetime: new Date(),
-          likes: [],
-          dislikes: [],
-        },
-        ...subCommentsArr,
-      ]);
-      setNewCommentvalue('');
-      setIsOpenEditor(false);
-      setSubmitting(false);
-    }, 1000);
+  const handleSubmitNewReply = (newReply: string) => {
+    setSubCommentsArr([
+      {
+        id: subCommentsArr.length,
+        author: 'Han Solo',
+        avatar: 'https://joeschmoe.io/api/v1/random',
+        content: newReply,
+        datetime: new Date(),
+        likes: [],
+        dislikes: [],
+      },
+      ...subCommentsArr,
+    ]);
+    setIsOpenEditor(false);
   };
 
   const additionalActions = [
@@ -66,10 +52,7 @@ function CommentWithReply({ comment }: Props) {
       <div className={cn('sub-comments')}>
         {isOpenEditor && (
           <Editor
-            onChange={handleChange}
-            onSubmit={handleSubmit}
-            submitting={submitting}
-            value={newCommentvalue}
+            onSubmit={handleSubmitNewReply}
           />
         )}
         {subCommentsArr.map(subComment => (
