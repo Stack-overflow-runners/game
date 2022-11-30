@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import createCn from '../../../../utils/create-cn';
 import { TBasicComment, TCommentWithReply } from '../../types';
 import BasicComment from '../BasicComment';
@@ -18,10 +18,13 @@ function CommentWithReply({ comment }: Props) {
   const [subCommentsArr, setSubCommentsArr] =
     useState<TBasicComment[]>(subComments);
 
-  const toogleEditor = () => setIsOpenEditor(!isOpenEditor);
+  const toogleEditor = useCallback(
+    () => setIsOpenEditor(isOpen => !isOpen),
+    []
+  );
 
-  const handleSubmitNewReply = (newReply: string) => {
-    setSubCommentsArr([
+  const handleSubmitNewReply = useCallback((newReply: string) => {
+    setSubCommentsArr(items => [
       {
         id: subCommentsArr.length,
         author: 'Han Solo',
@@ -31,10 +34,10 @@ function CommentWithReply({ comment }: Props) {
         likes: [],
         dislikes: [],
       },
-      ...subCommentsArr,
+      ...items,
     ]);
     setIsOpenEditor(false);
-  };
+  }, []);
 
   const additionalActions = [
     <button
@@ -50,11 +53,7 @@ function CommentWithReply({ comment }: Props) {
     <div className={cn()}>
       <BasicComment comment={comment} additionalActions={additionalActions} />
       <div className={cn('sub-comments')}>
-        {isOpenEditor && (
-          <Editor
-            onSubmit={handleSubmitNewReply}
-          />
-        )}
+        {isOpenEditor && <Editor onSubmit={handleSubmitNewReply} />}
         {subCommentsArr.map(subComment => (
           <BasicComment key={subComment.id} comment={subComment} />
         ))}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Typography, Collapse, Button } from 'antd';
 import Layout from '../../components/layout';
 import createCn from '../../utils/create-cn';
@@ -17,8 +17,8 @@ function ForumPage() {
   const [topics, setTopics] = useState<TTopic[]>(topicsMock);
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
 
-  const handleSubmitNewTopic = (newTopic: string) => {
-    setTopics([
+  const handleSubmitNewTopic = useCallback((newTopic: string) => {
+    setTopics(items => [
       {
         id: topics.length,
         author: 'Han Solo',
@@ -29,12 +29,15 @@ function ForumPage() {
         likes: [],
         dislikes: [],
       },
-      ...topics,
+      ...items,
     ]);
     setIsOpenEditor(false);
-  };
+  }, []);
 
-  const toogleEditor = () => setIsOpenEditor(!isOpenEditor);
+  const toogleEditor = useCallback(
+    () => setIsOpenEditor(isOpen => !isOpen),
+    []
+  );
 
   return (
     <Layout>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button } from 'antd';
 import Comment from '../CommentWithReply';
 import { TCommentWithReply } from '../../types';
@@ -17,8 +17,8 @@ function Topic({ commentWithReply }: Props) {
     useState<TCommentWithReply[]>(commentWithReply);
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
 
-  const handleSubmitNewComment = (newComment: string) => {
-    setComments([
+  const handleSubmitNewComment = useCallback((newComment: string) => {
+    setComments(items => [
       {
         id: comments.length,
         author: 'Han Solo',
@@ -29,12 +29,15 @@ function Topic({ commentWithReply }: Props) {
         likes: [],
         dislikes: [],
       },
-      ...comments,
+      ...items,
     ]);
     setIsOpenEditor(false);
-  };
+  }, []);
 
-  const toogleEditor = () => setIsOpenEditor(!isOpenEditor);
+  const toogleEditor = useCallback(
+    () => setIsOpenEditor(isOpen => !isOpen),
+    []
+  );
 
   return (
     <div className={cn()}>
@@ -45,11 +48,7 @@ function Topic({ commentWithReply }: Props) {
         size="small">
         {isOpenEditor ? 'Скрыть' : 'Добавить комментарий'}
       </Button>
-      {isOpenEditor && (
-        <Editor
-          onSubmit={handleSubmitNewComment}
-        />
-      )}
+      {isOpenEditor && <Editor onSubmit={handleSubmitNewComment} />}
       {comments.map(comment => (
         <Comment key={comment.id} comment={comment} />
       ))}
