@@ -7,6 +7,7 @@ import { TTopic } from './types';
 import Topic from './components/Topic';
 import BasicComment from './components/BasicComment';
 import Editor from './components/Editor';
+import withAuth from '../../hoc/withAuth';
 import './styles.css';
 
 const { Title } = Typography;
@@ -62,4 +63,4 @@ function ForumPage() {
   );
 }
 
-export default ForumPage;
+export default withAuth(ForumPage);

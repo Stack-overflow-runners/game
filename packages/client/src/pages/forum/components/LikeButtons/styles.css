@@ -1,8 +1,7 @@
-.basic-comment {
+.like-buttons {
   &__button-action {
     border: none;
     padding: 3px;
-    margin-right: 5px;
     background-color: transparent;
 
     &:hover {
@@ -17,7 +16,7 @@
     }
   }
 
-  &__comment-action {
+  &__count {
     margin-left: 8px;
   }
 }

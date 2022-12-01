@@ -41,14 +41,26 @@ function Topic({ commentWithReply }: Props) {
 
   return (
     <div className={cn()}>
-      <Button
-        type={isOpenEditor ? 'text' : 'dashed'}
-        className={cn('button')}
-        onClick={toogleEditor}
-        size="small">
-        {isOpenEditor ? 'Скрыть' : 'Добавить комментарий'}
-      </Button>
-      {isOpenEditor && <Editor onSubmit={handleSubmitNewComment} />}
+      {isOpenEditor ? (
+        <>
+          <Button
+            type="text"
+            className={cn('button')}
+            onClick={toogleEditor}
+            size="small">
+            Скрыть
+          </Button>
+          <Editor onSubmit={handleSubmitNewComment} />
+        </>
+      ) : (
+        <Button
+          type="dashed"
+          className={cn('button')}
+          onClick={toogleEditor}
+          size="small">
+          Добавить комментарий
+        </Button>
+      )}
       {comments.map(comment => (
         <Comment key={comment.id} comment={comment} />
       ))}

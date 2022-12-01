@@ -19,12 +19,16 @@ function Editor({ onSubmit }: Props) {
     setNewText(e.target.value);
   };
 
+  const reset = () => {
+    setNewText('');
+  }
+
   const handleSubmit = () => {
     setSubmitting(true);
 
     setTimeout(() => {
       onSubmit(newText);
-      setNewText('');
+      reset();
       setSubmitting(false);
     }, 1000);
   };
