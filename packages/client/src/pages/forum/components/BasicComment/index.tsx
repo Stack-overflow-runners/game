@@ -5,7 +5,6 @@ import { Avatar, Comment } from 'antd';
 import { useAuth } from '../../../../hooks/auth';
 import { TBasicComment } from '../../types';
 import LikeButtons from '../LikeButtons';
-import './styles.css';
 
 type Props = {
   comment: TBasicComment;
