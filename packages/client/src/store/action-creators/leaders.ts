@@ -12,9 +12,9 @@ export const addLeader = createAsyncThunk(
         return thunkAPI.rejectWithValue(error);
       }
       return data;
-    } catch (e: any) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        `Не удалось добавить лидера. ${e.message}`
+        `Не удалось добавить лидера. ${error.message}`
       );
     }
   }
@@ -29,9 +29,9 @@ export const getLeaders = createAsyncThunk(
         return thunkAPI.rejectWithValue(error);
       }
       return data;
-    } catch (e: any) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        `Не удалось получить данные лидеров. ${e.message}`
+        `Не удалось получить данные лидеров. ${error.message}`
       );
     }
   }

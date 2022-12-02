@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import express from 'express';
 import { dbConnect } from './db';
-import crudCheck from './utils/crud-check';
+import { forumModelCheck } from './utils/crud-check';
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ app.get('/', (_, res) => {
 const start = async () => {
   try {
     await dbConnect();
-    await crudCheck();
+    await forumModelCheck();
     app.listen(port, () => {
       console.log(`Server listening on port ${port}`);
     });

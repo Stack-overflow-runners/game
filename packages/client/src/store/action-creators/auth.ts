@@ -17,9 +17,9 @@ export const fetchUser = createAsyncThunk(
         return thunkAPI.rejectWithValue(error.includes('Cookie') ? '' : error);
       }
       return data;
-    } catch (e: any) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        `Не удалось загрузить пользователя. ${e.message}`
+        `Не удалось загрузить пользователя. ${error.message}`
       );
     }
   }
@@ -34,9 +34,9 @@ export const signIn = createAsyncThunk(
         return thunkAPI.rejectWithValue(error);
       }
       return data;
-    } catch (e: any) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        `Не удалось авторизоваться. ${e.message}`
+        `Не удалось авторизоваться. ${error.message}`
       );
     }
   }
@@ -51,9 +51,9 @@ export const signUp = createAsyncThunk(
         return thunkAPI.rejectWithValue(error);
       }
       return data;
-    } catch (e: any) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        `Не удалось зарегистрироваться. ${e.message}`
+        `Не удалось зарегистрироваться. ${error.message}`
       );
     }
   }
@@ -66,8 +66,8 @@ export const signOut = createAsyncThunk('user/signOut', async (_, thunkAPI) => {
       return thunkAPI.rejectWithValue(error);
     }
     return data;
-  } catch (e: any) {
-    return thunkAPI.rejectWithValue(`Ошибка ${e.message}`);
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(`Ошибка ${error.message}`);
   }
 });
 
@@ -82,10 +82,10 @@ export const signInOAuth = createAsyncThunk(
         return thunkAPI.rejectWithValue(error);
       }
       return data;
-    } catch (e: any) {
+    } catch (error: any) {
       navigate('/sign-in');
       return thunkAPI.rejectWithValue(
-        `Не удалось авторизоваться через OAuth. ${e.message}`
+        `Не удалось авторизоваться через OAuth. ${error.message}`
       );
     }
   }
