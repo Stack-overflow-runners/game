@@ -1,0 +1,22 @@
+.like-buttons {
+  &__button-action {
+    border: none;
+    padding: 3px;
+    background-color: transparent;
+
+    &:hover {
+      cursor: pointer;
+      color: #000;
+      transition: color .4s ease-out;
+    }
+
+    &:disabled {
+      cursor: default;
+      color: inherit;
+    }
+  }
+
+  &__count {
+    margin-left: 8px;
+  }
+}
