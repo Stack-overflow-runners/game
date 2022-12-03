@@ -19,12 +19,14 @@ export function render(url: string, store: Store) {
   );
 }
 
-export function configureInitialStore() {
-  return configureStore({
+export async function configureInitialStore() {
+  const store = configureStore({
     reducer: {
       user: userReducer,
       leaderBoard: leaderBoardReducer,
     },
     devTools: true
   });
+
+  return store
 }
