@@ -20,8 +20,8 @@ export function render(url: string, store: Store) {
   );
 }
 
-export function configureInitialStore() {
-  return configureStore({
+export async function configureInitialStore() {
+  const store = configureStore({
     reducer: {
       user: userReducer,
       leaderBoard: leaderBoardReducer,
@@ -29,4 +29,6 @@ export function configureInitialStore() {
     },
     devTools: true,
   });
+
+  return store
 }
