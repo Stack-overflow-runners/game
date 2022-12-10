@@ -1,42 +1,36 @@
 import { useCallback, useState } from 'react';
 import createCn from '../../../../utils/create-cn';
-import { TBasicComment, TCommentWithReply } from '../../types';
 import BasicComment from '../BasicComment';
 import Editor from '../Editor';
 import './styles.css';
+import { useAuth } from '../../../../hooks/auth';
+import { ForumPostTransformed } from '../../../../types/forum';
+import { createComment } from '../../../../store/action-creators/forum';
+import { useAppDispatch } from '../../../../hooks/store';
 
 type Props = {
-  comment: TCommentWithReply;
+  comment: ForumPostTransformed;
 };
 
 const cn = createCn('comment');
 
 function CommentWithReply({ comment }: Props) {
-  const { subComments } = comment;
+  const dispatch = useAppDispatch();
+  const { comments } = comment;
+  const { postId } = comment;
+  const { user } = useAuth();
 
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
-  const [subCommentsArr, setSubCommentsArr] =
-    useState<TBasicComment[]>(subComments);
 
   const toogleEditor = useCallback(
     () => setIsOpenEditor(isOpen => !isOpen),
     []
   );
-
-  const handleSubmitNewReply = useCallback((newReply: string) => {
-    setSubCommentsArr(items => [
-      {
-        id: subCommentsArr.length,
-        author: 'Han Solo',
-        avatar: 'https://joeschmoe.io/api/v1/random',
-        content: newReply,
-        datetime: new Date(),
-        likes: [],
-        dislikes: [],
-      },
-      ...items,
-    ]);
-    setIsOpenEditor(false);
+  const handleSubmitNewComment = useCallback((newTopic: string) => {
+    if (user && postId && newTopic.length > 0) {
+      dispatch(createComment({ content: newTopic, postId, user }));
+      setIsOpenEditor(false);
+    }
   }, []);
 
   const additionalActions = [
@@ -53,9 +47,9 @@ function CommentWithReply({ comment }: Props) {
     <div className={cn()}>
       <BasicComment comment={comment} additionalActions={additionalActions} />
       <div className={cn('sub-comments')}>
-        {isOpenEditor && <Editor onSubmit={handleSubmitNewReply} />}
-        {subCommentsArr.map(subComment => (
-          <BasicComment key={subComment.id} comment={subComment} />
+        {isOpenEditor && <Editor onSubmit={handleSubmitNewComment} />}
+        {comments.map(subComment => (
+          <BasicComment key={subComment.commentId} comment={subComment} />
         ))}
       </div>
     </div>

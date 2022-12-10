@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent } from 'react';
 import 'moment/locale/ru';
 import {
   DislikeFilled,
@@ -8,40 +8,44 @@ import {
 } from '@ant-design/icons';
 import createCn from '../../../../utils/create-cn';
 import './styles.css';
+import { useAppDispatch } from '../../../../hooks/store';
+import { useAuth } from '../../../../hooks/auth';
+import { setDislike, setLike } from '../../../../store/action-creators/forum';
+import { ForumEntityTransformed, LikeDislike } from '../../../../types/forum';
 
 type Props = {
   likes: number[];
   dislikes: number[];
   iserId: number;
+  comment: ForumEntityTransformed;
 };
 
 const cn = createCn('like-buttons');
 
-function LikeButtons({ likes: initLikes, dislikes: initDislikes, iserId }: Props) {
-  const [likes, setLikes] = useState(initLikes);
-  const [dislikes, setDislikes] = useState(initDislikes);
+function LikeButtons({ likes, dislikes, comment, iserId }: Props) {
+  const dispatch = useAppDispatch();
 
-  const hasDislike = dislikes.includes(iserId);
+  const { user } = useAuth();
+  const { postId, threadId, commentId } = comment as ForumEntityTransformed &
+    LikeDislike;
   const hasLike = likes.includes(iserId);
-
-  const addUserId = (userIds: number[]) => [...userIds, iserId];
-
-  const filterUserId = (userIds: number[]) =>
-    userIds.filter(userId => userId !== iserId);
+  const hasDislike = dislikes.includes(iserId);
 
   const handleLikeButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    if (!hasLike) {
-      setLikes(addUserId);
-      setDislikes(filterUserId);
+    if (user) {
+      if (!hasLike) {
+        dispatch(setLike({ postId, threadId, commentId, user }));
+      }
     }
   };
 
   const handleDislikeButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    if (!hasDislike) {
-      setLikes(filterUserId);
-      setDislikes(addUserId);
+    if (user) {
+      if (!hasDislike) {
+        dispatch(setDislike({ postId, threadId, commentId, user }));
+      }
     }
   };
 
