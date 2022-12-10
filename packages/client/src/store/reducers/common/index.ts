@@ -1,4 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit';
+import { Leader } from '../../../pages/leaderBoard/types';
 import { Nullable } from '../../../types/common';
 import { UserDTO } from '../../../types/user';
 
@@ -10,6 +11,11 @@ export type LoadingState = {
 export type UserState = LoadingState & {
   user: Nullable<UserDTO>;
   isLoggedIn: boolean;
+};
+
+export type LeaderBoardState = LoadingState & {
+  isLoading: boolean;
+  leaders: Nullable<Leader[]>;
 };
 
 export type ActionPayload<T> = PayloadAction<T, string, any, any>;

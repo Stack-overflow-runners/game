@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import MainPage from '../pages/main';
 import SignInPage from '../pages/signIn';
 import SignUpPage from '../pages/signUp';
@@ -8,6 +8,7 @@ import ForumPage from '../pages/forum';
 import GamePage from '../pages/game';
 import ErrorBoundary from '../components/error-boundary';
 import ErrorPage from '../pages/error';
+import NotFoundPage from '../pages/notFound';
 
 function AppRouter() {
   return (
@@ -21,7 +22,7 @@ function AppRouter() {
         <Route path="/forum" element={<ForumPage />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/error" element={<ErrorPage />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </ErrorBoundary>
   );

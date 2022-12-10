@@ -1,12 +1,14 @@
-import { Table, Button, Typography } from 'antd';
+import { useCallback, useEffect, useState } from 'react';
+import { Alert, Button, Pagination, PaginationProps, Table, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Leader } from './types';
-import data from './mock';
 import cup from '../../assets/cup.svg';
-import 'antd/dist/antd.css';
-import './styles.css';
 import Layout from '../../components/layout';
 import createCn from '../../utils/create-cn';
+import { useAppDispatch, useAppSelector } from '../../hooks/store';
+import { getLeaders } from '../../store/action-creators/leaders';
+import 'antd/dist/antd.css';
+import './styles.css';
 
 const { Title } = Typography;
 const cn = createCn('leader-board');
@@ -22,8 +24,8 @@ const columns: ColumnsType<Leader> = [
   },
   {
     title: 'Игрок',
-    dataIndex: 'player',
-    key: 'player',
+    dataIndex: 'displayName',
+    key: 'displayName',
   },
   {
     title: 'Очки',
@@ -35,22 +37,51 @@ const columns: ColumnsType<Leader> = [
 ];
 
 function LeaderBoardPage() {
+  const [pageNumber, setPageNumber] = useState<number>(1);
+  const [countPerPage, setCountPerPage] = useState<number>(10);
+  const dispatch = useAppDispatch();
+  const { leaders, isLoading, error } = useAppSelector(
+    state => state.leaderBoard
+  );
+
+  const updateLeaders = useCallback(() => {
+    dispatch(getLeaders({ pageNumber, countPerPage }));
+  }, [pageNumber, countPerPage]);
+  
+  const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
+    setCountPerPage(pageSize);
+    setPageNumber(current);    
+  };
+  
+  useEffect(() => {
+    updateLeaders();
+  }, [pageNumber, countPerPage]);
+
   return (
     <Layout>
       <div className={cn()}>
         <img src={cup} alt="cup" />
         <Title className="title">Таблица лидеров</Title>
-        <div>
-          <Button className={cn('button')}>Сегодня</Button>
-          <Button className={cn('button')}>Месяц</Button>
-          <Button className={cn('button')}>Всё время</Button>
-        </div>
+        <Button className={cn('button')} onClick={updateLeaders}>Обновить</Button>
+        {error && <Alert
+          message={error}
+          type="error"
+          className={cn('alert')}
+        />}
         <Table
           className="table"
           columns={columns}
-          dataSource={data}
+          dataSource={leaders || []}
           pagination={false}
           rowKey={record => record.score}
+          loading={isLoading}
+        />
+        <Pagination 
+          defaultCurrent={1}
+          total={leaders?.length} 
+          onChange={setPageNumber}
+          showSizeChanger
+          onShowSizeChange={onShowSizeChange}
         />
       </div>
     </Layout>

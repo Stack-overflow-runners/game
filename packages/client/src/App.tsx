@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './router/app-router';
+import { AuthProvider } from './hooks/auth';
+import './styles/index.css';
 import './App.css';
 
 function App() {
@@ -16,9 +17,9 @@ function App() {
   }, []);
   return (
     <div className="App">
-      <BrowserRouter>
+      <AuthProvider>
         <AppRouter />
-      </BrowserRouter>
+      </AuthProvider>
     </div>
   );
 }

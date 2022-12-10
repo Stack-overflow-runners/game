@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useLayoutEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useLayoutEffect,
+  useState,
+  forwardRef,
+} from 'react';
 import { random } from 'lodash';
 
 import { FrameContext, CanvasContext } from '../../contexts';
@@ -12,60 +18,79 @@ type Props = {
   className: string;
 };
 
-function Canvas({ height, width, isAnimating, children, className }: Props) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+const Canvas = forwardRef(
+  (
+    { height, width, isAnimating, children, className }: Props,
+    parentRef: any
+  ): JSX.Element => {
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // the canvas' context is stored once it's created
-  const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
-  useEffect(() => {
-    if (canvasRef.current !== null) {
-      const canvasContext = canvasRef.current.getContext('2d');
-      if (canvasContext !== null) {
-        canvasContext.globalCompositeOperation = 'soft-light';
-        setContext(canvasContext);
+    // the canvas' context is stored once it's created
+    const [context, setContext] = useState<CanvasRenderingContext2D | null>(
+      null
+    );
+    useEffect(() => {
+      if (canvasRef.current !== null) {
+        const canvasContext = canvasRef.current.getContext('2d');
+        if (canvasContext !== null) {
+          canvasContext.globalCompositeOperation = 'soft-light';
+          setContext(canvasContext);
+        }
       }
-    }
-  }, []);
+    }, []);
 
-  // making the component and the context re-render at every frame
-  const [frameCount, setFrameCount] = useState(0);
-  useEffect(() => {
-    let frameId: number;
-    if (isAnimating) {
-      frameId = requestAnimationFrame(() => {
-        setFrameCount(frameCount + 1);
-      });
-    }
-    return () => {
-      cancelAnimationFrame(frameId);
+    const handleCanvasClick = () => {
+      canvasRef.current?.requestPointerLock();
     };
-  }, [isAnimating, frameCount, setFrameCount]);
 
-  // whenever the canvas' dimensions change, it's automatically cleared
-  // we need to re-draw all its children in this case */
-  useLayoutEffect(() => {
-    setFrameCount(random(1, true));
-  }, [width, height]);
+    // making the component and the context re-render at every frame
+    const [frameCount, setFrameCount] = useState(0);
+    useEffect(() => {
+      let frameId: number;
+      if (isAnimating) {
+        frameId = requestAnimationFrame(() => {
+          setFrameCount(frameCount + 1);
+        });
+      }
+      return () => {
+        cancelAnimationFrame(frameId);
+      };
+    }, [isAnimating, frameCount, setFrameCount]);
 
-  // we need to clear the whole canvas before drawing the children
-  if (context !== null) {
-    context.clearRect(0, 0, width, height);
+    // whenever the canvas' dimensions change, it's automatically cleared
+    // we need to re-draw all its children in this case */
+    useLayoutEffect(() => {
+      setFrameCount(random(1, true));
+    }, [width, height]);
+
+    // we need to clear the whole canvas before drawing the children
+    if (context !== null) {
+      context.clearRect(0, 0, width, height);
+    }
+
+    const setRefs = (ref: HTMLCanvasElement) => {
+      canvasRef.current = ref;
+
+      if (parentRef) {
+        parentRef.current = ref;
+      }
+    };
+
+    return (
+      <CanvasContext.Provider value={context}>
+        <FrameContext.Provider value={frameCount}>
+          <canvas
+            ref={setRefs}
+            height={height}
+            width={width}
+            style={{ width, height }}
+            className={className}
+            onClick={handleCanvasClick}
+          />
+          {children}
+        </FrameContext.Provider>
+      </CanvasContext.Provider>
+    );
   }
-
-  return (
-    <CanvasContext.Provider value={context}>
-      <FrameContext.Provider value={frameCount}>
-        <canvas
-          ref={canvasRef}
-          height={height}
-          width={width}
-          style={{ width, height}}
-          className={className}
-        />
-        {children}
-      </FrameContext.Provider>
-    </CanvasContext.Provider>
-  );
-}
-
+);
 export default Canvas;

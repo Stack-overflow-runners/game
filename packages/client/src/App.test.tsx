@@ -6,7 +6,6 @@ describe('App', () => {
     act(() => {
       renderWithRouter('/');
     });
-    expect(window.location.pathname).toBe('/');
     expect(document.querySelector('.App')).toBeInTheDocument();
   });
 
@@ -30,7 +29,9 @@ describe('App', () => {
 
   test('app redirect', () => {
     renderWithRouter('/test');
-    expect(window.location.pathname).toBe('/');
+    expect(window.location.pathname).toBe('/test');
+    const title = screen.getByText(/404/i);
+    expect(title).toBeInTheDocument();
   });
 
   test('app sign-up', () => {

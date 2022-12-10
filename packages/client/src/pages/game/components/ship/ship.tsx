@@ -2,13 +2,15 @@ import React, { useEffect, useRef } from 'react';
 
 import { useCanvas, useAnimation } from '../../hooks';
 import game from '../../engine/game-engine';
+import GAME_SETTINGS from '../../game-settings';
 
 type Props = {
   isAnimating: boolean;
   mainShipFullHealthRef: React.RefObject<CanvasImageSource>;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
 };
 
-function Ship({ isAnimating, mainShipFullHealthRef }: Props) {
+function Ship({ isAnimating, mainShipFullHealthRef, canvasRef }: Props) {
   const context = useCanvas();
   const isControl = useRef<boolean>(false);
   const initialXClick = useRef<number | null>(null);
@@ -39,11 +41,43 @@ function Ship({ isAnimating, mainShipFullHealthRef }: Props) {
     isControl.current = false;
     initialXClick.current = null;
   };
+
+  const handlePointerMove = (e: MouseEvent) => {
+    const { canvas } = GAME_SETTINGS;
+    const CENTER_POSITION_OF_CANVAS = canvas.width / 2;
+
+    delta.current += -e.movementX;
+
+    if (delta.current > CENTER_POSITION_OF_CANVAS) {
+      delta.current = -CENTER_POSITION_OF_CANVAS;
+    } else if (delta.current < -CENTER_POSITION_OF_CANVAS) {
+      delta.current = CENTER_POSITION_OF_CANVAS;
+    }
+
+    game.gameState.ship.setCoord(
+      initialXPosition.current - delta.current,
+      game.gameState.ship.y
+    );
+  };
+
+  const handlePointerLock = () => {
+    const hasPointerLockElement = document.pointerLockElement;
+    const isCanvas = document.pointerLockElement === canvasRef.current;
+
+    if (hasPointerLockElement && isCanvas) {
+      window.addEventListener('mousemove', handlePointerMove);
+    } else {
+      window.removeEventListener('mousemove', handlePointerMove);
+    }
+  };
+
   useEffect(() => {
+    document.addEventListener('pointerlockchange', handlePointerLock);
     window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('mouseup', handleMouseUp);
     return () => {
+      document.removeEventListener('pointerlockchange', handlePointerLock);
       window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);

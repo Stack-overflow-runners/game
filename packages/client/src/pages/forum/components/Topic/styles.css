@@ -1,0 +1,17 @@
+.topic {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 20px;
+  max-width: 1000px;
+
+  .title {
+    font-size: 27px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  &__button {
+    margin: 0 auto 15px;
+  }
+}

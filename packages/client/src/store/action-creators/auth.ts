@@ -1,7 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { NavigateFunction } from 'react-router';
 import AuthApi from '../../api/auth';
 import { SignInDTO, SignUpDTO } from '../../types/auth';
-import signInService from '../../pages/signIn/services/signin-service';
+
+import signInService, {
+  signInWithProvider,
+} from '../../pages/signIn/services/signin-service';
 import signUpService from '../../pages/signUp/services/signup-service';
 
 export const fetchUser = createAsyncThunk(
@@ -13,9 +17,9 @@ export const fetchUser = createAsyncThunk(
         return thunkAPI.rejectWithValue(error.includes('Cookie') ? '' : error);
       }
       return data;
-    } catch (e: any) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        `Не удалось загрузить пользователя. ${e.message}`
+        `Не удалось загрузить пользователя. ${error.message}`
       );
     }
   }
@@ -30,9 +34,9 @@ export const signIn = createAsyncThunk(
         return thunkAPI.rejectWithValue(error);
       }
       return data;
-    } catch (e: any) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        `Не удалось авторизоваться. ${e.message}`
+        `Не удалось авторизоваться. ${error.message}`
       );
     }
   }
@@ -47,9 +51,9 @@ export const signUp = createAsyncThunk(
         return thunkAPI.rejectWithValue(error);
       }
       return data;
-    } catch (e: any) {
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(
-        `Не удалось зарегистрироваться. ${e.message}`
+        `Не удалось зарегистрироваться. ${error.message}`
       );
     }
   }
@@ -62,15 +66,36 @@ export const signOut = createAsyncThunk('user/signOut', async (_, thunkAPI) => {
       return thunkAPI.rejectWithValue(error);
     }
     return data;
-  } catch (e: any) {
-    return thunkAPI.rejectWithValue(`Ошибка ${e.message}`);
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(`Ошибка ${error.message}`);
   }
 });
+
+export const signInOAuth = createAsyncThunk(
+  'user/signInOAuth',
+  async (payload: { code: string; navigate: NavigateFunction }, thunkAPI) => {
+    const { code, navigate } = payload;
+    try {
+      const { data, error } = await signInWithProvider(code);
+      if (error) {
+        navigate('/sign-in');
+        return thunkAPI.rejectWithValue(error);
+      }
+      return data;
+    } catch (error: any) {
+      navigate('/sign-in');
+      return thunkAPI.rejectWithValue(
+        `Не удалось авторизоваться через OAuth. ${error.message}`
+      );
+    }
+  }
+);
 
 const actions = {
   fetchUser,
   signIn,
   signUp,
   signOut,
+  signInOAuth,
 };
 export default actions;

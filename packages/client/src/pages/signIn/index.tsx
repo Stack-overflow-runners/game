@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Alert, Button, Checkbox, Form, Input } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { Rule } from 'antd/lib/form';
@@ -7,12 +7,16 @@ import 'antd/dist/antd.css';
 import './style.css';
 import { useAppDispatch } from '../../hooks/store';
 import { useAuth } from '../../hooks/auth';
+import AuthSocial from '../../components/auth-social';
+import { getOAuthProviders } from '../../utils/get-OAuth-provider';
 
 type FormData = {
   username: string;
   password: string;
   remember: boolean;
 };
+
+const providers = getOAuthProviders();
 
 const cn = createCn('sign-in');
 
@@ -33,9 +37,12 @@ function SignInPage(): JSX.Element {
       })
     );
   }, []);
-  if (user) {
-    navigate('/');
-  }
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user]);
 
   return (
     <div className={cn()}>
@@ -76,7 +83,9 @@ function SignInPage(): JSX.Element {
             Войти
           </Button>
         </Form.Item>
-
+        <div className={cn('form-item')}>
+          <AuthSocial providers={providers} />
+        </div>
         <Form.Item
           className={cn('form-item')}
           name="remember"

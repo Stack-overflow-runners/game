@@ -12,6 +12,12 @@
   }
 
   &__button {
-    margin: 10px auto;
+    margin: 0 auto 20px 0;
+  }
+
+  &__header {
+    .ant-comment-inner {
+      padding: 0;
+    }
   }
 }

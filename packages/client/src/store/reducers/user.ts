@@ -1,12 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserDTO } from '../../types/user';
-import { fetchUser, signIn, signOut, signUp } from '../action-creators/auth';
 import { updateProfile } from '../action-creators/profile';
+import {
+  fetchUser,
+  signIn,
+  signOut,
+  signUp,
+  signInOAuth,
+} from '../action-creators/auth';
 import { setFulfilled, setPending, setRejected, UserState } from './common';
 
 const initialState: UserState = {
   user: null,
-  isLoading: true,
+  isLoading: false,
   isLoggedIn: false,
   error: null,
 };
@@ -40,6 +46,13 @@ const userSlice = createSlice({
     builder.addCase(signIn.fulfilled.type, setFulfilled<UserState, UserDTO>);
     builder.addCase(signIn.pending.type, setPending<UserState>);
     builder.addCase(signIn.rejected.type, setRejected<UserState, string>);
+
+    builder.addCase(
+      signInOAuth.fulfilled.type,
+      setFulfilled<UserState, UserDTO>
+    );
+    builder.addCase(signInOAuth.pending.type, setPending<UserState>);
+    builder.addCase(signInOAuth.rejected.type, setRejected<UserState, string>);
 
     builder.addCase(signUp.fulfilled.type, setFulfilled<UserState, UserDTO>);
     builder.addCase(signUp.pending.type, setPending<UserState>);

@@ -13,34 +13,48 @@ declare global {
     mozRequestFullScreen?: () => Promise<void>;
     webkitRequestFullscreen?: () => Promise<void>;
   }
+}
+
+export const checkFullscreenOpened = (): boolean => {
+  const isClosed =
+    !document.fullscreenElement &&
+    !document.mozFullScreenElement &&
+    !document.webkitFullscreenElement &&
+    !document.msFullscreenElement;
+
+  return !isClosed;
 };
 
-const toggleFullscreen = (element: HTMLElement | null, callBack: (isFullScreen: boolean) => void) => {
-  const elem = element || document.documentElement;
-  if (!document.fullscreenElement && !document.mozFullScreenElement &&
-    !document.webkitFullscreenElement && !document.msFullscreenElement) {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    }
-    callBack(true);
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    }
-    callBack(false);
+const exitFullscreen = () => {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
   }
-}
+};
+
+const requestFullscreenForElement = (element: HTMLElement) => {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen();
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen();
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen();
+  }
+};
+
+const toggleFullscreen = (element: HTMLElement | null) => {
+  if (checkFullscreenOpened()) {
+    exitFullscreen();
+  } else {
+    requestFullscreenForElement(element || document.documentElement);
+  }
+};
 
 export default toggleFullscreen;
