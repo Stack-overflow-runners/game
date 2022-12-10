@@ -7,16 +7,17 @@ export type UserDTO = {
   avatar: string;
   phone: string;
   email: string;
+  forumId?: number;
 };
 
 export type RequestUserAvatarData = {
   avatar: FormData;
-} 
+};
 
 export type RequestUserPasswordData = {
   oldPassword: string;
   newPassword: string;
-}
+};
 
 export type RequestUserData = {
   login: string;
@@ -26,4 +27,4 @@ export type RequestUserData = {
   display_name?: string;
   phone: string | number;
   avatar: string;
-}
+};

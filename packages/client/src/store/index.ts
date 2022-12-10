@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import leaderBoardReducer from './reducers/leader-board';
 import userReducer from './reducers/user';
+import forumReducer from './reducers/forum';
 
 declare global {
   interface Window {
@@ -18,6 +19,7 @@ export const store = configureStore({
   reducer: {
     user: userReducer,
     leaderBoard: leaderBoardReducer,
+    forum: forumReducer,
   },
   devTools: true,
   preloadedState,
