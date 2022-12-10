@@ -1,14 +1,16 @@
-import { useCallback } from 'react';
-import { Form, Input, Button, Alert, Spin } from 'antd';
+import { useCallback, useEffect } from 'react';
+import { Form, Input, Button, Alert, Avatar } from 'antd';
 import { useNavigate } from 'react-router';
 import { Rule } from 'antd/lib/form';
+import { UserOutlined } from '@ant-design/icons';
 import signUpRules from '../signUp/validator';
 import createCn from '../../utils/create-cn';
 import { useAuth } from '../../hooks/auth';
 import { useAppDispatch } from '../../hooks/store';
+import { updateProfile } from '../../store/action-creators/profile';
+import Layout from '../../components/layout';
 import 'antd/dist/antd.css';
 import './style.css';
-import { updateProfile } from '../../store/action-creators/profile';
 
 type FormData = {
   email: string;
@@ -21,29 +23,31 @@ type FormData = {
 
 const cn = createCn('profile');
 
-function ProfilePage(): JSX.Element {
+function ProfilePage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user, error: formAlert, isLoading } = useAuth();
+  const { user, error } = useAuth();
+  const formIntitialValues = user || {};
 
-  const handleSubmit = useCallback((data: FormData): void => {
+  const handleSubmit = useCallback((data: FormData) => {
     dispatch(updateProfile(data));
   }, []);
 
-  if (!isLoading && !user) {
-    navigate('/');
-  }
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user]);
 
   return (
-    <div className={cn()}>
-      {isLoading 
-        ? <Spin size="large" />
-        : <Form
-            className={cn('form')}
-            layout="vertical"
-            initialValues={user || {}}
-            onFinish={handleSubmit}
-          >
+    <Layout>
+      <div className={cn()}>
+        <Form
+          className={cn('form')}
+          layout="vertical"
+          initialValues={formIntitialValues}
+          onFinish={handleSubmit}>
+          <Avatar className={cn('avatar')} size={128} icon={<UserOutlined />} />
           <h1 className={cn('form-title')}>Профиль</h1>
           <Form.Item
             className={cn('form-item')}
@@ -87,27 +91,22 @@ function ProfilePage(): JSX.Element {
             rules={signUpRules.phone}>
             <Input />
           </Form.Item>
-          {formAlert && (
-            <Alert
-              message={formAlert}
-              type="error"
-              className={cn('form-alert')}
-            />
+          {error && (
+            <Alert message={error} type="error" className={cn('form-alert')} />
           )}
           <Form.Item className={cn('form-item')}>
-            <Button 
-              type="primary" 
-              htmlType="submit" 
-              block 
-              className={cn('submit-button')}
-            >
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              className={cn('submit-button')}>
               Сохранить
             </Button>
           </Form.Item>
         </Form>
-      }
-    </div>
+      </div>
+    </Layout>
   );
-}
+};
 
 export default ProfilePage;

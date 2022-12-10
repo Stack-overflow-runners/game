@@ -4,6 +4,12 @@
   align-items: center;
   justify-content: center;
 
+  &__avatar {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 2.4rem;
+  }
+
   &__form {
     padding: 50px 40px 40px;
     border-radius: 12px;
