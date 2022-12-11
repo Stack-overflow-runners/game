@@ -19,10 +19,9 @@ class UserAPI extends BaseAPI {
     });
   }
 
-  public updateAvatar(body: RequestUserAvatarData): ApiResponse<void> {
+  public updateAvatar(body: RequestUserAvatarData): ApiResponse<UserDTO> {
     return this.httpService.put('/profile/avatar', {
-      body,
-      headers: { 'Content-Type': 'application/json' },
+      body
     });
   }
 

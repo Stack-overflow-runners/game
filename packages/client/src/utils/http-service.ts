@@ -14,26 +14,36 @@ export type RequestOptions<Data> = {
   headers?: Record<string, string>;
 };
 
+const prepareOptions = (options: RequestOptions<any>) => {
+  if (!options?.body) return options;
+
+  const isFormData = options.body instanceof FormData;
+
+  const preparedOptions = {
+    ...options,
+    body: isFormData ? options.body : JSON.stringify(options.body),
+  };
+
+  return preparedOptions
+};
+
 class HttpService {
   constructor(private endPoint: string) {}
 
   query = (url: string, options?: RequestOptions<any>): ApiResponse<any> => {
-    const preparedOptions = options?.body
-      ? {
-          ...options,
-          body: JSON.stringify(options.body),
-        }
-      : options;
+    const preparedOptions = options ? prepareOptions(options) : undefined
 
     return fetch(`${this.endPoint}${url}`, preparedOptions)
       .then(async response => {
         if (!response.ok) {
           return Promise.reject(response);
         }
+
         const contentType = response.headers.get('content-type');
         const data = contentType?.includes('application/json')
           ? await response.json()
           : await response.text();
+        
         return Promise.resolve({ data, status: response.status });
       })
       .catch(error => {

@@ -9,9 +9,7 @@ export type UserDTO = {
   email: string;
 };
 
-export type RequestUserAvatarData = {
-  avatar: FormData;
-} 
+export type RequestUserAvatarData = FormData
 
 export type RequestUserPasswordData = {
   oldPassword: string;

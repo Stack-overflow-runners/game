@@ -1,42 +1,8 @@
 .profile {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 50px 0;
 
   &__avatar {
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 2.4rem;
-  }
-
-  &__form {
-    padding: 50px 40px 40px;
-    border-radius: 12px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
-    max-width: 340px;
-    flex-grow: 1;
-  }
-
-  &__form-title {
-    font-size: 20px;
-    margin-top: 0;
-    text-align: center;
-  }
-
-  &__form-item {
-    margin: 0;
-  }
-
-  &__form-item + &__form-item {
-    margin-top: 10px;
-  }
-
-  &__form-alert {
-    margin: 15px 0 15px;
-  }
-
-  &__submit-button {
-    margin-top: 30px;
+    margin: 0 auto 24px;
   }
 }
