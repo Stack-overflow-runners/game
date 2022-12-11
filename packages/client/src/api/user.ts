@@ -3,6 +3,7 @@ import {
   RequestUserPasswordData,
   RequestUserAvatarData,
   RequestUserData,
+  UserDTO,
 } from '../types/user';
 import BaseAPI from './base';
 
@@ -11,17 +12,16 @@ class UserAPI extends BaseAPI {
     super('/user');
   }
 
-  public updateProfile(body: RequestUserData): ApiResponse<void> {
+  public updateProfile(body: RequestUserData): ApiResponse<UserDTO> {
     return this.httpService.put('/profile', {
       body,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  public updateAvatar(body: RequestUserAvatarData): ApiResponse<void> {
+  public updateAvatar(body: RequestUserAvatarData): ApiResponse<UserDTO> {
     return this.httpService.put('/profile/avatar', {
-      body,
-      headers: { 'Content-Type': 'application/json' },
+      body
     });
   }
 

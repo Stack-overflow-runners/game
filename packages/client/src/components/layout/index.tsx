@@ -16,10 +16,11 @@ type LayoutProps = {
 const cn = createCn('layout');
 
 const items: ItemType[] = [
+  { label: <Link to="/profile">Profile</Link>, key: 'profile' },
   { label: <Link to="/">Home</Link>, key: 'home' },
   { label: <Link to="/game">Game</Link>, key: 'game' },
   { label: <Link to="/leader-board">Leader-board</Link>, key: 'leader-board' },
-  { label: <Link to="/forum">Forum</Link>, key: 'forum' },
+  { label: <Link to="/forum">Forum</Link>, key: 'forum' }
 ];
 
 function Layout({ children }: LayoutProps): JSX.Element {

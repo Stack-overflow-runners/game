@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserDTO } from '../../types/user';
+import { updateProfile, updateProfileAvatar } from '../action-creators/profile';
 import {
   fetchUser,
   signIn,
@@ -65,6 +66,14 @@ const userSlice = createSlice({
       state.user = null;
       state.isLoggedIn = false;
     });
+    
+    builder.addCase(updateProfile.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(updateProfile.pending.type, setPending<UserState>);
+    builder.addCase(updateProfile.rejected.type, setRejected<UserState, string>);
+
+    builder.addCase(updateProfileAvatar.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(updateProfileAvatar.pending.type, setPending<UserState>);
+    builder.addCase(updateProfileAvatar.rejected.type, setRejected<UserState, string>);
   },
 });
 
