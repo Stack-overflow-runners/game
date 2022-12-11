@@ -1,0 +1,32 @@
+.profile-form {
+  &__form {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    padding: 50px 40px 40px;
+    border-radius: 12px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+    flex-grow: 1;
+
+    &-item {
+      margin: 0;
+    }
+
+    &-alert {
+      margin: 15px 0;
+    }
+
+    &-items {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: baseline;
+      width: 100%;
+      column-gap: 16px;
+      row-gap: 16px;
+    }
+
+    &-submit-button {
+      margin: 32px 0 0;
+    }
+  }
+}

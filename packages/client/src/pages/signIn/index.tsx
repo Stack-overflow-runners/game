@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Alert, Button, Checkbox, Form, Input } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { Rule } from 'antd/lib/form';
 import createCn from '../../utils/create-cn';
-import 'antd/dist/antd.css';
-import './style.css';
 import { useAppDispatch } from '../../hooks/store';
 import { useAuth } from '../../hooks/auth';
 import AuthSocial from '../../components/auth-social';
 import { getOAuthProviders } from '../../utils/get-OAuth-provider';
+import signUpRules from '../signUp/validator';
+import 'antd/dist/antd.css';
+import './style.css';
 
 type FormData = {
   username: string;
@@ -21,8 +21,6 @@ const providers = getOAuthProviders();
 const cn = createCn('sign-in');
 
 const initialValues: Partial<FormData> = { remember: true };
-const usernameRules: Rule[] = [{ required: true, message: 'Введите логин!' }];
-const passwordRules: Rule[] = [{ required: true, message: 'Введите пароль!' }];
 
 function SignInPage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -58,7 +56,7 @@ function SignInPage(): JSX.Element {
           className={cn('form-item')}
           label="Username"
           name="username"
-          rules={usernameRules}>
+          rules={signUpRules.login}>
           <Input />
         </Form.Item>
 
@@ -66,7 +64,7 @@ function SignInPage(): JSX.Element {
           className={cn('form-item')}
           label="Password"
           name="password"
-          rules={passwordRules}>
+          rules={signUpRules.password}>
           <Input.Password />
         </Form.Item>
 
