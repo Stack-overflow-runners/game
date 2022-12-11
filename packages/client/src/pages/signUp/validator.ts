@@ -1,3 +1,9 @@
+const CIRILLIC_OR_LATIN_REGEXP = /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g;
+const PHONE_REGEXP = /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/;
+const LOGIN_REGEXP = /^[a-zA-Z][a-zA-Z0-9-_]*$/g;
+const CHECK_UPPER_SYMBOL_REGEXP = /(?=.*[A-Z])/;
+const CHECK_NUMBER_REGEXP = /(?=.*\d)/;
+
 const signUpRules = {
   email: [
     {
@@ -12,7 +18,7 @@ const signUpRules = {
   login: [
     { required: true, message: 'Введите логин' },
     {
-      pattern: /^[a-zA-Z][a-zA-Z0-9-_]*$/g,
+      pattern: LOGIN_REGEXP,
       message: 'Введите корректный логин',
     },
     { min: 3, message: 'Не менее 3 символов' },
@@ -20,21 +26,21 @@ const signUpRules = {
   firstName: [
     { required: true, message: 'Введите имя' },
     {
-      pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
+      pattern: CIRILLIC_OR_LATIN_REGEXP,
       message: 'латиница или кириллица',
     },
   ],
   secondName: [
     { required: true, message: 'Введите фамилию' },
     {
-      pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
+      pattern: CIRILLIC_OR_LATIN_REGEXP,
       message: 'латиница или кириллица',
     },
   ],
   displayName: [
     { required: true, message: 'Введите имя в игре' },
     {
-      pattern: /^[a-zA-Zа-яА-ЯёЁ][a-zA-Zа-яА-ЯёЁ-]*$/g,
+      pattern: CIRILLIC_OR_LATIN_REGEXP,
       message: 'латиница или кириллица',
     },
   ],
@@ -44,7 +50,7 @@ const signUpRules = {
       message: 'Введите телефон',
     },
     {
-      pattern: /^((8|\+7)[- ]?)?(\(?\d{3}\)?[- ]?)?[\d\- ]{7,10}$/,
+      pattern: PHONE_REGEXP,
       message: 'Введите корректный телефон',
     },
   ],
@@ -55,11 +61,11 @@ const signUpRules = {
     },
     { min: 8, message: 'Не менее 8 символов' },
     {
-      pattern: /(?=.*[A-Z])/,
+      pattern: CHECK_UPPER_SYMBOL_REGEXP,
       message: 'Не менее 1 заглавной буквы',
     },
     {
-      pattern: /(?=.*\d)/,
+      pattern: CHECK_NUMBER_REGEXP,
       message: 'Должен содержать хотя бы одну цифру',
     },
   ],
