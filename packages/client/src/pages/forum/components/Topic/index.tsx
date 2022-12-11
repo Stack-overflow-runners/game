@@ -21,12 +21,15 @@ function Topic({ posts, threadId }: Props) {
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
   const { user } = useAuth();
 
-  const handleSubmitNewComment = useCallback((newTopic: string) => {
-    if (user && threadId && newTopic.length > 0) {
-      dispatch(createPost({ content: newTopic, threadId, user }));
-      setIsOpenEditor(false);
-    }
-  }, []);
+  const handleSubmitNewComment = useCallback(
+    (newTopic: string) => {
+      if (user && threadId && newTopic.length > 0) {
+        dispatch(createPost({ content: newTopic, threadId, user }));
+        setIsOpenEditor(false);
+      }
+    },
+    [user, threadId, dispatch]
+  );
 
   const toogleEditor = useCallback(
     () => setIsOpenEditor(isOpen => !isOpen),

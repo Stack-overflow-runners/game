@@ -16,8 +16,7 @@ const cn = createCn('comment');
 
 function CommentWithReply({ comment }: Props) {
   const dispatch = useAppDispatch();
-  const { comments } = comment;
-  const { postId } = comment;
+  const { comments, postId } = comment;
   const { user } = useAuth();
 
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
@@ -26,12 +25,15 @@ function CommentWithReply({ comment }: Props) {
     () => setIsOpenEditor(isOpen => !isOpen),
     []
   );
-  const handleSubmitNewComment = useCallback((newTopic: string) => {
-    if (user && postId && newTopic.length > 0) {
-      dispatch(createComment({ content: newTopic, postId, user }));
-      setIsOpenEditor(false);
-    }
-  }, []);
+  const handleSubmitNewComment = useCallback(
+    (newTopic: string) => {
+      if (user && postId && newTopic.length > 0) {
+        dispatch(createComment({ content: newTopic, postId, user }));
+        setIsOpenEditor(false);
+      }
+    },
+    [user, postId, dispatch]
+  );
 
   const additionalActions = [
     <button

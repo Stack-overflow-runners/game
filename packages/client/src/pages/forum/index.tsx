@@ -26,12 +26,15 @@ function ForumPage() {
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
   const { user } = useAuth();
 
-  const handleSubmitNewTopic = useCallback((newTopic: string) => {
-    if (user && newTopic.length > 0) {
-      dispatch(createThread({ content: newTopic, user }));
-      setIsOpenEditor(false);
-    }
-  }, []);
+  const handleSubmitNewTopic = useCallback(
+    (newTopic: string) => {
+      if (user && newTopic.length > 0) {
+        dispatch(createThread({ content: newTopic, user }));
+        setIsOpenEditor(false);
+      }
+    },
+    [user, dispatch]
+  );
 
   const toogleEditor = useCallback(
     () => setIsOpenEditor(isOpen => !isOpen),

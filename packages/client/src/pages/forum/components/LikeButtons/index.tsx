@@ -33,19 +33,15 @@ function LikeButtons({ likes, dislikes, comment, iserId }: Props) {
 
   const handleLikeButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    if (user) {
-      if (!hasLike) {
-        dispatch(setLike({ postId, threadId, commentId, user }));
-      }
+    if (user && !hasLike) {
+      dispatch(setLike({ postId, threadId, commentId, user }));
     }
   };
 
   const handleDislikeButtonClick = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
-    if (user) {
-      if (!hasDislike) {
-        dispatch(setDislike({ postId, threadId, commentId, user }));
-      }
+    if (user && !hasDislike) {
+      dispatch(setDislike({ postId, threadId, commentId, user }));
     }
   };
 
