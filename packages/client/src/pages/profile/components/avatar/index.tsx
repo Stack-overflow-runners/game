@@ -30,10 +30,6 @@ function Image({ avatar }: ProfileAvatarImageProps) {
   );
 }
 
-Image.defaultProps = {
-  avatar: '',
-};
-
 function ProfileAvatar({ user, onChange, className }: ProfileAvatarProps) {
   return (
     <form className={`${className} ${cn('avatar')}`}>
@@ -56,6 +52,10 @@ function ProfileAvatar({ user, onChange, className }: ProfileAvatarProps) {
     </form>
   );
 }
+
+Image.defaultProps = {
+  avatar: '',
+};
 
 ProfileAvatar.defaultProps = {
   className: '',

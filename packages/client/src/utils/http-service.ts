@@ -31,7 +31,7 @@ class HttpService {
   constructor(private endPoint: string) {}
 
   query = (url: string, options?: RequestOptions<any>): ApiResponse<any> => {
-    const preparedOptions = options ? prepareOptions(options) : undefined
+    const preparedOptions = options ? prepareOptions(options) : {}
 
     return fetch(`${this.endPoint}${url}`, preparedOptions)
       .then(async response => {

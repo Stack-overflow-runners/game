@@ -2,7 +2,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { RequestUserAvatarData, RequestUserData } from '../../types/user';
 import userAPI from '../../api/user';
 
-
 export const updateProfile = createAsyncThunk(
   'user/updateProfile',
   async (payload: RequestUserData, thunkAPI) => {
@@ -43,6 +42,7 @@ export const updateProfileAvatar = createAsyncThunk(
 
 const actions = {
   updateProfile,
+  updateProfileAvatar,
 };
 
 export default actions;
