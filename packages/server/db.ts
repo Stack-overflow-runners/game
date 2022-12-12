@@ -16,14 +16,14 @@ const sequelizeOptions: SequelizeOptions = {
 };
 
 const sequelize = new Sequelize(sequelizeOptions);
-const isDev = process.env.NODE_ENV === 'development';
-const options = { force: isDev };
+// const isDev = process.env.NODE_ENV === 'development';
+// const options = { force: isDev };
 
 export const dbConnect = async (): Promise<Nullable<Sequelize>> => {
   try {
     await sequelize.authenticate();
     console.log('Connection to db has been established successfully.');
-    await sequelize.sync(options);
+    await sequelize.sync(); // set options in sync to clear tables on file change
     return sequelize;
   } catch (e: any) {
     console.error('Unable to connect to the database:', e);

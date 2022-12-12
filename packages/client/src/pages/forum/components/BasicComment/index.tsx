@@ -3,28 +3,25 @@ import moment from 'moment/moment';
 import 'moment/locale/ru';
 import { Avatar, Comment } from 'antd';
 import { useAuth } from '../../../../hooks/auth';
-import { TBasicComment } from '../../types';
 import LikeButtons from '../LikeButtons';
+import { ForumEntityTransformed } from '../../../../types/forum';
 
 type Props = {
-  comment: TBasicComment;
+  comment: ForumEntityTransformed;
   additionalActions?: ReactElement[];
 };
 
 function BasicComment({ comment, additionalActions = [] }: Props) {
-  const {
-    author,
-    avatar = 'https://joeschmoe.io/api/v1/random',
-    content,
-    datetime,
-    likes,
-    dislikes,
-  } = comment;
+  const { author, avatar, content, datetime, likes, dislikes } = comment;
   const { user } = useAuth();
-
   const actions = [
-    user?.id && (
-      <LikeButtons likes={likes} dislikes={dislikes} iserId={user.id} />
+    user?.forumId && (
+      <LikeButtons
+        likes={likes}
+        dislikes={dislikes}
+        iserId={user.forumId}
+        comment={comment}
+      />
     ),
     ...additionalActions,
   ];

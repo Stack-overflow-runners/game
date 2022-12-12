@@ -7,6 +7,7 @@ export type UserDTO = {
   avatar: string;
   phone: string;
   email: string;
+  forumId?: number;
 };
 
 export type RequestUserAvatarData = FormData

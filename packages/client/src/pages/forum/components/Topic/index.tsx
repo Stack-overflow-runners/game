@@ -1,38 +1,35 @@
 import { useCallback, useState } from 'react';
 import { Button } from 'antd';
 import Comment from '../CommentWithReply';
-import { TCommentWithReply } from '../../types';
 import Editor from '../Editor';
 import createCn from '../../../../utils/create-cn';
 import './styles.css';
+import { createPost } from '../../../../store/action-creators/forum';
+import { useAppDispatch } from '../../../../hooks/store';
+import { useAuth } from '../../../../hooks/auth';
+import { ForumPostTransformed } from '../../../../types/forum';
 
 const cn = createCn('topic');
 
 type Props = {
-  commentWithReply: TCommentWithReply[];
+  posts: ForumPostTransformed[];
+  threadId: number;
 };
 
-function Topic({ commentWithReply }: Props) {
-  const [comments, setComments] =
-    useState<TCommentWithReply[]>(commentWithReply);
+function Topic({ posts, threadId }: Props) {
+  const dispatch = useAppDispatch();
   const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
+  const { user } = useAuth();
 
-  const handleSubmitNewComment = useCallback((newComment: string) => {
-    setComments(items => [
-      {
-        id: comments.length,
-        author: 'Han Solo',
-        avatar: 'https://joeschmoe.io/api/v1/random',
-        content: newComment,
-        datetime: new Date(),
-        subComments: [],
-        likes: [],
-        dislikes: [],
-      },
-      ...items,
-    ]);
-    setIsOpenEditor(false);
-  }, []);
+  const handleSubmitNewComment = useCallback(
+    (newTopic: string) => {
+      if (user && threadId && newTopic.length > 0) {
+        dispatch(createPost({ content: newTopic, threadId, user }));
+        setIsOpenEditor(false);
+      }
+    },
+    [user, threadId, dispatch]
+  );
 
   const toogleEditor = useCallback(
     () => setIsOpenEditor(isOpen => !isOpen),
@@ -61,9 +58,7 @@ function Topic({ commentWithReply }: Props) {
           Добавить комментарий
         </Button>
       )}
-      {comments.map(comment => (
-        <Comment key={comment.id} comment={comment} />
-      ))}
+      {posts && posts.map(post => <Comment key={post.postId} comment={post} />)}
     </div>
   );
 }

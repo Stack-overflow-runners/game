@@ -1,6 +1,7 @@
 import { Indexable } from '../types/common';
 
 const API_URL = 'https://ya-praktikum.tech/api/v2';
+const FORUM_API_URL = 'http://localhost:3001/api';
 const RESOURCE_URL = `${API_URL}/resources`
 // Team name. Used to make unique leaderboard for each project. Yandex API
 const TEAM = 'stackoverflowRunners';
@@ -21,4 +22,4 @@ export enum Locals {
   OAUTH_PROVIDER = 'oauth-provider',
 }
 
-export default { API_URL, TEAM, RATING_FIELD, OAUTH_PROVIDERS, RESOURCE_URL };
+export default { API_URL, TEAM, RATING_FIELD, OAUTH_PROVIDERS, FORUM_API_URL, RESOURCE_URL};

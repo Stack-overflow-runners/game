@@ -2,6 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import { Leader } from '../../../pages/leaderBoard/types';
 import { Nullable } from '../../../types/common';
 import { UserDTO } from '../../../types/user';
+import { ForumThreadTransformed } from '../../../types/forum';
 
 export type LoadingState = {
   isLoading: boolean;
@@ -14,8 +15,11 @@ export type UserState = LoadingState & {
 };
 
 export type LeaderBoardState = LoadingState & {
-  isLoading: boolean;
   leaders: Nullable<Leader[]>;
+};
+
+export type ForumState = LoadingState & {
+  forum: ForumThreadTransformed[];
 };
 
 export type ActionPayload<T> = PayloadAction<T, string, any, any>;
