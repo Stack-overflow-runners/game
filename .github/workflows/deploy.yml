@@ -25,5 +25,7 @@ jobs:
           fail_on_empty: true
       - name: stopping & removing old containers if exist
         run: docker compose down --remove-orphans || true
+      - name: installing dependencies
+        run: yarn bootstrap
       - name: building containers & starting it
         run: docker compose up -d --build

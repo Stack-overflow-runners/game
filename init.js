@@ -1,5 +1,8 @@
-const fs = require('fs')
+const fs = require('fs');
 
-fs.copyFileSync('.env.sample', '.env')
+if (!fs.existsSync('.env')) {
+  console.log('No .env file found. Copying .env.example to .env');
+  fs.copyFileSync('.env.sample', '.env');
+}
 
-fs.mkdirSync('tmp/pgdata', { recursive: true })
+fs.mkdirSync('tmp/pgdata', { recursive: true });
