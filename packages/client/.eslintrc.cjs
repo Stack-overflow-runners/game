@@ -31,6 +31,7 @@ module.exports = {
         "tsx": "never"
       }
    ],
+   "class-methods-use-this": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {

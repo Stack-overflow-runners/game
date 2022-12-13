@@ -6,10 +6,13 @@
   height: 600px;
   margin: 0 auto;
 
-  &__fullscreen-btn {
+  &__buttons {
     position: fixed;
-    bottom: 30px;
-    right: 50px;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    flex-flow: column;
+    row-gap: 16px;
     z-index: 1;
   }
 

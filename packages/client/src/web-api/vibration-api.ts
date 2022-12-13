@@ -1,5 +1,5 @@
 class VibrationAPI {
-  static vibrate(scheme: number | number[]) {
+  vibrate(scheme: number | number[]) {
     window.navigator.vibrate(scheme);
   }
 }
