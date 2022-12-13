@@ -52,7 +52,7 @@ const errorLogger = (
 
 async function createDevelopmentServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.CLIENT_PORT;
 
   const vite = await import('vite');
 
@@ -89,7 +89,7 @@ async function createDevelopmentServer() {
 
 async function createProductionServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.CLIENT_PORT || 3000;
 
   const compression = await import('compression');
   const dist = path.resolve(__dirname, 'dist/client');
