@@ -23,6 +23,7 @@ import GameOverScreen from './components/game-over-screen';
 import { useAppDispatch } from '../../hooks/store';
 import { useAuth } from '../../hooks/auth';
 import { addLeader } from '../../store/action-creators/leaders';
+import withAuth from '../../hoc/withAuth';
 
 import './game.css';
 
@@ -126,4 +127,4 @@ function Game() {
   );
 }
 
-export default Game;
+export default withAuth(Game);
