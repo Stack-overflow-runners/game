@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Typography, Collapse, Button } from 'antd';
+import { Typography, Collapse } from 'antd';
 import Layout from '../../components/layout';
 import createCn from '../../utils/create-cn';
 import topicsMock from './mock';
@@ -16,7 +16,6 @@ const cn = createCn('forum');
 
 function ForumPage() {
   const [topics, setTopics] = useState<TTopic[]>(topicsMock);
-  const [isOpenEditor, setIsOpenEditor] = useState<boolean>(false);
 
   const handleSubmitNewTopic = useCallback((newTopic: string) => {
     setTopics(items => [
@@ -32,25 +31,12 @@ function ForumPage() {
       },
       ...items,
     ]);
-    setIsOpenEditor(false);
   }, []);
-
-  const toogleEditor = useCallback(
-    () => setIsOpenEditor(isOpen => !isOpen),
-    []
-  );
 
   return (
     <Layout>
       <div className={cn()}>
         <Title className="title">Форум</Title>
-        <Button
-          type={isOpenEditor ? 'text' : 'primary'}
-          className={cn('button')}
-          onClick={toogleEditor}>
-          {isOpenEditor ? 'Скрыть' : 'Добавить тему'}
-        </Button>
-        {isOpenEditor && <Editor onSubmit={handleSubmitNewTopic} />}
         <Collapse expandIconPosition="end">
           {topics.map(topic => (
             <Panel header={<BasicComment comment={topic} />} key={topic.id}>
@@ -58,6 +44,7 @@ function ForumPage() {
             </Panel>
           ))}
         </Collapse>
+        <Editor className={cn('editor')} onSubmit={handleSubmitNewTopic} />
       </div>
     </Layout>
   );

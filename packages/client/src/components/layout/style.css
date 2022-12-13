@@ -3,36 +3,31 @@
   flex-flow: column;
   min-height: 100vh;
 
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: auto;
-    padding: 12px 24px;
+  &__sidebar {
+    padding: 48px 24px;
 
-    @media screen and (min-width: 768px) {
-      padding: 12px 50px;
+    &-menu {
+      margin-bottom: 24px;
     }
   }
 
-  &__logo {
+  &__start-game-button {
     display: flex;
-  }
-
-  &__logo-image {
-    width: auto;
-    height: 48px;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 24px 48px;
+    width: 100%;
+    background: gray;
+    font-size: 24px;
+    font-weight: 700;
+    text-transform: uppercase;
   }
 
   &__main {
+    display: flex;
+    flex-flow: column;
     flex: 1;
-  }
-
-  &__container {
-    padding: 0 24px;
-
-    @media screen and (min-width: 768px) {
-      padding: 0 50px;
-    }
+    padding: 24px;
   }
 }

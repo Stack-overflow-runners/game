@@ -11,8 +11,8 @@
     text-align: center;
   }
 
-  &__button {
-    margin: 0 auto 20px 0;
+  &__editor {
+    margin: 48px 0 0 0;
   }
 
   &__header {

@@ -1,4 +1,8 @@
 .editor {
   display: flex;
   flex-direction: column;
+
+  &__button {
+    margin: 24px auto 0 0;
+  }
 }

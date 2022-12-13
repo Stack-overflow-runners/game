@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import createCn from '../../utils/create-cn';
 import Layout from '../../components/layout';
 import heroImage from '../../assets/hero-image.jpg';
+import withAuth from '../../hoc/withAuth';
 import 'antd/dist/antd.css';
 import './style.css';
-import withAuth from '../../hoc/withAuth';
 
 const cn = createCn('main');
 
