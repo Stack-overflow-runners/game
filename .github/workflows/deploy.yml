@@ -25,7 +25,15 @@ jobs:
           fail_on_empty: true
       - name: stopping & removing old containers if exist
         run: docker compose down --remove-orphans || true
-      - name: installing dependencies
-        run: yarn bootstrap
+      - name: check for node version
+        run: echo "node -v =`echo $(node -v)`"
+      - name: check for npm version
+        run: echo "npm -v =`echo $(npm -v)`"
+      - name: check for yarn version
+        run: echo "yarn -v =`echo $(yarn -v)`"
+      - name: Install main deps
+        run: yarn
+      - name: Initialize
+        run: yarn lerna bootstrap
       - name: building containers & starting it
         run: docker compose up -d --build
