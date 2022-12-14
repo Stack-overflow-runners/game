@@ -9,8 +9,8 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: temporary solution for cleanup according to github.com/actions/checkout/issues/211
-        run: sudo chown -R $USER:$USER /home/runner/actions-runner/_work/
+      - name: remove temp dir if exists (temporary solution)
+        run: sudo rm -rf /home/runner/actions-runner/_work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/tmp
       - uses: actions/checkout@v3
       - name: set env var for new docker containers postfix
         run: echo "short_sha=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
