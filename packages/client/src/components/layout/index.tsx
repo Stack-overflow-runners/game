@@ -4,12 +4,12 @@ import { Content, Header } from 'antd/lib/layout/layout';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
-import { UserOutlined } from '@ant-design/icons';
 import Sider from 'antd/lib/layout/Sider';
 import createCn from '../../utils/create-cn';
 import { useAppDispatch } from '../../hooks/store';
 import { signOut } from '../../store/action-creators/auth';
 import { useAuth } from '../../hooks/auth';
+import CONSTS from '../../utils/consts';
 import 'antd/dist/antd.css';
 import './style.css';
 
@@ -66,10 +66,9 @@ function Layout({ children }: LayoutProps): JSX.Element {
             <div className={cn('user')}>
               <Avatar
                 className={cn('user-avatar')}
-                src={user.avatar}
+                src={`${CONSTS.RESOURCE_URL}${user.avatar}`}
                 shape="square"
                 size="large"
-                icon={<UserOutlined />}
               />
               <span className={cn('user-login')}>{user.login}</span>
             </div>

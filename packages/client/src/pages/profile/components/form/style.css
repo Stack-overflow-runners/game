@@ -3,7 +3,7 @@
     display: flex;
     flex-flow: column;
     align-items: center;
-    padding: 50px 40px 40px;
+    padding: 48px 24px;
     border-radius: 12px;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
     flex-grow: 1;

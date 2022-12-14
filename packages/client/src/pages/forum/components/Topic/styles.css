@@ -1,9 +1,9 @@
 .topic {
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin: 0 auto;
-  padding: 20px;
-  max-width: 1000px;
+  padding: 16px;
 
   .title {
     font-size: 27px;
@@ -12,6 +12,7 @@
   }
 
   &__button {
-    margin: 0 auto 15px;
+    align-self: center;
+    margin: 48px 0 0;
   }
 }

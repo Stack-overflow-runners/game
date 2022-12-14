@@ -37,18 +37,18 @@ function Editor({ onSubmit, className }: Props) {
   return (
     <div className={`${className} ${cn()}`}>
       <TextArea
-        autoSize={{ minRows: 3, maxRows: 5 }}
+        className={cn('textarea')}
         onChange={handleChange}
         value={newText}
+        placeholder="Введите комментарий"
       />
       <Button
         loading={submitting}
         onClick={handleSubmit}
         type="primary"
-        size="small"
         className={cn('button')}
         disabled={!newText}>
-        Добавить комментарий
+        Добавить
       </Button>
     </div>
   );
