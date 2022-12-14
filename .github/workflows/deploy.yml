@@ -1,8 +1,10 @@
 name: deploy
 on:
-  pull_request:
   push:
-    branches: [ ci-cd ]
+  pull_request:
+    branches:
+      - main
+      - ci-cd
 jobs:
   deploy:
     runs-on: self-hosted
@@ -31,6 +33,8 @@ jobs:
         run: echo "npm -v =`echo $(npm -v)`"
       - name: check for yarn version
         run: echo "yarn -v =`echo $(yarn -v)`"
+      - name: create tmp folder
+        run: mkdir -p tmp/pgdata
       - name: Install main deps
         run: yarn
       - name: Initialize
