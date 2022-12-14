@@ -9,8 +9,8 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: remove temp dir if exists (temporary solution)
-        run: sudo rm -rf /home/runner/actions-runner/_work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/tmp
+      - name: stopping & removing old containers if exist
+        run: docker compose down --remove-orphans || true
       - uses: actions/checkout@v3
       - name: set env var for new docker containers postfix
         run: echo "short_sha=`echo ${{ github.sha }} | cut -c1-8`" >> $GITHUB_ENV
@@ -25,12 +25,11 @@ jobs:
           envkey_POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           envkey_POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
           envkey_POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          envkey_POSTGRES_PATH: ${{ secrets.POSTGRES_PATH }}
           file_name: .env
           fail_on_empty: true
-      - name: stopping & removing old containers if exist
-        run: docker compose down --remove-orphans || true
-      - name: create tmp folder
-        run: mkdir -p tmp/pgdata
+      - name: create postgres volume folder
+        run: mkdir -p ${{ secrets.POSTGRES_PATH }}
       - name: Install main deps
         run: yarn
       - name: Initialize
