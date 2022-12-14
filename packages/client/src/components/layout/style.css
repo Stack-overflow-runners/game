@@ -3,36 +3,56 @@
   flex-flow: column;
   min-height: 100vh;
 
-  &__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: auto;
-    padding: 12px 24px;
+  &__sidebar {
+    padding: 48px 24px;
 
-    @media screen and (min-width: 768px) {
-      padding: 12px 50px;
+    &-menu {
+      margin-bottom: 24px;
+    }
+
+    .ant-layout-sider-children {
+      display: flex;
+      flex-flow: column;
     }
   }
 
-  &__logo {
-    display: flex;
+  &__header {
+    display: grid;
+    grid-template-areas: 'user theme-picker';
+
+    padding: 0;
   }
 
-  &__logo-image {
-    width: auto;
-    height: 48px;
+  &__theme-picker {
+    grid-area: theme-picker;
+  }
+
+  &__user {
+    grid-area: user;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+
+    &-avatar {
+      
+    }
+
+    &-login {
+      color: white;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    flex-flow: column;
+    row-gap: 16px;
+    margin: auto 0 0;
   }
 
   &__main {
+    display: flex;
+    flex-flow: column;
     flex: 1;
-  }
-
-  &__container {
-    padding: 0 24px;
-
-    @media screen and (min-width: 768px) {
-      padding: 0 50px;
-    }
+    padding: 24px;
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button } from 'antd';
 import Canvas from './components/canvas';
@@ -15,14 +15,14 @@ import usePreloadedImagesRefs from './hooks/use-preloaded-images-refs';
 import Background from './components/background/background';
 import StartScreen from './components/start-screen';
 import Layout from '../../components/layout';
-import toggleFullscreen, {
-  checkFullscreenOpened,
-} from '../../utils/fullscreen-toggle';
+import clipboardAPI from '../../web-api/clipboard-api';
+import fullscreenAPI from '../../web-api/fullscreen-api';
 import Score from './components/score';
 import GameOverScreen from './components/game-over-screen';
 import { useAppDispatch } from '../../hooks/store';
 import { useAuth } from '../../hooks/auth';
 import { addLeader } from '../../store/action-creators/leaders';
+import withAuth from '../../hoc/withAuth';
 
 import './game.css';
 
@@ -61,14 +61,16 @@ function Game() {
     game.start();
   };
 
-  const handleClickFullScreenBtn = () => {
-    toggleFullscreen(gameRef.current);
+  const handleLinkCopy = () => {
+    clipboardAPI.copy('ссылка на игру для товарища');
+  };
+
+  const handleFullscreenButtonToggle = () => {
+    fullscreenAPI.toggle(gameRef.current);
   };
 
   const handleFullcreenChange = () => {
-    const isFullscreenOpened = checkFullscreenOpened()
-
-    setIsFullscreen(isFullscreenOpened);
+    setIsFullscreen(fullscreenAPI.isOpened);
   };
 
   useEffect(() => {
@@ -89,12 +91,14 @@ function Game() {
     <Layout>
       <div className={cn()} ref={gameRef}>
         <div className={cn('game-container')}>
-          <Button
-            className={cn('fullscreen-btn')}
-            type="primary"
-            onClick={handleClickFullScreenBtn}>
-            {isFullScreen ? 'Обычный экран' : 'Полный экран'}
-          </Button>
+          <div className={cn('buttons')}>
+            <Button type="primary" onClick={handleLinkCopy}>
+              Копировать ссылку на игру
+            </Button>
+            <Button type="primary" onClick={handleFullscreenButtonToggle}>
+              {isFullScreen ? 'Обычный экран' : 'Полный экран'}
+            </Button>
+          </div>
           {isNewGame && <StartScreen onStart={handleStartGame} />}
           {!isStarted && !isNewGame && (
             <GameOverScreen onGameOver={handleRestartGame} />
@@ -126,4 +130,4 @@ function Game() {
   );
 }
 
-export default Game;
+export default withAuth(Game);

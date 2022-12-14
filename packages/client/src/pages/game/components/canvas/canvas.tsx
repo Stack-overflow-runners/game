@@ -8,6 +8,7 @@ import React, {
 import { random } from 'lodash';
 
 import { FrameContext, CanvasContext } from '../../contexts';
+import pointerLockAPI from '../../../../web-api/pointer-lock-api';
 
 type Props = {
   height: number;
@@ -40,7 +41,11 @@ const Canvas = forwardRef(
     }, []);
 
     const handleCanvasClick = () => {
-      canvasRef.current?.requestPointerLock();
+      const canvasElement = canvasRef.current;
+
+      if (canvasElement) {
+        pointerLockAPI.lockByElement(canvasElement);
+      }
     };
 
     // making the component and the context re-render at every frame
@@ -83,7 +88,6 @@ const Canvas = forwardRef(
             ref={setRefs}
             height={height}
             width={width}
-            style={{ width, height }}
             className={className}
             onClick={handleCanvasClick}
           />

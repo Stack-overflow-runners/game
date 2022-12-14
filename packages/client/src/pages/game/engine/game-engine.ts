@@ -5,6 +5,7 @@ import getRandomArbitrary from '../../../utils/get-random-arbitrary';
 import { IntervalId } from '../../../types/interval-id';
 import checkObjectsIntersect from './utils/check-objects-intersect';
 import GAME_SETTINGS from '../game-settings';
+import vibrationAPI from '../../../web-api/vibration-api';
 
 type GameState = {
   ship: Ship;
@@ -125,6 +126,7 @@ class GameEngine {
           enemies[i].exploded = true;
           this.gameState.score += 1;
           shipBullets[j].isAlive = false;
+          vibrationAPI.vibrate(200)
         }
       }
     }

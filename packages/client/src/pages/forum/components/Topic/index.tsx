@@ -3,11 +3,11 @@ import { Button } from 'antd';
 import Comment from '../CommentWithReply';
 import Editor from '../Editor';
 import createCn from '../../../../utils/create-cn';
-import './styles.css';
 import { createPost } from '../../../../store/action-creators/forum';
 import { useAppDispatch } from '../../../../hooks/store';
 import { useAuth } from '../../../../hooks/auth';
 import { ForumPostTransformed } from '../../../../types/forum';
+import './styles.css';
 
 const cn = createCn('topic');
 
@@ -38,27 +38,22 @@ function Topic({ posts, threadId }: Props) {
 
   return (
     <div className={cn()}>
+      {posts && posts.map(post => <Comment key={post.postId} comment={post} />)}
       {isOpenEditor ? (
         <>
+          <Editor onSubmit={handleSubmitNewComment} />
           <Button
-            type="text"
+            type="primary"
             className={cn('button')}
-            onClick={toogleEditor}
-            size="small">
+            onClick={toogleEditor}>
             Скрыть
           </Button>
-          <Editor onSubmit={handleSubmitNewComment} />
         </>
       ) : (
-        <Button
-          type="dashed"
-          className={cn('button')}
-          onClick={toogleEditor}
-          size="small">
+        <Button type="primary" className={cn('button')} onClick={toogleEditor}>
           Добавить комментарий
         </Button>
       )}
-      {posts && posts.map(post => <Comment key={post.postId} comment={post} />)}
     </div>
   );
 }
