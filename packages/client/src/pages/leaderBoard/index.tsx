@@ -7,6 +7,7 @@ import Layout from '../../components/layout';
 import createCn from '../../utils/create-cn';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { getLeaders } from '../../store/action-creators/leaders';
+import withAuth from '../../hoc/withAuth';
 import 'antd/dist/antd.css';
 import './styles.css';
 
@@ -88,4 +89,4 @@ function LeaderBoardPage() {
   );
 }
 
-export default LeaderBoardPage;
+export default withAuth(LeaderBoardPage);

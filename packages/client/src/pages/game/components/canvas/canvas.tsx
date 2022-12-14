@@ -88,7 +88,6 @@ const Canvas = forwardRef(
             ref={setRefs}
             height={height}
             width={width}
-            style={{ width, height }}
             className={className}
             onClick={handleCanvasClick}
           />

@@ -1,11 +1,15 @@
-import React, { useCallback, useState } from 'react';
-import { Button, Drawer, Layout as BaseLayout, Menu } from 'antd';
+import React, { useCallback } from 'react';
+import { Avatar, Button, Layout as BaseLayout, Menu } from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
-import { MenuOutlined } from '@ant-design/icons';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { Link } from 'react-router-dom';
-import logoImage from '../../assets/logo.png';
+import { useNavigate } from 'react-router';
+import Sider from 'antd/lib/layout/Sider';
 import createCn from '../../utils/create-cn';
+import { useAppDispatch } from '../../hooks/store';
+import { signOut } from '../../store/action-creators/auth';
+import { useAuth } from '../../hooks/auth';
+import CONSTS from '../../utils/consts';
 import 'antd/dist/antd.css';
 import './style.css';
 
@@ -16,44 +20,62 @@ type LayoutProps = {
 const cn = createCn('layout');
 
 const items: ItemType[] = [
-  { label: <Link to="/profile">Profile</Link>, key: 'profile' },
-  { label: <Link to="/">Home</Link>, key: 'home' },
-  { label: <Link to="/game">Game</Link>, key: 'game' },
-  { label: <Link to="/leader-board">Leader-board</Link>, key: 'leader-board' },
-  { label: <Link to="/forum">Forum</Link>, key: 'forum' }
+  { label: <Link to="/">Главная</Link>, key: 'home' },
+  { label: <Link to="/profile">Профиль</Link>, key: 'profile' },
+  {
+    label: <Link to="/leader-board">Таблица лидеров</Link>,
+    key: 'leader-board',
+  },
+  { label: <Link to="/forum">Форум</Link>, key: 'forum' },
 ];
 
-function Layout({ children }: LayoutProps): JSX.Element {
-  const [isDrawerOpened, setDrawerOpened] = useState(false);
 
-  const handleButtonClick = useCallback(() => {
-    setDrawerOpened(true);
+function Layout({ children }: LayoutProps): JSX.Element {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handlePlayButtonClick = useCallback(() => {
+    navigate('/game');
   }, []);
 
-  const handleDrawerClose = useCallback(() => {
-    setDrawerOpened(false);
+  const handleLogoutButtonClick = useCallback(() => {
+    dispatch(signOut());
   }, []);
 
   return (
-    <BaseLayout className={cn()}>
-      <Header className={cn('header')}>
-        <Link className={cn('logo')} to="/">
-          <img className={cn('logo-image')} src={logoImage} alt="logo" />
-        </Link>
-        <Button type="primary" onClick={handleButtonClick}>
-          <MenuOutlined />
-        </Button>
-      </Header>
-      <Content className={cn('main')}>
-        <div className={cn('container')}>{children}</div>
-      </Content>
-      <Drawer
-        title="Menu"
-        placement="right"
-        onClose={handleDrawerClose}
-        open={isDrawerOpened}>
-        <Menu items={items} />
-      </Drawer>
+    <BaseLayout className={cn()} hasSider>
+      <Sider className={cn('sidebar')} width={350}>
+        <Menu className={cn('sidebar-menu')} theme="dark" items={items} />
+        <div className={cn('buttons')}>
+          <Button onClick={handlePlayButtonClick} type="primary" size="large">
+            Play
+          </Button>
+          <Button
+            onClick={handleLogoutButtonClick}
+            type="primary"
+            danger
+            size="large">
+            Logout
+          </Button>
+        </div>
+      </Sider>
+      <BaseLayout>
+        <Header className={cn('header')}>
+          {user && (
+            <div className={cn('user')}>
+              <Avatar
+                className={cn('user-avatar')}
+                src={`${CONSTS.RESOURCE_URL}${user.avatar}`}
+                shape="square"
+                size="large"
+              />
+              <span className={cn('user-login')}>{user.login}</span>
+            </div>
+          )}
+        </Header>
+        <Content className={cn('main')}>{children}</Content>
+      </BaseLayout>
     </BaseLayout>
   );
 }
