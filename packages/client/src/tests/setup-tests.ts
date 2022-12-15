@@ -15,3 +15,10 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: jest.fn(),
   })),
 });
+
+Object.defineProperty(window, '__SERVER_PORT__', {
+  value: process.env.SERVER_PORT,
+});
+Object.defineProperty(window, '__CLIENT_PORT__', {
+  value: process.env.CLIENT_PORT,
+});

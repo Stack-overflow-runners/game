@@ -1,4 +1,4 @@
-import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import renderWithRouter from './tests/utils/render-with-router';
 
 describe('App', () => {
@@ -20,13 +20,6 @@ describe('App', () => {
     });
   });
 
-  test('app menu', async () => {
-    renderWithRouter('/leader-board');
-    expect(window.location.pathname).toBe('/leader-board');
-    const menuButton = document.querySelector('.anticon-menu') as HTMLElement;
-    expect(menuButton).toBeInTheDocument();
-  });
-
   test('app redirect', () => {
     renderWithRouter('/test');
     expect(window.location.pathname).toBe('/test');
@@ -41,17 +34,24 @@ describe('App', () => {
     expect(title).toBeInTheDocument();
   });
 
-  test('app game canvas', () => {
-    renderWithRouter('/game');
-    const buttonStart = screen.getByTestId('startGame');
-    fireEvent.click(buttonStart);
-    const canvas = document.querySelector('canvas') as HTMLElement;
-    expect(canvas).toBeInTheDocument();
-  });
+  // test('app menu', async () => {
+  //   renderWithRouter('/leader-board');
+  //   expect(window.location.pathname).toBe('/leader-board');
+  //   const menuButton = document.querySelector('.anticon-menu') as HTMLElement;
+  //   expect(menuButton).toBeInTheDocument();
+  // });
 
-  test('app game start button', () => {
-    renderWithRouter('/game');
-    const buttonStart = screen.getByTestId('startGame');
-    expect(buttonStart).toBeInTheDocument();
-  });
+  // test('app game canvas', () => {
+  //   renderWithRouter('/game');
+  //   const buttonStart = screen.getByTestId('startGame');
+  //   fireEvent.click(buttonStart);
+  //   const canvas = document.querySelector('canvas') as HTMLElement;
+  //   expect(canvas).toBeInTheDocument();
+  // });
+  //
+  // test('app game start button', () => {
+  //   renderWithRouter('/game');
+  //   const buttonStart = screen.getByTestId('startGame');
+  //   expect(buttonStart).toBeInTheDocument();
+  // });
 });
