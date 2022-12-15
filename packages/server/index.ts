@@ -7,10 +7,14 @@ import errorHandler from './middleware/errorHandlingMiddleware';
 
 dotenv.config();
 const port = Number(process.env.SERVER_PORT) || 3001;
-const origin = ['http://localhost:3000', 'http://prodDomain.com'];
+const clientPort = Number(process.env.CLIENT_PORT) || 3000;
+const isDev = process.env.NODE_ENV === 'development';
+const devHost = `http://localhost:${clientPort}`;
+const prodHost = 'http://stack-overflow-runners.ya-praktikum.tech';
+const host = isDev ? devHost : prodHost;
 
 const app = express();
-app.use(cors({ credentials: true, origin }));
+app.use(cors({ credentials: true, origin: host }));
 app.use(express.json());
 app.use('/api', router);
 app.use(errorHandler);
