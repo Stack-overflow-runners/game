@@ -18,11 +18,13 @@ export const fetchUser = createAsyncThunk(
         return thunkAPI.rejectWithValue(error?.includes('Cookie') ? '' : error);
       }
       // temporary not safe solution here
-       const { data: userWithForumRes } = await forumSignIn(data);
-       if (!userWithForumRes) {
-         return thunkAPI.rejectWithValue('Не удалось авторизоваться на форуме');
-       }
-      return data;
+      const { data: userWithForumRes } = await forumSignIn(data);
+      
+      if (!userWithForumRes) {
+        return thunkAPI.rejectWithValue('Не удалось авторизоваться на форуме');
+      }
+
+      return userWithForumRes;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         `Не удалось загрузить пользователя. ${error.message}`
