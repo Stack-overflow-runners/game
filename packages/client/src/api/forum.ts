@@ -10,7 +10,7 @@ import {
   CreateEntity,
 } from '../types/forum';
 import { ApiResponse } from '../types/api';
-import { UserDTO } from '../types/user';
+import { UserEntity } from '../types/user';
 
 class ForumAPI extends ForumBaseAPI {
   constructor() {
@@ -62,29 +62,27 @@ class ForumAPI extends ForumBaseAPI {
     });
   }
 
-  getUsers(): ApiResponse<ForumUserDTO[]> {
+  getUser(): ApiResponse<UserEntity> {
     return this.httpService.get('/user', {
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  signIn(body: UserDTO): ApiResponse<ForumUserDTO> {
+  signIn(body: UserEntity): ApiResponse<ForumUserDTO> {
     return this.httpService.post('/user/signin', {
       body,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  setLike(
-    body: UserId & LikeDislike
-  ): ApiResponse<Partial<LikeDislike> & UserId> {
+  setLike(body: LikeDislike): ApiResponse<LikeDislike & UserId> {
     return this.httpService.post('/like', {
       body,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  setDislike(body: UserId & LikeDislike): ApiResponse<LikeDislike & UserId> {
+  setDislike(body: LikeDislike): ApiResponse<LikeDislike & UserId> {
     return this.httpService.post('/dislike', {
       body,
       headers: { 'Content-Type': 'application/json' },

@@ -1,10 +1,10 @@
-import BaseAPI from './base';
+import { ForumBaseAPI } from './base';
 import { OAuthServiceIdDTO, OAuthSignInYandexDTO } from '../types/auth';
 import { ApiResponse } from '../types/api';
 
-class OAuthYandexAPI extends BaseAPI {
+class OAuthYandexAPI extends ForumBaseAPI {
   constructor() {
-    super('/oauth/yandex');
+    super('/user/oauth/yandex');
   }
 
   signIn(body: OAuthSignInYandexDTO): ApiResponse<string> {
