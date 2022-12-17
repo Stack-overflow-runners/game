@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit';
 import { Leader } from '../../../pages/leaderBoard/types';
 import { Nullable } from '../../../types/common';
-import { UserDTO } from '../../../types/user';
+import { UserEntity } from '../../../types/user';
 import { ForumThreadTransformed } from '../../../types/forum';
 
 export type LoadingState = {
@@ -10,7 +10,7 @@ export type LoadingState = {
 };
 
 export type UserState = LoadingState & {
-  user: Nullable<UserDTO>;
+  user: Nullable<UserEntity>;
   isLoggedIn: boolean;
 };
 
@@ -37,7 +37,7 @@ export const setRejected = <T extends LoadingState, A extends Nullable<string>>(
   state.error = action.payload;
 };
 
-export const setFulfilled = <T extends UserState, A extends UserDTO>(
+export const setFulfilled = <T extends UserState, A extends UserEntity>(
   state: T,
   action: ActionPayload<A>
 ) => {

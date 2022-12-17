@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserDTO } from '../../types/user';
+import { UserEntity } from '../../types/user';
 import { updateProfile, updateProfileAvatar } from '../action-creators/profile';
 import {
   fetchUser,
@@ -24,7 +24,7 @@ const userSlice = createSlice({
     setLoadingStatus(state: UserState, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
     },
-    setUser(state: UserState, action: PayloadAction<UserDTO>) {
+    setUser(state: UserState, action: PayloadAction<UserEntity>) {
       state.user = action.payload;
       state.isLoggedIn = true;
     },
@@ -32,29 +32,32 @@ const userSlice = createSlice({
       state.user = null;
       state.isLoggedIn = false;
     },
-    updateUser(state: UserState, action: PayloadAction<Partial<UserDTO>>) {
+    updateUser(state: UserState, action: PayloadAction<Partial<UserEntity>>) {
       if (!state.user) return;
 
       state.user = { ...state.user, ...action.payload };
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchUser.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(
+      fetchUser.fulfilled.type,
+      setFulfilled<UserState, UserEntity>
+    );
     builder.addCase(fetchUser.pending.type, setPending<UserState>);
     builder.addCase(fetchUser.rejected.type, setRejected<UserState, string>);
 
-    builder.addCase(signIn.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(signIn.fulfilled.type, setFulfilled<UserState, UserEntity>);
     builder.addCase(signIn.pending.type, setPending<UserState>);
     builder.addCase(signIn.rejected.type, setRejected<UserState, string>);
 
     builder.addCase(
       signInOAuth.fulfilled.type,
-      setFulfilled<UserState, UserDTO>
+      setFulfilled<UserState, UserEntity>
     );
     builder.addCase(signInOAuth.pending.type, setPending<UserState>);
     builder.addCase(signInOAuth.rejected.type, setRejected<UserState, string>);
 
-    builder.addCase(signUp.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(signUp.fulfilled.type, setFulfilled<UserState, UserEntity>);
     builder.addCase(signUp.pending.type, setPending<UserState>);
     builder.addCase(signUp.rejected.type, setRejected<UserState, string>);
 
@@ -66,14 +69,26 @@ const userSlice = createSlice({
       state.user = null;
       state.isLoggedIn = false;
     });
-    
-    builder.addCase(updateProfile.fulfilled.type, setFulfilled<UserState, UserDTO>);
-    builder.addCase(updateProfile.pending.type, setPending<UserState>);
-    builder.addCase(updateProfile.rejected.type, setRejected<UserState, string>);
 
-    builder.addCase(updateProfileAvatar.fulfilled.type, setFulfilled<UserState, UserDTO>);
+    builder.addCase(
+      updateProfile.fulfilled.type,
+      setFulfilled<UserState, UserEntity>
+    );
+    builder.addCase(updateProfile.pending.type, setPending<UserState>);
+    builder.addCase(
+      updateProfile.rejected.type,
+      setRejected<UserState, string>
+    );
+
+    builder.addCase(
+      updateProfileAvatar.fulfilled.type,
+      setFulfilled<UserState, UserEntity>
+    );
     builder.addCase(updateProfileAvatar.pending.type, setPending<UserState>);
-    builder.addCase(updateProfileAvatar.rejected.type, setRejected<UserState, string>);
+    builder.addCase(
+      updateProfileAvatar.rejected.type,
+      setRejected<UserState, string>
+    );
   },
 });
 

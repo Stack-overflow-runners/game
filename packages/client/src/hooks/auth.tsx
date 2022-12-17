@@ -9,7 +9,7 @@ import {
   signOut as logout,
   signUp as register,
 } from '../store/action-creators/auth';
-import { UserDTO } from '../types/user';
+import { UserEntity } from '../types/user';
 import { Nullable } from '../types/common';
 import { getServiceIdFromProvider } from '../pages/signIn/services/signin-service';
 
@@ -18,7 +18,7 @@ type Props = {
 };
 
 type AuthContextProps = {
-  user: Nullable<UserDTO>;
+  user: Nullable<UserEntity>;
   signUp: (credentials: SignUpDTO) => any;
   signIn: (credentials: SignInDTO) => any;
   signOut: () => any;
