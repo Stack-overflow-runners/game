@@ -26,6 +26,7 @@ type TUser = {
   email: string;
   name: string;
   lastname: string;
+  displayName: string;
   login: string;
   phone: string;
   avatar: string;
@@ -70,6 +71,13 @@ class User extends Model<Partial<TUser>> {
     allowNull: true,
   })
   lastname: string;
+
+  @Column({
+    type: DataType.STRING,
+    field: 'display_name',
+    allowNull: true,
+  })
+  displayName: string;
 
   @Column({
     type: DataType.STRING,
