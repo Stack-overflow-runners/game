@@ -8,6 +8,9 @@ const FORUM_API_URL = IS_PRODUCTION
   ? `${PROD_URL}:${__SERVER_PORT__}/api`
   : `http://localhost:${__SERVER_PORT__}/api`;
 const RESOURCE_URL = `${API_URL}/resources`;
+const PROXY_RESOURCE_URL = `${FORUM_API_URL}/resources`;
+const AVATAR_PLACEHOLDER =
+  'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
 // Team name. Used to make unique leaderboard for each project. Yandex API
 const TEAM = 'stackoverflowRunners';
 const RATING_FIELD = 'score';
@@ -37,4 +40,6 @@ export default {
   IS_PRODUCTION,
   PROD_URL,
   DEV_URL,
+  AVATAR_PLACEHOLDER,
+  PROXY_RESOURCE_URL,
 };
