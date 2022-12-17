@@ -1,5 +1,5 @@
 import { Indexable } from './common';
-import { UserDTO } from './user';
+import { UserEntity } from './user';
 
 export type ThreadDTO = Indexable<{
   threadId: number;
@@ -147,7 +147,7 @@ export type LikeDislike = {
 };
 
 export type User = {
-  user: UserDTO;
+  user: UserEntity;
 };
 
 export type CreateEntity = {
