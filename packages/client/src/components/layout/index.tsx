@@ -82,7 +82,11 @@ function Layout({ children }: LayoutProps): JSX.Element {
             <div className={cn('user')}>
               <Avatar
                 className={cn('user-avatar')}
-                src={`${CONSTS.RESOURCE_URL}${user.avatar}`}
+                src={`${
+                  user?.avatar
+                    ? `${CONSTS.PROXY_RESOURCE_URL}${user.avatar}`
+                    : CONSTS.AVATAR_PLACEHOLDER
+                }`}
                 shape="square"
                 size="large"
               />

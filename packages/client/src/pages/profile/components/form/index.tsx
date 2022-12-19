@@ -2,21 +2,22 @@ import { Form, Input, Button, Alert } from 'antd';
 import { Rule } from 'antd/lib/form';
 import signUpRules from '../../../signUp/validator';
 import createCn from '../../../../utils/create-cn';
-import { UserDTO } from '../../../../types/user';
+import { UserDTO, UserEntity } from '../../../../types/user';
 import { Nullable } from '../../../../types/common';
 import './style.css';
+import { transformUserEntityToUserDTO } from '../../../../utils/forum-utils';
 
 type ProfileFormProps = {
   className?: string;
   error: Nullable<string>;
-  user: Nullable<UserDTO>;
+  user: Nullable<UserEntity>;
   onSubmit: (data: UserDTO) => void;
 };
 
 const cn = createCn('profile-form');
 
 function ProfileForm({ user, error, onSubmit, className }: ProfileFormProps) {
-  const initialValues = user || {};
+  const initialValues = transformUserEntityToUserDTO(user) || {};
 
   return (
     <Form

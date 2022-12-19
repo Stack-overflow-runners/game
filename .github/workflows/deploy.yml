@@ -1,10 +1,8 @@
 name: deploy
 on:
-  push:
   pull_request:
     branches:
       - main
-      - ci-cd
 jobs:
   deploy:
     runs-on: self-hosted
@@ -28,6 +26,18 @@ jobs:
           envkey_POSTGRES_PATH: ${{ secrets.POSTGRES_PATH }}
           file_name: .env
           fail_on_empty: true
+      - name: Create SSL key from encoded secret
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'key.key'
+          fileDir: './ssl/'
+          encodedString: ${{ secrets.SSL_BASE64_KEY }}
+      - name: Create SSL certificate from encoded secret
+        uses: timheuer/base64-to-file@v1.2
+        with:
+          fileName: 'cert.crt'
+          fileDir: './ssl/'
+          encodedString: ${{ secrets.SSL_BASE64_CERT }}
       - name: create postgres volume folder
         run: mkdir -p ${{ secrets.POSTGRES_PATH }}
       - name: Install main deps

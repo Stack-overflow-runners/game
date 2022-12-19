@@ -7,7 +7,6 @@ import signInService, {
   signInWithProvider,
 } from '../../pages/signIn/services/signin-service';
 import signUpService from '../../pages/signUp/services/signup-service';
-import { forumSignIn } from '../../pages/forum/services/forum-service';
 
 export const fetchUser = createAsyncThunk(
   'user/fetchUser',
@@ -17,14 +16,7 @@ export const fetchUser = createAsyncThunk(
       if (error || !data) {
         return thunkAPI.rejectWithValue(error?.includes('Cookie') ? '' : error);
       }
-      // temporary not safe solution here
-      const { data: userWithForumRes } = await forumSignIn(data);
-      
-      if (!userWithForumRes) {
-        return thunkAPI.rejectWithValue('Не удалось авторизоваться на форуме');
-      }
-
-      return userWithForumRes;
+      return data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(
         `Не удалось загрузить пользователя. ${error.message}`

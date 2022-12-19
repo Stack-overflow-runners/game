@@ -1,15 +1,13 @@
 import AuthAPI from '../../../api/auth';
 import { OAuthServiceIdDTO, SignInDTO } from '../../../types/auth';
 import { ApiResponse } from '../../../types/api';
-import { UserDTO } from '../../../types/user';
+import { UserEntity } from '../../../types/user';
 import OAuthYandexAPI from '../../../api/OAuth';
 import getOAuthProvider from '../../../utils/get-OAuth-provider';
 import LocalStorageService from '../../../utils/localstorage-service';
 import { OAUTH_PROVIDERS } from '../../../utils/consts';
-import { forumSignIn } from '../../forum/services/forum-service';
 
-const signIn = async (payload: SignInDTO): ApiResponse<UserDTO> => {
-  // TODO proxyfication api calls through the server (http-proxy-middleware)
+const signIn = async (payload: SignInDTO): ApiResponse<UserEntity> => {
   const response = await AuthAPI.signIn(payload);
   if (response.error) {
     return response;
@@ -18,14 +16,12 @@ const signIn = async (payload: SignInDTO): ApiResponse<UserDTO> => {
   if (userRes.error || !userRes.data) {
     return { error: 'Не удалось получить пользователя' };
   }
-  // temporary not safe solution here
-  const user = await forumSignIn(userRes.data);
-  return user;
+  return userRes;
 };
 
 export const signInWithProvider = async (
   code: string
-): ApiResponse<UserDTO> => {
+): ApiResponse<UserEntity> => {
   const providerName = LocalStorageService.getOAuthProvider();
   if (!providerName) {
     return { error: 'Не удалось получить провайдера' };
@@ -48,9 +44,7 @@ export const signInWithProvider = async (
           error: 'Не удалось получить пользователя (OAuth)',
         };
       }
-      // temporary not safe solution here
-      const user = await forumSignIn(data);
-      return user;
+      return { data };
     }
   }
   return { error: 'Неизвестный провайдер' };

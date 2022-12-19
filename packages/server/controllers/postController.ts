@@ -6,10 +6,8 @@ import { Post } from '../models/forum.model';
 class PostController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { content, userId, threadId } = req.body;
-      if (!userId) {
-        return next(ApiError.forbidden('user is required'));
-      }
+      const { userId } = req.user;
+      const { content, threadId } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest('Validation error'));
@@ -26,12 +24,8 @@ class PostController {
     }
   }
 
-  async getAll(req: Request, res: Response, next: NextFunction) {
+  async getAll(_req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = req.body;
-      if (!userId) {
-        return next(ApiError.forbidden('user is required'));
-      }
       const comments = await Post.findAll();
       return res.json(comments);
     } catch (error: any) {
@@ -42,10 +36,6 @@ class PostController {
   async getOne(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { userId } = req.body;
-      if (!userId) {
-        return next(ApiError.forbidden('user is required'));
-      }
       const thread = await Post.findOne({ where: { id } });
       return res.json(thread);
     } catch (error: any) {

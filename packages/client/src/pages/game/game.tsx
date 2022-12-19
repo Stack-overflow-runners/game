@@ -44,7 +44,7 @@ function Game() {
     game.stop();
     dispatch(
       addLeader({
-        displayName: user?.second_name || 'Новый игрок',
+        displayName: user?.displayName || 'Новый игрок',
         score: game.gameState.score,
       })
     );

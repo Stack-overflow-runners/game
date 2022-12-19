@@ -1,3 +1,17 @@
+export type UserEntity = {
+  userId: number;
+  forumId: number;
+  email: string;
+  phone: string;
+  avatar: string;
+  name: string;
+  lastname: string;
+  login: string;
+  displayName: string;
+  updatedAt: string;
+  createdAt: string;
+};
+
 export type UserDTO = {
   id: number;
   login: string;
@@ -7,16 +21,15 @@ export type UserDTO = {
   avatar: string;
   phone: string;
   email: string;
-  forumId?: number;
   theme?: string;
 };
 
-export type RequestUserAvatarData = FormData
+export type RequestUserAvatarData = FormData;
 
 export type RequestUserPasswordData = {
   oldPassword: string;
   newPassword: string;
-}
+};
 
 export type RequestUserData = {
   login: string;
@@ -25,4 +38,4 @@ export type RequestUserData = {
   second_name: string;
   display_name: string;
   phone: string;
-}
+};
