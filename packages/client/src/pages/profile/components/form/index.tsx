@@ -4,7 +4,6 @@ import signUpRules from '../../../signUp/validator';
 import createCn from '../../../../utils/create-cn';
 import { UserDTO } from '../../../../types/user';
 import { Nullable } from '../../../../types/common';
-import 'antd/dist/antd.css';
 import './style.css';
 
 type ProfileFormProps = {
@@ -31,42 +30,42 @@ function ProfileForm({ user, error, onSubmit, className }: ProfileFormProps) {
           label="Email"
           name="email"
           rules={signUpRules.email as Rule[]}>
-          <Input size="large" placeholder="Введите еmail" />
+          <Input className={cn('form-item-input')} size="large" placeholder="Введите еmail" />
         </Form.Item>
         <Form.Item
           className={cn('form-item')}
           label="Логин"
           name="login"
           rules={signUpRules.login}>
-          <Input size="large" placeholder="Введите логин" />
+          <Input className={cn('form-item-input')} size="large" placeholder="Введите логин" />
         </Form.Item>
         <Form.Item
           className={cn('form-item')}
           label="Имя"
           name="first_name"
           rules={signUpRules.firstName}>
-          <Input size="large" placeholder="Введите имя" />
+          <Input className={cn('form-item-input')} size="large" placeholder="Введите имя" />
         </Form.Item>
         <Form.Item
           className={cn('form-item')}
           label="Фамилия"
           name="second_name"
           rules={signUpRules.secondName}>
-          <Input size="large" placeholder="Введите фамилию" />
+          <Input className={cn('form-item-input')} size="large" placeholder="Введите фамилию" />
         </Form.Item>
         <Form.Item
           className={cn('form-item')}
           label="Никнейм"
           name="display_name"
           rules={signUpRules.displayName}>
-          <Input size="large" placeholder="Введите никнейм для игры" />
+          <Input className={cn('form-item-input')} size="large" placeholder="Введите никнейм для игры" />
         </Form.Item>
         <Form.Item
           className={cn('form-item')}
           label="Телефон"
           name="phone"
           rules={signUpRules.phone}>
-          <Input size="large" placeholder="Введите телефон" />
+          <Input className={cn('form-item-input')} size="large" placeholder="Введите телефон" />
         </Form.Item>
       </div>
       {error && (

@@ -4,7 +4,6 @@ import createCn from '../../utils/create-cn';
 import Layout from '../../components/layout';
 import heroImage from '../../assets/hero-image.jpg';
 import withAuth from '../../hoc/withAuth';
-import 'antd/dist/antd.css';
 import './style.css';
 
 const cn = createCn('main');

@@ -1,11 +1,10 @@
 import { ChangeEvent } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
+import { UploadOutlined } from '@ant-design/icons';
 import SkeletonImage from 'antd/lib/skeleton/Image';
 import createCn from '../../../../utils/create-cn';
 import CONSTS from '../../../../utils/consts';
 import { UserDTO } from '../../../../types/user';
 import { Nullable } from '../../../../types/common';
-import 'antd/dist/antd.css';
 import './style.css';
 
 type ProfileAvatarImageProps = {
@@ -45,8 +44,7 @@ function ProfileAvatar({ user, onChange, className }: ProfileAvatarProps) {
         />
 
         <div className={cn('avatar-upload')}>
-          <PlusOutlined />
-          <div>Загрузить</div>
+          <UploadOutlined />
         </div>
       </label>
     </form>

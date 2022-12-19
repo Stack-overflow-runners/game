@@ -37,6 +37,11 @@ const userSlice = createSlice({
 
       state.user = { ...state.user, ...action.payload };
     },
+    changeTheme(state: UserState, action: PayloadAction<string>) {
+      if (!state.user) return
+
+      state.user = { ...state.user, theme: action.payload || 'default' }
+    }
   },
   extraReducers: builder => {
     builder.addCase(fetchUser.fulfilled.type, setFulfilled<UserState, UserDTO>);
@@ -77,7 +82,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setLoadingStatus, setUser, removeUser, updateUser } =
+export const { setLoadingStatus, setUser, removeUser, updateUser, changeTheme } =
   userSlice.actions;
 
 export default userSlice.reducer;

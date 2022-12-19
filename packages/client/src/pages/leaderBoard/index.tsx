@@ -1,17 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Alert, Button, Pagination, PaginationProps, Table, Typography } from 'antd';
+import {
+  Alert,
+  Button,
+  Empty,
+  Pagination,
+  PaginationProps,
+  Table
+} from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Leader } from './types';
-import cup from '../../assets/cup.svg';
 import Layout from '../../components/layout';
 import createCn from '../../utils/create-cn';
 import { useAppDispatch, useAppSelector } from '../../hooks/store';
 import { getLeaders } from '../../store/action-creators/leaders';
 import withAuth from '../../hoc/withAuth';
-import 'antd/dist/antd.css';
 import './styles.css';
 
-const { Title } = Typography;
 const cn = createCn('leader-board');
 
 const columns: ColumnsType<Leader> = [
@@ -48,12 +52,15 @@ function LeaderBoardPage() {
   const updateLeaders = useCallback(() => {
     dispatch(getLeaders({ pageNumber, countPerPage }));
   }, [pageNumber, countPerPage]);
-  
-  const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
+
+  const onShowSizeChange: PaginationProps['onShowSizeChange'] = (
+    current,
+    pageSize
+  ) => {
     setCountPerPage(pageSize);
-    setPageNumber(current);    
+    setPageNumber(current);
   };
-  
+
   useEffect(() => {
     updateLeaders();
   }, [pageNumber, countPerPage]);
@@ -61,29 +68,35 @@ function LeaderBoardPage() {
   return (
     <Layout>
       <div className={cn()}>
-        <img src={cup} alt="cup" />
-        <Title className="title">Таблица лидеров</Title>
-        <Button className={cn('button')} onClick={updateLeaders}>Обновить</Button>
-        {error && <Alert
-          message={error}
-          type="error"
-          className={cn('alert')}
-        />}
-        <Table
-          className="table"
-          columns={columns}
-          dataSource={leaders || []}
-          pagination={false}
-          rowKey={record => record.score}
-          loading={isLoading}
-        />
-        <Pagination 
-          defaultCurrent={1}
-          total={leaders?.length} 
-          onChange={setPageNumber}
-          showSizeChanger
-          onShowSizeChange={onShowSizeChange}
-        />
+        {leaders?.length > 0 ? (
+          <>
+            <Table
+              className="table"
+              columns={columns}
+              dataSource={leaders || []}
+              pagination={false}
+              rowKey={record => record.score}
+              loading={isLoading}
+            />
+            <div className={cn('footer')}>
+              <Pagination
+                defaultCurrent={1}
+                total={leaders?.length}
+                onChange={setPageNumber}
+                showSizeChanger
+                onShowSizeChange={onShowSizeChange}
+              />
+              <Button className={cn('button')} onClick={updateLeaders}>
+                Обновить
+              </Button>
+            </div>
+          </>
+        ) : (
+          <Empty />
+        )}
+        {error && (
+          <Alert message={error} type="error" className={cn('alert')} />
+        )}
       </div>
     </Layout>
   );

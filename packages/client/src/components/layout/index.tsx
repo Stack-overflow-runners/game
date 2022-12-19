@@ -1,5 +1,12 @@
-import React, { useCallback } from 'react';
-import { Avatar, Button, Layout as BaseLayout, Menu } from 'antd';
+import React, { useCallback, useEffect } from 'react';
+import {
+  Avatar,
+  Button,
+  ConfigProvider,
+  Layout as BaseLayout,
+  Menu,
+  Select,
+} from 'antd';
 import { Content, Header } from 'antd/lib/layout/layout';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { Link } from 'react-router-dom';
@@ -10,8 +17,9 @@ import { useAppDispatch } from '../../hooks/store';
 import { signOut } from '../../store/action-creators/auth';
 import { useAuth } from '../../hooks/auth';
 import CONSTS from '../../utils/consts';
-import 'antd/dist/antd.css';
 import './style.css';
+import themes, { themeList } from '../../theme';
+import { changeTheme } from '../../store/reducers/user';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -29,11 +37,11 @@ const items: ItemType[] = [
   { label: <Link to="/forum">Форум</Link>, key: 'forum' },
 ];
 
-
 function Layout({ children }: LayoutProps): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const currentTheme = user?.theme || 'default';
 
   const handlePlayButtonClick = useCallback(() => {
     navigate('/game');
@@ -43,20 +51,28 @@ function Layout({ children }: LayoutProps): JSX.Element {
     dispatch(signOut());
   }, []);
 
+  const handleThemeChange = useCallback((theme: string) => {
+    dispatch(changeTheme(theme));
+  }, []);
+
+  useEffect(() => {
+    ConfigProvider.config({ theme: themes[currentTheme] });
+  }, [currentTheme]);
+
   return (
     <BaseLayout className={cn()} hasSider>
       <Sider className={cn('sidebar')} width={350}>
-        <Menu className={cn('sidebar-menu')} theme="dark" items={items} />
+        <Menu className={cn('sidebar-menu')} items={items} />
         <div className={cn('buttons')}>
           <Button onClick={handlePlayButtonClick} type="primary" size="large">
-            Play
+            Играть
           </Button>
           <Button
             onClick={handleLogoutButtonClick}
             type="primary"
             danger
             size="large">
-            Logout
+            Выйти
           </Button>
         </div>
       </Sider>
@@ -73,6 +89,14 @@ function Layout({ children }: LayoutProps): JSX.Element {
               <span className={cn('user-login')}>{user.login}</span>
             </div>
           )}
+          <div className={cn('theme-picker')}>
+            <Select
+              defaultValue={currentTheme}
+              style={{ width: 160 }}
+              onChange={handleThemeChange}
+              options={themeList}
+            />
+          </div>
         </Header>
         <Content className={cn('main')}>{children}</Content>
       </BaseLayout>

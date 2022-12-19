@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { Typography, Collapse } from 'antd';
+import { Collapse, Empty } from 'antd';
 import Layout from '../../components/layout';
 import createCn from '../../utils/create-cn';
 import withAuth from '../../hoc/withAuth';
@@ -13,9 +13,26 @@ import BasicComment from './components/BasicComment';
 import Editor from './components/Editor';
 import './styles.css';
 
-const { Title } = Typography;
+type TopicsProps = {
+  forum: ForumThreadTransformed[];
+};
+
 const { Panel } = Collapse;
 const cn = createCn('forum');
+
+function Topics({ forum }: TopicsProps) {
+  return forum.length > 0 ? (
+    <Collapse expandIconPosition="end">
+      {forum.map((thread: ForumThreadTransformed) => (
+        <Panel header={<BasicComment comment={thread} />} key={thread.threadId}>
+          <Topic posts={thread.comments} threadId={thread.threadId} />
+        </Panel>
+      ))}
+    </Collapse>
+  ) : (
+    <Empty className={cn('stub')} />
+  );
+}
 
 function ForumPage() {
   const dispatch = useAppDispatch();
@@ -38,21 +55,8 @@ function ForumPage() {
   return (
     <Layout>
       <div className={cn()}>
-        <Title className="title">Форум</Title>
-        <Collapse expandIconPosition="end">
-          {isLoading ? (
-            <PageLoader />
-          ) : (
-            forum &&
-            forum.map((thread: ForumThreadTransformed) => (
-              <Panel
-                header={<BasicComment comment={thread} />}
-                key={thread.threadId}>
-                <Topic posts={thread.comments} threadId={thread.threadId} />
-              </Panel>
-            ))
-          )}
-        </Collapse>
+        {isLoading ? <PageLoader /> : <Topics forum={forum} />}
+
         <Editor className={cn('editor')} onSubmit={handleSubmitNewTopic} />
       </div>
     </Layout>
