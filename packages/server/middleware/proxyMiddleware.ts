@@ -16,7 +16,7 @@ const options = {
   pathRewrite: PROXY_PATH_REWRITE_OPTIONS,
   cookieDomainRewrite: APP_CURRENT_DOMAIN,
   changeOrigin: true,
-  secure: false,
+  secure: true,
   timeout: 10000,
   onProxyReq: fixRequestBody,
   selfHandleResponse: true,
