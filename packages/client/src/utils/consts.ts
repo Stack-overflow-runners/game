@@ -15,7 +15,7 @@ const AVATAR_PLACEHOLDER =
 const TEAM = 'stackoverflowRunners';
 const RATING_FIELD = 'score';
 // OAuth providers
-const OAUTH_PROD_REDIRECT_URL = `http://stack-overflow-runners.ya-praktikum.tech`;
+const OAUTH_PROD_REDIRECT_URL = `https://stack-overflow-runners.ya-praktikum.tech`;
 export const OAUTH_PROVIDERS: Indexable<any> = {
   yandex: {
     name: 'Yandex',
