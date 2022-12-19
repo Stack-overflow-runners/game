@@ -29,7 +29,6 @@ const items: ItemType[] = [
   { label: <Link to="/forum">Форум</Link>, key: 'forum' },
 ];
 
-
 function Layout({ children }: LayoutProps): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -66,7 +65,11 @@ function Layout({ children }: LayoutProps): JSX.Element {
             <div className={cn('user')}>
               <Avatar
                 className={cn('user-avatar')}
-                src={`${CONSTS.RESOURCE_URL}${user.avatar}`}
+                src={`${
+                  user?.avatar
+                    ? `${CONSTS.PROXY_RESOURCE_URL}${user.avatar}`
+                    : CONSTS.AVATAR_PLACEHOLDER
+                }`}
                 shape="square"
                 size="large"
               />

@@ -13,7 +13,8 @@ import ApiError from '../utils/error';
 class LikeController {
   async setLike(req: Request, res: Response, next: NextFunction) {
     try {
-      const { threadId, postId, commentId, userId } = req.body;
+      const { userId } = req.user;
+      const { threadId, postId, commentId } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest('Validation error'));
@@ -43,7 +44,8 @@ class LikeController {
 
   async setDislike(req: Request, res: Response, next: NextFunction) {
     try {
-      const { threadId, postId, commentId, userId } = req.body;
+      const { userId } = req.user;
+      const { threadId, postId, commentId } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest('Validation error'));

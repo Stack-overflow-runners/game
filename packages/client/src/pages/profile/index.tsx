@@ -8,7 +8,7 @@ import {
 } from '../../store/action-creators/profile';
 import Layout from '../../components/layout';
 import withAuth from '../../hoc/withAuth';
-import { UserDTO } from '../../types/user';
+import { RequestUserData } from '../../types/user';
 import ProfileAvatar from './components/avatar';
 import ProfileForm from './components/form';
 import 'antd/dist/antd.css';
@@ -20,7 +20,7 @@ function ProfilePage() {
   const dispatch = useAppDispatch();
   const { user, error } = useAuth();
 
-  const handleFormSubmit = useCallback((data: UserDTO) => {
+  const handleFormSubmit = useCallback((data: RequestUserData) => {
     dispatch(updateProfile(data));
   }, []);
 

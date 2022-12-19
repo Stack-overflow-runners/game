@@ -1,20 +1,19 @@
 import { ApiResponse } from '../../../types/api';
-import ForumAPI from '../../../api/forum';
+import ForumApi from '../../../api/forum';
 import {
   ForumEntityTransformed,
   ForumThreadTransformed,
   LikeDislike,
-  User,
   UserId,
 } from '../../../types/forum';
 import {
   transformForumData,
   transformForumDTOtoStore,
 } from '../../../utils/forum-utils';
-import { UserDTO } from '../../../types/user';
+import { UserEntity } from '../../../types/user';
 
 const getForum = async (): ApiResponse<ForumThreadTransformed[]> => {
-  const response = await ForumAPI.getForum();
+  const response = await ForumApi.getForum();
   if (response.error || !response.data) {
     return { error: 'Не удалось получить данные с форума' };
   }
@@ -26,9 +25,11 @@ const getForum = async (): ApiResponse<ForumThreadTransformed[]> => {
   return { data: transformedForum };
 };
 
-export async function forumSignIn(userRes: UserDTO): ApiResponse<UserDTO> {
+export async function forumSignIn(
+  userRes: UserEntity
+): ApiResponse<UserEntity> {
   // temporary not safe solution here
-  const forumAuthRes = await ForumAPI.signIn(userRes);
+  const forumAuthRes = await ForumApi.signIn(userRes);
   if (forumAuthRes.error || !forumAuthRes.data) {
     return { error: 'Не удалось авторизоваться на форуме' };
   }
@@ -38,14 +39,14 @@ export async function forumSignIn(userRes: UserDTO): ApiResponse<UserDTO> {
 
 const createThread = async (payload: {
   content: string;
-  user: UserDTO;
+  user: UserEntity;
 }): ApiResponse<ForumEntityTransformed> => {
   const { user } = payload;
   const content = payload.content.trim();
   if (!user.forumId || content.length === 0) {
     return { error: 'Введите корректные данные' };
   }
-  const response = await ForumAPI.createThread({
+  const response = await ForumApi.createThread({
     content,
     userId: user.forumId,
   });
@@ -62,7 +63,7 @@ const createThread = async (payload: {
 
 const createPost = async (payload: {
   content: string;
-  user: UserDTO;
+  user: UserEntity;
   threadId: number;
 }): ApiResponse<ForumEntityTransformed> => {
   const { user, threadId } = payload;
@@ -70,7 +71,7 @@ const createPost = async (payload: {
   if (!user.forumId || content.length === 0) {
     return { error: 'Введите корректные данные' };
   }
-  const response = await ForumAPI.createPost({
+  const response = await ForumApi.createPost({
     content,
     threadId,
     userId: user.forumId,
@@ -91,7 +92,7 @@ const createPost = async (payload: {
 
 const createComment = async (payload: {
   content: string;
-  user: UserDTO;
+  user: UserEntity;
   postId: number;
 }): ApiResponse<ForumEntityTransformed> => {
   const { user, postId } = payload;
@@ -99,7 +100,7 @@ const createComment = async (payload: {
   if (!user.forumId || content.length === 0) {
     return { error: 'Введите корректные данные' };
   }
-  const response = await ForumAPI.createComment({
+  const response = await ForumApi.createComment({
     content,
     postId,
     userId: user.forumId,
@@ -119,14 +120,11 @@ const createComment = async (payload: {
 };
 
 const setLike = async (
-  payload: LikeDislike & User
+  payload: LikeDislike
 ): ApiResponse<LikeDislike & UserId> => {
-  const { user, threadId, postId, commentId } = payload;
-  if (!user.forumId) {
-    return { error: 'Не удалось получить id пользователя на форуме' };
-  }
-  const response = await ForumAPI.setLike({
-    userId: user.forumId,
+  const { threadId, postId, commentId } = payload;
+
+  const response = await ForumApi.setLike({
     threadId,
     postId,
     commentId,
@@ -137,15 +135,9 @@ const setLike = async (
   return { data: { ...response.data, threadId } };
 };
 
-const setDislike = async (
-  payload: LikeDislike & User
-): ApiResponse<LikeDislike & UserId> => {
-  const { user, threadId, postId, commentId } = payload;
-  if (!user.forumId) {
-    return { error: 'Не удалось получить id пользователя на форуме' };
-  }
-  const response = await ForumAPI.setDislike({
-    userId: user.forumId,
+const setDislike = async (payload: LikeDislike): ApiResponse<LikeDislike> => {
+  const { threadId, postId, commentId } = payload;
+  const response = await ForumApi.setDislike({
     threadId,
     postId,
     commentId,

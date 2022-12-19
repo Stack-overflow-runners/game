@@ -1,4 +1,4 @@
-import { UserDTO } from '../types/user';
+import { UserDTO, UserEntity } from '../types/user';
 import {
   ForumCommentExtended,
   Forum,
@@ -13,6 +13,7 @@ import {
   ForumCommentTransformed,
   ForumEntityTransformed,
 } from '../types/forum';
+import { Nullable } from '../types/common';
 
 export function transformForumData(data: Forum): ForumThreadTransformed[] {
   const { threads, posts, comments } = data;
@@ -77,14 +78,30 @@ export function transformForumData(data: Forum): ForumThreadTransformed[] {
   return forum as unknown as ForumThreadTransformed[];
 }
 
+export function transformUserEntityToUserDTO(
+  user: Nullable<UserEntity>
+): Partial<UserDTO> | null {
+  if (user) {
+    return {
+      login: user.login,
+      first_name: user.name || '',
+      second_name: user.lastname || '',
+      display_name: user.displayName || '',
+      phone: user.phone || '',
+      email: user.email || '',
+    };
+  }
+  return null;
+}
+
 export function transformForumDTOtoStore(
   type: string,
   dto: ThreadDTO | PostDTO | ForumCommentDTO,
-  user: UserDTO
+  user: UserEntity
 ): ForumEntityTransformed {
   return {
     [`${type}Id`]: dto[Object.keys(dto)[0]],
-    author: user.first_name,
+    author: user.name,
     avatar: user.avatar,
     content: String(dto.content),
     datetime: String(dto.createdAt),
@@ -97,6 +114,7 @@ export function transformForumDTOtoStore(
 const forumUtils = {
   transformForumData,
   transformForumDTOtoStore,
+  transformUserEntityToUserDTO,
 };
 
 export default forumUtils;

@@ -1,29 +1,31 @@
-import BaseAPI from './base';
+import { ForumBaseAPI } from './base';
 import { SignUpDTO, SignInDTO } from '../types/auth';
-import { UserDTO } from '../types/user';
+import { UserEntity } from '../types/user';
 import { ApiResponse } from '../types/api';
 
-class AuthAPI extends BaseAPI {
+class AuthAPI extends ForumBaseAPI {
   constructor() {
-    super('/auth');
+    super('/user');
   }
 
-  signIn(body: SignInDTO): ApiResponse<UserDTO> {
+  signIn(body: SignInDTO): ApiResponse<UserEntity> {
     return this.httpService.post('/signin', {
       body,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  signUp(body: SignUpDTO): ApiResponse<UserDTO> {
+  signUp(body: SignUpDTO): ApiResponse<UserEntity> {
     return this.httpService.post('/signup', {
       body,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  getUser(): ApiResponse<UserDTO> {
-    return this.httpService.get('/user');
+  getUser(): ApiResponse<UserEntity> {
+    return this.httpService.get('/', {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   logout(): ApiResponse<void> {

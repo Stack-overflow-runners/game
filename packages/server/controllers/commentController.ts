@@ -5,15 +5,16 @@ import ApiError from '../utils/error';
 
 class CommentController {
   async create(req: Request, res: Response, next: NextFunction) {
-    const { postId, content, userId } = req.body;
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(ApiError.badRequest('Validation error'));
-    }
-    if (!userId) {
-      return next(ApiError.forbidden('user is required'));
-    }
     try {
+      const { postId, content } = req.body;
+      const { userId } = req.user;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return next(ApiError.badRequest('Validation error'));
+      }
+      if (!userId) {
+        return next(ApiError.forbidden('user is required'));
+      }
       const comment = await Comment.create({
         postId,
         content,

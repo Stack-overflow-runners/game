@@ -3,25 +3,25 @@ import {
   RequestUserPasswordData,
   RequestUserAvatarData,
   RequestUserData,
-  UserDTO,
+  UserEntity,
 } from '../types/user';
-import BaseAPI from './base';
+import { ForumBaseAPI } from './base';
 
-class UserAPI extends BaseAPI {
+class UserAPI extends ForumBaseAPI {
   constructor() {
     super('/user');
   }
 
-  public updateProfile(body: RequestUserData): ApiResponse<UserDTO> {
+  public updateProfile(body: RequestUserData): ApiResponse<UserEntity> {
     return this.httpService.put('/profile', {
       body,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  public updateAvatar(body: RequestUserAvatarData): ApiResponse<UserDTO> {
+  public updateAvatar(body: RequestUserAvatarData): ApiResponse<UserEntity> {
     return this.httpService.put('/profile/avatar', {
-      body
+      body,
     });
   }
 

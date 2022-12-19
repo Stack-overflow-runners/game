@@ -6,10 +6,8 @@ import ApiError from '../utils/error';
 class ThreadController {
   async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { content, userId } = req.body;
-      if (!userId) {
-        return next(ApiError.forbidden('user is required'));
-      }
+      const { userId } = req.user;
+      const { content } = req.body;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return next(ApiError.badRequest('Validation error'));
@@ -27,7 +25,7 @@ class ThreadController {
 
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const { userId } = req.query;
+      const { userId } = req.user;
       if (!userId) {
         return next(ApiError.forbidden('user is required'));
       }
@@ -40,10 +38,7 @@ class ThreadController {
 
   async getOne(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id, userId } = req.params;
-      if (!userId) {
-        return next(ApiError.forbidden('user is required'));
-      }
+      const { id } = req.params;
       const thread = await Thread.findOne({ where: { id } });
       return res.json(thread);
     } catch (error: any) {

@@ -1,10 +1,9 @@
 import AuthAPI from '../../../api/auth';
 import { SignUpDTO } from '../../../types/auth';
 import { ApiResponse } from '../../../types/api';
-import { UserDTO } from '../../../types/user';
-import { forumSignIn } from '../../forum/services/forum-service';
+import { UserEntity } from '../../../types/user';
 
-const signUp = async (payload: SignUpDTO): ApiResponse<UserDTO> => {
+const signUp = async (payload: SignUpDTO): ApiResponse<UserEntity> => {
   const response = await AuthAPI.signUp(payload);
   if (response.error) {
     return response;
@@ -13,10 +12,8 @@ const signUp = async (payload: SignUpDTO): ApiResponse<UserDTO> => {
   if (userRes.error || !userRes.data) {
     return { error: 'Не удалось получить пользователя' };
   }
-  // temporary not safe solution here
-  const user = await forumSignIn(userRes.data);
 
-  return user;
+  return { data: userRes.data };
 };
 
 export default signUp;

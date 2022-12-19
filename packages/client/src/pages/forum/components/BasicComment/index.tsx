@@ -5,6 +5,7 @@ import { Avatar, Comment } from 'antd';
 import { useAuth } from '../../../../hooks/auth';
 import LikeButtons from '../LikeButtons';
 import { ForumEntityTransformed } from '../../../../types/forum';
+import CONSTS from '../../../../utils/consts';
 
 type Props = {
   comment: ForumEntityTransformed;
@@ -30,7 +31,12 @@ function BasicComment({ comment, additionalActions = [] }: Props) {
     <Comment
       actions={actions}
       author={<p>{author}</p>}
-      avatar={<Avatar src={avatar} alt={`Аватар ${author}`} />}
+      avatar={
+        <Avatar
+          src={avatar ? `${CONSTS.PROXY_RESOURCE_URL}${avatar}` : ''}
+          alt={`Аватар ${author}`}
+        />
+      }
       content={content}
       datetime={moment(datetime).format('D MMM YYYY в HH:MM')}
     />

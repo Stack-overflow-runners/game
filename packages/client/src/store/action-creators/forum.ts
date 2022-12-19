@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import forumService from '../../pages/forum/services/forum-service';
-import { LikeDislike, User } from '../../types/forum';
-import { UserDTO } from '../../types/user';
+import { LikeDislike } from '../../types/forum';
+import { UserEntity } from '../../types/user';
 
 export const fetchForum = createAsyncThunk(
   'forum/fetchForum',
@@ -22,7 +22,7 @@ export const fetchForum = createAsyncThunk(
 
 export const createThread = createAsyncThunk(
   'forum/createThread',
-  async (payload: { content: string; user: UserDTO }, thunkAPI) => {
+  async (payload: { content: string; user: UserEntity }, thunkAPI) => {
     try {
       const { data, error } = await forumService.createThread(payload);
       if (error) {
@@ -40,7 +40,7 @@ export const createThread = createAsyncThunk(
 export const createPost = createAsyncThunk(
   'forum/createPost',
   async (
-    payload: { content: string; threadId: number; user: UserDTO },
+    payload: { content: string; threadId: number; user: UserEntity },
     thunkAPI
   ) => {
     try {
@@ -60,7 +60,7 @@ export const createPost = createAsyncThunk(
 export const createComment = createAsyncThunk(
   'forum/createComment',
   async (
-    payload: { content: string; postId: number; user: UserDTO },
+    payload: { content: string; postId: number; user: UserEntity },
     thunkAPI
   ) => {
     try {
@@ -79,7 +79,7 @@ export const createComment = createAsyncThunk(
 
 export const setLike = createAsyncThunk(
   'forum/setLike',
-  async (payload: LikeDislike & User, thunkAPI) => {
+  async (payload: LikeDislike, thunkAPI) => {
     try {
       const { data, error } = await forumService.setLike(payload);
       if (error) {
@@ -96,7 +96,7 @@ export const setLike = createAsyncThunk(
 
 export const setDislike = createAsyncThunk(
   'forum/setDislike',
-  async (payload: LikeDislike & User, thunkAPI) => {
+  async (payload: LikeDislike, thunkAPI) => {
     try {
       const { data, error } = await forumService.setDislike(payload);
       if (error) {

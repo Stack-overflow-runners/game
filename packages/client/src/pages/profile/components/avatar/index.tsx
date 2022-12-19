@@ -3,7 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import SkeletonImage from 'antd/lib/skeleton/Image';
 import createCn from '../../../../utils/create-cn';
 import CONSTS from '../../../../utils/consts';
-import { UserDTO } from '../../../../types/user';
+import { UserEntity } from '../../../../types/user';
 import { Nullable } from '../../../../types/common';
 import 'antd/dist/antd.css';
 import './style.css';
@@ -14,15 +14,14 @@ type ProfileAvatarImageProps = {
 
 type ProfileAvatarProps = {
   className?: string;
-  user: Nullable<UserDTO>;
+  user: Nullable<UserEntity>;
   onChange: (e: ChangeEvent) => void;
 };
 
 const cn = createCn('profile-avatar');
 
 function Image({ avatar }: ProfileAvatarImageProps) {
-  const imageUrl = `${CONSTS.RESOURCE_URL}${avatar}`;
-
+  const imageUrl = `${CONSTS.PROXY_RESOURCE_URL}${avatar}`;
   return avatar ? (
     <img className={cn('avatar-image')} src={imageUrl} alt="avatar" />
   ) : (
