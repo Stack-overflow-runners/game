@@ -29,14 +29,12 @@ jobs:
           file_name: .env
           fail_on_empty: true
       - name: Create SSL key from encoded secret
-        id: write_file
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'key.key'
           fileDir: './ssl/'
           encodedString: ${{ secrets.SSL_BASE64_KEY }}
       - name: Create SSL certificate from encoded secret
-        id: write_file
         uses: timheuer/base64-to-file@v1.2
         with:
           fileName: 'cert.crt'
