@@ -10,6 +10,7 @@ export type UserEntity = {
   displayName: string;
   updatedAt: string;
   createdAt: string;
+  theme: string;
 };
 
 export type UserDTO = {
@@ -21,7 +22,6 @@ export type UserDTO = {
   avatar: string;
   phone: string;
   email: string;
-  theme?: string;
 };
 
 export type RequestUserAvatarData = FormData;

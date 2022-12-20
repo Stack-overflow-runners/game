@@ -19,7 +19,7 @@ import { useAuth } from '../../hooks/auth';
 import CONSTS from '../../utils/consts';
 import './style.css';
 import themes, { themeList } from '../../theme';
-import { changeTheme } from '../../store/reducers/user';
+import { updateTheme } from '../../store/action-creators/profile';
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -52,7 +52,7 @@ function Layout({ children }: LayoutProps): JSX.Element {
   }, []);
 
   const handleThemeChange = useCallback((theme: string) => {
-    dispatch(changeTheme(theme));
+    dispatch(updateTheme(theme));
   }, []);
 
   useEffect(() => {

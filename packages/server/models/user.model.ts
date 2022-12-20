@@ -1,13 +1,15 @@
 import {
+  AllowNull,
   AutoIncrement,
   Column,
   DataType,
+  Default,
+  ForeignKey,
   HasMany,
   Model,
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-// eslint-disable-next-line import/no-cycle
 import {
   Comment,
   CommentDislike,
@@ -19,6 +21,7 @@ import {
   ThreadDislike,
   ThreadLike,
 } from './forum.model';
+import { SiteTheme } from './theme.model';
 
 type TUser = {
   userId: number;
@@ -30,6 +33,7 @@ type TUser = {
   login: string;
   phone: string;
   avatar: string;
+  theme: string;
 };
 
 @Table({
@@ -96,6 +100,15 @@ class User extends Model<Partial<TUser>> {
     allowNull: true,
   })
   avatar: string;
+
+  @ForeignKey(() => SiteTheme)
+  @AllowNull(false)
+  @Default('default')
+  @Column({
+    type: DataType.STRING,
+    field: 'theme',
+  })
+  theme: string;
 
   @HasMany(() => Thread, 'userId')
   threads: Thread[];

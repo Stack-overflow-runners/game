@@ -1,12 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import {
-  Alert,
-  Button,
-  Empty,
-  Pagination,
-  PaginationProps,
-  Table
-} from 'antd';
+import { Alert, Button, Empty, Pagination, PaginationProps, Table } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { Leader } from './types';
 import Layout from '../../components/layout';
@@ -68,7 +61,7 @@ function LeaderBoardPage() {
   return (
     <Layout>
       <div className={cn()}>
-        {leaders?.length > 0 ? (
+        {leaders && leaders?.length > 0 ? (
           <>
             <Table
               className="table"

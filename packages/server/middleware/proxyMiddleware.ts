@@ -53,4 +53,4 @@ const options = {
   ),
 };
 
-export default createProxyMiddleware(options);
+export default createProxyMiddleware(['!**/theme'], options);

@@ -1,6 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserEntity } from '../../types/user';
-import { updateProfile, updateProfileAvatar } from '../action-creators/profile';
+import {
+  updateProfile,
+  updateProfileAvatar,
+  updateTheme,
+} from '../action-creators/profile';
 import {
   fetchUser,
   signIn,
@@ -37,11 +41,6 @@ const userSlice = createSlice({
 
       state.user = { ...state.user, ...action.payload };
     },
-    changeTheme(state: UserState, action: PayloadAction<string>) {
-      if (!state.user) return
-
-      state.user = { ...state.user, theme: action.payload || 'default' }
-    }
   },
   extraReducers: builder => {
     builder.addCase(
@@ -94,10 +93,22 @@ const userSlice = createSlice({
       updateProfileAvatar.rejected.type,
       setRejected<UserState, string>
     );
+
+    builder.addCase(
+      updateTheme.fulfilled.type,
+      (state: UserState, action: PayloadAction<string>) => {
+        if (!state.user) return;
+        state.user = { ...state.user, theme: action.payload || 'default' };
+        state.isLoading = false;
+        state.error = null;
+      }
+    );
+    builder.addCase(updateTheme.pending.type, setPending<UserState>);
+    builder.addCase(updateTheme.rejected.type, setRejected<UserState, string>);
   },
 });
 
-export const { setLoadingStatus, setUser, removeUser, updateUser, changeTheme } =
+export const { setLoadingStatus, setUser, removeUser, updateUser } =
   userSlice.actions;
 
 export default userSlice.reducer;

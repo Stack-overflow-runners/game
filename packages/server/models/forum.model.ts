@@ -10,7 +10,6 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-// eslint-disable-next-line import/no-cycle
 import User from './user.model';
 
 export type TThread = {

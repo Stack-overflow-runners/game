@@ -40,9 +40,32 @@ export const updateProfileAvatar = createAsyncThunk(
   }
 );
 
+export const updateTheme = createAsyncThunk(
+  'user/updateTheme',
+  async (payload: string, thunkAPI) => {
+    try {
+      const { data, error } = await userAPI.updateTheme(payload);
+
+      if (error || !data) {
+        return thunkAPI.rejectWithValue(error);
+      }
+      const { theme } = data;
+      if (!theme) {
+        return thunkAPI.rejectWithValue('Не удалось поменять тему.');
+      }
+      return theme;
+    } catch (e: any) {
+      return thunkAPI.rejectWithValue(
+        `Не удалось сохранить данные. ${e.message}`
+      );
+    }
+  }
+);
+
 const actions = {
   updateProfile,
   updateProfileAvatar,
+  updateTheme,
 };
 
 export default actions;

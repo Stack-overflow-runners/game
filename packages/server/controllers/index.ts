@@ -4,6 +4,7 @@ import PostController from './postController';
 import CommentController from './commentController';
 import LikeController from './likeController';
 import UserController from './userController';
+import ThemeController from './themeController';
 
 const controllers = {
   ThreadController,
@@ -12,6 +13,7 @@ const controllers = {
   PostController,
   CommentController,
   UserController,
+  ThemeController,
 };
 
 export {
@@ -21,6 +23,7 @@ export {
   LikeController,
   PostController,
   CommentController,
+  ThemeController,
 };
 
 export default controllers;
