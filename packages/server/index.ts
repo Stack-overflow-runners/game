@@ -15,7 +15,20 @@ import proxyMiddleware from './middleware/proxyMiddleware';
 dotenv.config();
 
 const app = express();
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: [`'self'`],
+        styleSrc: [
+          `'self'`,
+          `'unsafe-inline'`,
+        ],
+        scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+      },
+    },
+  })
+);
 app.enable('trust proxy');
 if (IS_PROD) {
   app.use((req, res, next) => {
