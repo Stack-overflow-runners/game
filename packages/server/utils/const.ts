@@ -26,6 +26,18 @@ export const PROXY_PATH_REWRITE_OPTIONS = {
   '^/api/leaderboard': 'api/v2/leaderboard',
 };
 
+export const SITE_THEMES = [
+  { theme: 'default', description: 'Default theme' },
+  { theme: 'gray' },
+  { theme: 'brown' },
+  { theme: 'orange' },
+  { theme: 'teal' },
+  { theme: 'cyan' },
+  { theme: 'blue' },
+  { theme: 'purple' },
+  { theme: 'pink' },
+];
+
 const consts = {
   API_YANDEX_DOMAIN,
   API_YANDEX_PATH,
