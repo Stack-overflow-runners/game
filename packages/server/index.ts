@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+import helmet from "helmet";
 import * as https from 'https';
 import * as http from 'http';
 import * as fs from 'fs';
@@ -14,6 +15,7 @@ import proxyMiddleware from './middleware/proxyMiddleware';
 dotenv.config();
 
 const app = express();
+app.use(helmet());
 app.enable('trust proxy');
 if (IS_PROD) {
   app.use((req, res, next) => {
