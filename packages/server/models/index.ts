@@ -1,5 +1,5 @@
 import User from './user.model';
-import { UserTheme, SiteTheme } from './theme.model';
+import { SiteTheme } from './theme.model';
 import {
   Thread,
   Post,
@@ -15,7 +15,6 @@ import {
 export default [
   User,
   SiteTheme,
-  UserTheme,
   Thread,
   Post,
   Comment,

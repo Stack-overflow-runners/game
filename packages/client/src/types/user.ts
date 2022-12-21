@@ -10,6 +10,7 @@ export type UserEntity = {
   displayName: string;
   updatedAt: string;
   createdAt: string;
+  theme: string;
 };
 
 export type UserDTO = {

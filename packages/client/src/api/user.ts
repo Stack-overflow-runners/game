@@ -31,6 +31,12 @@ class UserAPI extends ForumBaseAPI {
       headers: { 'Content-Type': 'application/json' },
     });
   }
+
+  public updateTheme(theme: string): ApiResponse<UserEntity> {
+    return this.httpService.put(`/theme?themeName=${theme}`, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }
 
 const userAPI = new UserAPI();

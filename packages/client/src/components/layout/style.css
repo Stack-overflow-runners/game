@@ -4,10 +4,25 @@
   min-height: 100vh;
 
   &__sidebar {
-    padding: 48px 24px;
+    padding: 64px 24px 24px;
+    background: var(--ant-primary-7);
 
     &-menu {
       margin-bottom: 24px;
+      background: transparent;
+      border: none;
+
+      .ant-menu-item {
+        background: var(--ant-primary-color);
+
+        a {
+          color: var(--ant-primary-1);
+        }
+
+        &:hover {
+          background: var(--ant-primary-color-hover);
+        }
+      }
     }
 
     .ant-layout-sider-children {
@@ -17,28 +32,33 @@
   }
 
   &__header {
-    display: grid;
-    grid-template-areas: 'user theme-picker';
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: auto;
+    line-height: 1;
+    background: var(--ant-primary-7);
 
-    padding: 0;
+    padding: 13px 24px 13px 0;
   }
 
   &__theme-picker {
-    grid-area: theme-picker;
   }
 
   &__user {
-    grid-area: user;
     display: flex;
     align-items: center;
-    column-gap: 8px;
+    border: 1px dashed var(--ant-primary-color);
+    background-color: var(--ant-primary-color-outline);
 
     &-avatar {
-      
+      border-right: 1px dashed var(--ant-primary-color);
     }
 
     &-login {
-      color: white;
+      color: #ffffff;
+      padding: 12px 24px;
+      font-weight: 600;
     }
   }
 
@@ -54,5 +74,6 @@
     flex-flow: column;
     flex: 1;
     padding: 24px;
+    background-color: var(--ant-primary-color-outline);
   }
 }

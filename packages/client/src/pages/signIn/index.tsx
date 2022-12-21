@@ -7,7 +7,6 @@ import { useAuth } from '../../hooks/auth';
 import AuthSocial from '../../components/auth-social';
 import { getOAuthProviders } from '../../utils/get-OAuth-provider';
 import signUpRules from '../signUp/validator';
-import 'antd/dist/antd.css';
 import './style.css';
 
 type FormData = {

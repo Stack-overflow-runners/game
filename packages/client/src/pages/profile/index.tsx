@@ -11,7 +11,6 @@ import withAuth from '../../hoc/withAuth';
 import { RequestUserData } from '../../types/user';
 import ProfileAvatar from './components/avatar';
 import ProfileForm from './components/form';
-import 'antd/dist/antd.css';
 import './style.css';
 
 const cn = createCn('profile');

@@ -9,7 +9,7 @@ import {
   POSTGRES_USER,
 } from './utils/const';
 
-const options = { force: IS_DEV };
+const options = { force: true };
 const host = IS_DEV ? 'localhost' : 'postgres';
 const sequelizeOptions: SequelizeOptions = {
   host,
