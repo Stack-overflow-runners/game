@@ -10,7 +10,7 @@ class LeaderAPI extends ForumBaseAPI {
   }
 
   addLeader(leader: Leader): ApiResponse<'OK'> {
-    return this.httpService.post('', {
+    return this.httpService.post('/', {
       body: {
         data: leader,
         // Which field is used to sort (if new value of the field more than old, data is stored)
