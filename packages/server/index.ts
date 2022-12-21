@@ -27,6 +27,7 @@ app.use(
         scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
       },
     },
+    crossOriginResourcePolicy: { policy: "same-site" }
   })
 );
 app.enable('trust proxy');
