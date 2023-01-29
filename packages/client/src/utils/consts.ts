@@ -5,7 +5,7 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 const PROD_URL = 'https://spacerunner.online';
 const DEV_URL = `http://localhost:${__CLIENT_PORT__}`;
 const FORUM_API_URL = IS_PRODUCTION
-  ? `https://api.spacerunner.online`
+  ? `https://api.spacerunner.online/api`
   : `http://localhost:${__SERVER_PORT__}/api`;
 const RESOURCE_URL = `${API_URL}/resources`;
 const PROXY_RESOURCE_URL = `${FORUM_API_URL}/resources`;
