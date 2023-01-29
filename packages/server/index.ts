@@ -2,14 +2,19 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import helmet from "helmet";
+import helmet from 'helmet';
 import * as https from 'https';
 import * as http from 'http';
 import * as fs from 'fs';
 import { dbInit } from './db';
 import router from './routes';
 import errorHandler from './middleware/errorHandlingMiddleware';
-import { APP_CURRENT_URL, IS_PROD, SERVER_PORT } from './utils/const';
+import {
+  APP_CURRENT_URL,
+  IS_PROD,
+  SERVER_PORT,
+  HTTPS_SERVER,
+} from './utils/const';
 import proxyMiddleware from './middleware/proxyMiddleware';
 import createThemes from './utils/create-themes';
 
@@ -21,14 +26,11 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: [`'self'`],
-        styleSrc: [
-          `'self'`,
-          `'unsafe-inline'`,
-        ],
+        styleSrc: [`'self'`, `'unsafe-inline'`],
         scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
       },
     },
-    crossOriginResourcePolicy: { policy: "same-site" }
+    crossOriginResourcePolicy: { policy: 'same-site' },
   })
 );
 app.enable('trust proxy');
@@ -58,7 +60,7 @@ const start = async () => {
     } catch (e) {
       console.log('cannot start http server', e);
     }
-    if (IS_PROD) {
+    if (IS_PROD && HTTPS_SERVER) {
       try {
         https
           .createServer(

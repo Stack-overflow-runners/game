@@ -2,10 +2,10 @@ import { Indexable } from '../types/common';
 
 const API_URL = 'https://ya-praktikum.tech/api/v2';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-const PROD_URL = 'https://stack-overflow-runners.ya-praktikum.tech';
+const PROD_URL = 'https://spacerunner.online';
 const DEV_URL = `http://localhost:${__CLIENT_PORT__}`;
 const FORUM_API_URL = IS_PRODUCTION
-  ? `${PROD_URL}:${__SERVER_PORT__}/api`
+  ? `https://api.spacerunner.online`
   : `http://localhost:${__SERVER_PORT__}/api`;
 const RESOURCE_URL = `${API_URL}/resources`;
 const PROXY_RESOURCE_URL = `${FORUM_API_URL}/resources`;
@@ -15,7 +15,6 @@ const AVATAR_PLACEHOLDER =
 const TEAM = 'stackoverflowRunners';
 const RATING_FIELD = 'score';
 // OAuth providers
-const OAUTH_PROD_REDIRECT_URL = `https://stack-overflow-runners.ya-praktikum.tech`;
 export const OAUTH_PROVIDERS: Indexable<any> = {
   yandex: {
     name: 'Yandex',
@@ -23,7 +22,7 @@ export const OAUTH_PROVIDERS: Indexable<any> = {
       'https://oauth.yandex.ru/authorize?response_type=code&client_id=',
     signInURI: 'https://ya-praktikum.tech/api/v2/oauth/yandex',
     getServiceIdURI: 'https://ya-praktikum.tech/api/v2/oauth/yandex/service-id',
-    redirectURI: IS_PRODUCTION ? OAUTH_PROD_REDIRECT_URL : DEV_URL,
+    redirectURI: IS_PRODUCTION ? PROD_URL : DEV_URL,
   },
 };
 //  Local storage keys
