@@ -31,7 +31,7 @@ function AuthSocial({ providers }: Props): JSX.Element {
             onClick={() => {
               onSigninWithProvider(provider.name);
             }}
-            disabled={pending === provider.name}>
+            disabled>
             {pending === provider.name && <>...</>}
             Войти через {provider.name}
           </Button>
