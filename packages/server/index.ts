@@ -3,18 +3,11 @@ import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
-import * as https from 'https';
 import * as http from 'http';
-import * as fs from 'fs';
 import { dbInit } from './db';
 import router from './routes';
 import errorHandler from './middleware/errorHandlingMiddleware';
-import {
-  APP_CURRENT_URL,
-  IS_PROD,
-  SERVER_PORT,
-  HTTPS_SERVER,
-} from './utils/const';
+import { APP_CURRENT_URL, IS_PROD, SERVER_PORT } from './utils/const';
 import proxyMiddleware from './middleware/proxyMiddleware';
 import createThemes from './utils/create-themes';
 
@@ -59,23 +52,6 @@ const start = async () => {
       });
     } catch (e) {
       console.log('cannot start http server', e);
-    }
-    if (IS_PROD && HTTPS_SERVER) {
-      try {
-        https
-          .createServer(
-            {
-              key: fs.readFileSync('./ssl/key.key'),
-              cert: fs.readFileSync('./ssl/cert.crt'),
-            },
-            app
-          )
-          .listen(443, () => {
-            console.log('https server started on port', 443);
-          });
-      } catch (e) {
-        console.log('cannot start https server', e);
-      }
     }
   }
 };
