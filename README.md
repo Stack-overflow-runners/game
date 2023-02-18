@@ -1,3 +1,30 @@
+## Space runner
+
+![Build status](https://github.com/aleksandr-loskutov/middle.messenger.praktikum.yandex/actions/workflows/docker-deploy.yml/badge.svg)
+
+Игра Space runner - командная разработка от идеи до результата по методологии scrum и git flow с cross-review.
+В разработке принимали участие [4 человека](https://github.com/Stack-overflow-runners/game/graphs/contributors).
+
+## Demo
+Доступно [по ссылке](https://spacerunner.online/sign-up). Короткое [видео с функционалом](https://www.berrycast.com/conversations/8b50b284-959c-5c16-b106-b28f441c848f).
+
+## Screenshot
+![App Screenshot](https://files.aleksandrl.ru/sites/portfolio/img/spacerunner-gameplay4.png)
+
+## Технологии
+- TypeScript;
+- React - для всего, кроме игры;
+- Redux, Redux-Thunk, Redux-Toolkit - стейт-менеджмент;
+- Canvas API - для отрисовки игры;
+- Ant-D & PostCSS — стилизация;
+- React Testing Library & Jest — тесты;
+- Vite — сборщик;
+- Express — веб-сервер;
+- PostgreSQL — база данных;
+- Sequelize — ORM;
+- Docker + github actions для автодеплоя на VDS;
+- EsLint, Prettier — линтеры.
+
 ### Как запускать?
 
 1. Убедитесь что у вас установлен `node` и `docker`
@@ -52,20 +79,8 @@
 В проекте используется [lefthook](https://github.com/evilmartians/lefthook)
 Если очень-очень нужно пропустить проверки, используйте `--no-verify` (но не злоупотребляйте :)
 
-## Ой, ничего не работает :(
-
-Откройте issue, я приду :)
-
-## Автодеплой статики на vercel
-Зарегистрируйте аккаунт на [vercel](https://vercel.com/)
-Следуйте [инструкции](https://vitejs.dev/guide/static-deploy.html#vercel-for-git)
-В качестве `root directory` укажите `packages/client`
-
-Все ваши PR будут автоматически деплоиться на vercel. URL вам предоставит деплоящий бот
-
 ## Production окружение в докере
 Перед первым запуском выполните `node init.js`
-
 
 `docker compose up` - запустит три сервиса
 1. nginx, раздающий клиентскую статику (client)
