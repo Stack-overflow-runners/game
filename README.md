@@ -1,6 +1,6 @@
 ## Space runner
 
-![Build status](https://github.com/aleksandr-loskutov/middle.messenger.praktikum.yandex/actions/workflows/docker-deploy.yml/badge.svg)
+![Build status](https://github.com/Stack-overflow-runners/game/actions/workflows/deploy.yml/badge.svg)
 
 Игра Space runner - командная разработка от идеи до результата по методологии scrum и git flow с cross-review.
 В разработке принимали участие [4 человека](https://github.com/Stack-overflow-runners/game/graphs/contributors).
