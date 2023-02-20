@@ -5,7 +5,7 @@ import {
 } from 'http-proxy-middleware';
 import {
   API_YANDEX_DOMAIN,
-  APP_CURRENT_DOMAIN,
+  APP_COOKIE_DOMAIN,
   PROXY_PATH_REWRITE_OPTIONS,
 } from '../utils/const';
 import { userInterceptorHandler } from '../utils/user';
@@ -14,7 +14,7 @@ import isJsonString from '../utils/json-check';
 const options = {
   target: API_YANDEX_DOMAIN,
   pathRewrite: PROXY_PATH_REWRITE_OPTIONS,
-  cookieDomainRewrite: APP_CURRENT_DOMAIN,
+  cookieDomainRewrite: APP_COOKIE_DOMAIN,
   changeOrigin: true,
   secure: true,
   timeout: 10000,

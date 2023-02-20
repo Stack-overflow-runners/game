@@ -19,11 +19,10 @@ function MainPage(): JSX.Element {
           <div className={cn('content-item')}>
             <div className={cn('brief')}>
               <Card title="Team" className={cn('brief-card')}>
-                <p>Антон Борисенко</p>
-                <p>Александр Лоскутов</p>
-                <p>Иван Попов</p>
-                <p>Георгий Ядрихинский</p>
                 <p>Антон Колотаев</p>
+                <p>Александр Лоскутов</p>
+                <p>Георгий Ядрихинский</p>
+                <p>Иван Попов</p>
                 <p>Ментор Артём Коньков</p>
               </Card>
               <Card title="Stack" className={cn('brief-card')}>
