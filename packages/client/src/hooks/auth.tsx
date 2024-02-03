@@ -39,16 +39,15 @@ function useAuthProvider() {
     state => state.user
   );
 
-  const signUp = (credentials: SignUpDTO): void =>
-    dispatch(register(credentials));
-  const signIn = (credentials: SignInDTO): void => dispatch(login(credentials));
-  const signOut = (): void => dispatch(logout());
+  const signUp = (credentials: SignUpDTO) => dispatch(register(credentials));
+  const signIn = (credentials: SignInDTO) => dispatch(login(credentials));
+  const signOut = () => dispatch(logout());
 
   const getProviderServiceId = async (providerName: string) => {
     const response = await getServiceIdFromProvider(providerName);
     return response;
   };
-  const signInWithProvider = (code: string, navigate: NavigateFunction): void =>
+  const signInWithProvider = (code: string, navigate: NavigateFunction) =>
     dispatch(signInOAuth({ code, navigate }));
 
   useEffect(() => {

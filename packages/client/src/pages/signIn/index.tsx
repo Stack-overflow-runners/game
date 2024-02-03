@@ -2,7 +2,6 @@ import { useCallback, useEffect } from 'react';
 import { Alert, Button, Checkbox, Form, Input } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import createCn from '../../utils/create-cn';
-import { useAppDispatch } from '../../hooks/store';
 import { useAuth } from '../../hooks/auth';
 import AuthSocial from '../../components/auth-social';
 import { getOAuthProviders } from '../../utils/get-OAuth-provider';
@@ -22,17 +21,14 @@ const cn = createCn('sign-in');
 const initialValues: Partial<FormData> = { remember: true };
 
 function SignInPage(): JSX.Element {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { user, signIn, error: formAlert } = useAuth();
   const handleFormFinish = useCallback((data: FormData): void => {
-    dispatch(
-      signIn({
-        login: data.username,
-        password: data.password,
-        remember: data.remember,
-      })
-    );
+    signIn({
+      login: data.username,
+      password: data.password,
+      remember: data.remember,
+    });
   }, []);
 
   useEffect(() => {

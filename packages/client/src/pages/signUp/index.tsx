@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router';
 import { Rule } from 'antd/lib/form';
 import createCn from '../../utils/create-cn';
 import { useAuth } from '../../hooks/auth';
-import { useAppDispatch } from '../../hooks/store';
 import signUpRules from './validator';
 import './style.css';
 
@@ -21,14 +20,13 @@ type FormData = {
 const cn = createCn('sign-up');
 
 function SignUpPage(): JSX.Element {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { user, signUp, error: formAlert } = useAuth();
   const onLoginClick = useCallback((): void => {
     navigate('/sign-in');
   }, []);
   const handleSubmit = useCallback((data: FormData): void => {
-    dispatch(signUp(data));
+    signUp(data);
   }, []);
   if (user) {
     navigate('/');
