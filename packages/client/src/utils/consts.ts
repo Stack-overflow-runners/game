@@ -2,10 +2,10 @@ import { Indexable } from '../types/common';
 
 const API_URL = 'https://ya-praktikum.tech/api/v2';
 const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-const PROD_URL = 'https://spacerunner.online';
+const PROD_URL = 'https://spacerunner.ru';
 const DEV_URL = `http://localhost:${__CLIENT_PORT__}`;
 const FORUM_API_URL = IS_PRODUCTION
-  ? `https://api.spacerunner.online/api`
+  ? `https://api.spacerunner.ru/api`
   : `http://localhost:${__SERVER_PORT__}/api`;
 const RESOURCE_URL = `${API_URL}/resources`;
 const PROXY_RESOURCE_URL = `${FORUM_API_URL}/resources`;

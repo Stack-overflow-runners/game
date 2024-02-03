@@ -10,8 +10,8 @@ export const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env;
 export const PROXY_PATH_REWRITE = `^/api/user`;
 export const APP_DEV_URL = `http://localhost:${CLIENT_PORT}`;
-export const APP_FRONTEND_URL = 'https://spacerunner.online';
-export const APP_API_URL = 'https://api.spacerunner.online';
+export const APP_FRONTEND_URL = 'https://spacerunner.ru';
+export const APP_API_URL = 'https://api.spacerunner.ru';
 export const APP_CURRENT_URL = IS_DEV ? APP_DEV_URL : APP_FRONTEND_URL;
 export const APP_COOKIE_DOMAIN = IS_DEV
   ? `http://localhost:${CLIENT_PORT}`

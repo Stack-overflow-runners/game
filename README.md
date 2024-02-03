@@ -6,7 +6,7 @@
 В разработке принимали участие [4 человека](https://github.com/Stack-overflow-runners/game/graphs/contributors).
 
 ## Demo
-Доступно [по ссылке](https://spacerunner.online/sign-up). Короткое [видео с функционалом](https://www.berrycast.com/conversations/8b50b284-959c-5c16-b106-b28f441c848f).
+Доступно [по ссылке](https://spacerunner.ru/sign-up). Короткое [видео с функционалом](https://www.berrycast.com/conversations/8b50b284-959c-5c16-b106-b28f441c848f).
 
 ## Screenshot
 ![App Screenshot](https://files.aleksandrl.ru/sites/portfolio/img/spacerunner-gameplay4.png)
